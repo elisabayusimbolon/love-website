@@ -1,649 +1,515 @@
-const $ = (id) => document.getElementById(id)
-
-const sceneGuide = {
-  "scene-1": { text: "aku nemenin 💛", mood: "pink" },
-  "scene-2": { text: "tangkap hatinya 💘", mood: "peach" },
-  "scene-3": { text: "siap-siap baper 😚", mood: "lilac" },
-  "scene-4": { text: "jangan pura-pura biasa 😳", mood: "yellow" },
-  "scene-5": { text: "pelan-pelan dulu 🌙", mood: "mint" },
-  "scene-6": { text: "akhirnya sampai sini 💌", mood: "pink" }
-}
-
-let activeScene = "scene-1"
-let transitionLock = false
-
-function setMascotMood(element, mood) {
-  if (!element) return
-
-  element.classList.remove(
-    "mood-pink",
-    "mood-peach",
-    "mood-yellow",
-    "mood-lilac",
-    "mood-mint"
-  )
-
-  element.classList.add(`mood-${mood}`)
-}
-
-function updateGuide(sceneId) {
-  const data = sceneGuide[sceneId] || sceneGuide["scene-1"]
-
-  if ($("guideBubble")) {
-    $("guideBubble").textContent = data.text
-  }
-
-  setMascotMood($("guideMascot"), data.mood)
-}
-
-function goTo(sceneId) {
-  if (transitionLock || activeScene === sceneId) return
-
-  transitionLock = true
-
-  document.querySelectorAll(".scene").forEach((scene) => {
-    scene.classList.remove("active")
-  })
-
-  const target = $(sceneId)
-  if (!target) return
-
-  target.classList.add("active")
-  activeScene = sceneId
-  updateGuide(sceneId)
-
-  const card = target.querySelector(".cute-card")
-  if (card) {
-    card.scrollTop = 0
-  }
-
-  setTimeout(() => {
-    transitionLock = false
-  }, 460)
-}
-
-function on(id, event, handler) {
-  const element = $(id)
-  if (!element) return
-  element.addEventListener(event, handler)
-}
-
-/* floating background */
-
-const floatingItems = [
-  "♡",
-  "💗",
-  "💕",
-  "hehe",
-  "cute",
-  "love",
-  "🌸",
-  "baper",
-  "gemes",
-  "✧"
-]
-
-function spawnFloatingItem() {
-  const area = $("floatingArea")
-  if (!area) return
-
-  const item = document.createElement("div")
-  item.className = "float-item"
-  item.textContent = floatingItems[Math.floor(Math.random() * floatingItems.length)]
-
-  item.style.left = Math.random() * 100 + "vw"
-  item.style.fontSize = 12 + Math.random() * 12 + "px"
-  item.style.animationDuration = 8 + Math.random() * 8 + "s"
-
-  area.appendChild(item)
-
-  setTimeout(() => item.remove(), 17000)
-}
-
-/* cursor heart */
-
-let cursorCooldown = false
-
-function spawnCursorHeart(x, y) {
-  if (cursorCooldown) return
-  cursorCooldown = true
-
-  const area = $("cursorArea")
-  if (!area) return
-
-  const heart = document.createElement("div")
-  heart.className = "cursor-heart"
-  heart.textContent = ["💗", "💕", "🌸", "♡"][Math.floor(Math.random() * 4)]
-  heart.style.left = `${x}px`
-  heart.style.top = `${y}px`
-
-  area.appendChild(heart)
-
-  setTimeout(() => {
-    cursorCooldown = false
-  }, 120)
-
-  setTimeout(() => heart.remove(), 900)
-}
-
-/* confetti */
-
-function launchConfetti() {
-  const area = $("confettiArea")
-  if (!area) return
-
-  const colors = ["#ff78b9", "#ffd1e8", "#ffffff", "#ffc94e", "#d9a9ff"]
-
-  for (let i = 0; i < 44; i++) {
-    const item = document.createElement("div")
-    item.className = "confetti"
-
-    const size = 7 + Math.random() * 8
-
-    item.style.left = Math.random() * 100 + "vw"
-    item.style.width = size + "px"
-    item.style.height = size + "px"
-    item.style.background = colors[Math.floor(Math.random() * colors.length)]
-    item.style.animationDuration = 2.8 + Math.random() * 2.8 + "s"
-    item.style.animationDelay = Math.random() * 0.5 + "s"
-    item.style.setProperty("--move-x", (Math.random() - 0.5) * 180 + "px")
-
-    area.appendChild(item)
-
-    setTimeout(() => item.remove(), 6500)
-  }
-}
-
-/* intro mascot */
-
-const heroMoods = [
-  { mood: "pink", face: "•ᴗ•", bubble: "gemes ya?" },
-  { mood: "peach", face: "≧ᴗ≦", bubble: "klik aku" },
-  { mood: "yellow", face: "♥ᴗ♥", bubble: "jangan malu" },
-  { mood: "lilac", face: "˶ᵔᵕᵔ˶", bubble: "ayo dong" },
-  { mood: "mint", face: "◕ᴗ◕", bubble: "siap yaa?" }
-]
-
-let heroMoodIndex = 0
-let heroMoodTimer = null
-
-function renderHeroMood() {
-  const data = heroMoods[heroMoodIndex]
-
-  setMascotMood($("heroMascot"), data.mood)
-
-  if ($("heroFace")) {
-    $("heroFace").textContent = data.face
-  }
-
-  if ($("mascotBubble")) {
-    $("mascotBubble").textContent = data.bubble
-  }
-}
-
-function startHeroMoodLoop() {
-  clearInterval(heroMoodTimer)
-
-  renderHeroMood()
-
-  heroMoodTimer = setInterval(() => {
-    heroMoodIndex = (heroMoodIndex + 1) % heroMoods.length
-    renderHeroMood()
-  }, 1200)
-}
-
-function startIntro() {
-  if ($("mascotBubble")) {
-    $("mascotBubble").textContent = "yeayy mulai 💗"
-  }
-
-  setMascotMood($("heroMascot"), "yellow")
-
-  if ($("heroFace")) {
-    $("heroFace").textContent = "≧ᴗ≦"
-  }
-
-  for (let i = 0; i < 16; i++) {
-    setTimeout(spawnFloatingItem, i * 45)
-  }
-
-  setTimeout(() => {
-    goTo("scene-2")
-    initHeartGame()
-  }, 650)
-}
-
-/* scene 2 */
-
-let cuteScore = 0
-let heartInterval = null
-const maxCuteScore = 5
-
-function initHeartGame() {
-  cuteScore = 0
-
-  if ($("cuteScore")) $("cuteScore").textContent = cuteScore
-  if ($("nextToRiddleBtn")) $("nextToRiddleBtn").classList.add("hidden")
-  if ($("cuteHint")) $("cuteHint").textContent = "klik hati yang muncul 💕"
-
-  const game = $("heartGame")
-  if (game) {
-    game.querySelectorAll(".catch-heart").forEach((heart) => heart.remove())
-  }
-
-  clearInterval(heartInterval)
-
-  setTimeout(() => {
-    spawnCatchHeart()
-    heartInterval = setInterval(spawnCatchHeart, 780)
-  }, 300)
-}
-
-function spawnCatchHeart() {
-  const game = $("heartGame")
-  if (!game || cuteScore >= maxCuteScore) return
-
-  const heart = document.createElement("button")
-  heart.className = "catch-heart"
-  heart.type = "button"
-  heart.textContent = ["💗", "💕", "💖", "💘", "🌸"][Math.floor(Math.random() * 5)]
-
-  const maxX = Math.max(0, game.clientWidth - 58)
-  const maxY = Math.max(0, game.clientHeight - 58)
-
-  heart.style.left = Math.max(8, Math.random() * maxX) + "px"
-  heart.style.top = Math.max(8, Math.random() * maxY) + "px"
-
-  heart.addEventListener("click", () => {
-    cuteScore++
-    if ($("cuteScore")) $("cuteScore").textContent = cuteScore
-
-    heart.textContent = "✨"
-    heart.style.pointerEvents = "none"
-
-    setTimeout(() => heart.remove(), 130)
-
-    if (cuteScore >= maxCuteScore) {
-      finishHeartGame()
-    }
-  })
-
-  game.appendChild(heart)
-
-  setTimeout(() => {
-    if (heart.parentElement) heart.remove()
-  }, 1300)
-}
-
-function finishHeartGame() {
-  clearInterval(heartInterval)
-
-  const game = $("heartGame")
-  if (game) {
-    game.querySelectorAll(".catch-heart").forEach((heart) => heart.remove())
-  }
-
-  if ($("cuteHint")) {
-    $("cuteHint").textContent = "yeay, hatinya ketangkep semua 😚"
-  }
-
-  if ($("nextToRiddleBtn")) {
-    $("nextToRiddleBtn").classList.remove("hidden")
-  }
-
-  for (let i = 0; i < 18; i++) {
-    setTimeout(spawnFloatingItem, i * 40)
-  }
-}
-
-/* scene 3 */
+const card = document.getElementById("card");
+const topBadge = document.getElementById("topBadge");
+const tinyPill = document.getElementById("tinyPill");
+const character = document.getElementById("character");
+const miniTitle = document.getElementById("miniTitle");
+const mainTitle = document.getElementById("mainTitle");
+const heartStack = document.getElementById("heartStack");
+const desc = document.getElementById("desc");
+const noteBox = document.getElementById("noteBox");
+const contentArea = document.getElementById("contentArea");
+const mainBtn = document.getElementById("mainBtn");
+const ghostBtn = document.getElementById("ghostBtn");
+const smallText = document.getElementById("smallText");
+const softBg = document.getElementById("softBg");
+const buddyText = document.getElementById("buddyText");
+
+let scene = "intro";
+let caught = 0;
+let quizIndex = 0;
+let softUnlocked = false;
+
+const characterMoods = [
+  "peach happy",
+  "pink shy",
+  "yellow excited",
+  "lilac sad",
+  "mint happy"
+];
 
 const riddles = [
   {
+    label: "GOMBALAN 1 DARI 3",
+    title: "Teka-teki baper",
     question: "Kalau aku disuruh pilih tempat paling nyaman, aku pilih...",
+    correct: "Kamu",
     options: [
-      "Kasur empuk",
-      "Rumah yang tenang",
-      "Kamu",
-      "Kafe lucu"
-    ],
-    correctIndex: 2,
-    emoji: "🏡",
-    correctText:
-      "Iya, kamu. Soalnya nyaman itu bukan selalu tempat. Kadang nyaman itu seseorang yang bikin hati tenang.",
-    wrongReplies: [
-      "Kasur emang empuk, tapi kalau rebahan pun tetap aja pikiranku larinya ke kamu 😚",
-      "Rumah yang tenang memang enak, tapi tenangnya beda kalau ada kamu di dalam ceritanya.",
-      "",
-      "Kafe lucu boleh, tapi tempat favoritku tetap dekat kamu. Sederhana, tapi bikin betah."
+      {
+        text: "Kasur empuk",
+        reply: "Kasur emang nyaman, tapi kalau lagi kangen, tetap aja yang dicari bukan bantal. 😚"
+      },
+      {
+        text: "Rumah yang tenang",
+        reply: "Rumah itu tempat pulang, tapi kamu tuh rasanya kayak pulang yang lebih hangat. 🤍"
+      },
+      {
+        text: "Kamu",
+        reply: "Nah, pinter. Jawaban ini bikin aku senyum duluan. Soalnya tempat ternyaman versi aku ya kamu. 💗"
+      },
+      {
+        text: "Kafe lucu",
+        reply: "Kafe lucu boleh, tapi kalau kamu ada di sana, tempatnya langsung jadi favorit. ☕💞"
+      }
     ]
   },
   {
-    question: "Kalau aku jadi notifikasi di HP kamu, aku pengennya muncul pas...",
+    label: "GOMBALAN 2 DARI 3",
+    title: "Jawab pakai hati",
+    question: "Kalau aku tiba-tiba diem, biasanya karena...",
+    correct: "Lagi mikirin kamu",
     options: [
-      "Kamu lagi bete",
-      "Kamu lagi senyum",
-      "Kamu lagi kangen",
-      "Setiap kamu butuh alasan buat senyum"
-    ],
-    correctIndex: 3,
-    emoji: "📱",
-    correctText:
-      "Nah itu. Aku pengen jadi alasan kecil yang muncul pelan-pelan, terus bikin kamu senyum tanpa sadar.",
-    wrongReplies: [
-      "Kalau kamu lagi bete, aku tetap mau muncul. Tapi bukan buat ganggu, cuma buat bilang: sini, senyum dikit.",
-      "Kalau kamu lagi senyum, aku pasti ikut senyum juga. Tapi ada jawaban yang lebih aku banget.",
-      "Kalau kamu lagi kangen, bahaya sih. Nanti aku juga ikut kangen beneran.",
-      ""
+      {
+        text: "Lagi lapar",
+        reply: "Bisa jadi lapar sih, tapi anehnya yang kebayang malah kamu, bukan makanan. 😭"
+      },
+      {
+        text: "Lagi ngantuk",
+        reply: "Ngantuk boleh, tapi kalau kamu muncul di pikiran, mata bisa auto melek lagi. 🤭"
+      },
+      {
+        text: "Lagi mikirin kamu",
+        reply: "Iya. Kadang aku diem bukan karena kosong, tapi karena kepala aku lagi penuh sama kamu. 💕"
+      },
+      {
+        text: "Lagi pura-pura sibuk",
+        reply: "Pura-pura sibuk itu cuma alibi. Aslinya nyari cara biar kamu senyum. 😌"
+      }
     ]
   },
   {
-    question: "Kalau senyum kamu punya efek samping, efeknya ke aku adalah...",
+    label: "GOMBALAN 3 DARI 3",
+    title: "Terakhir nih",
+    question: "Kalau kamu senyum, efeknya ke aku tuh...",
+    correct: "Hari aku jadi manis",
     options: [
-      "Biasa aja",
-      "Ikut senyum tanpa sadar",
-      "Jadi lupa pura-pura cuek",
-      "Nomor 2 dan 3 benar"
-    ],
-    correctIndex: 3,
-    emoji: "😳",
-    correctText:
-      "Benar. Senyum kamu tuh curang. Bisa bikin aku senyum balik, terus lupa kalau tadinya mau pura-pura biasa aja.",
-    wrongReplies: [
-      "Biasa aja? Hmm, itu jawaban paling bohong. Senyum kamu nggak sesederhana itu.",
-      "Iya, aku memang ikut senyum. Tapi efeknya belum lengkap, masih ada satu rahasia lagi.",
-      "Nah, ini juga benar. Tapi ada jawaban yang lebih jujur lagi.",
-      ""
+      {
+        text: "Biasa aja",
+        reply: "Biasa aja? Waduh, kayaknya hatiku protes. Senyum kamu nggak pernah biasa buat aku. 🥺"
+      },
+      {
+        text: "Bikin bingung",
+        reply: "Iya, bingung juga sih. Bingung kenapa ada orang yang senyumnya bisa semanis itu. 😵‍💫"
+      },
+      {
+        text: "Hari aku jadi manis",
+        reply: "Nah ini. Kamu nggak sadar, tapi senyum kamu bisa bikin hari aku berubah jadi lebih ringan. ✨"
+      },
+      {
+        text: "Bikin pengen jajan",
+        reply: "Jajan boleh, tapi kamu tetap bagian paling manisnya. 🍰"
+      }
     ]
   }
-]
+];
 
-let riddleIndex = 0
-let riddleWrong = 0
+const scenes = {
+  intro() {
+    scene = "intro";
+    setMood("pink happy");
 
-function initRiddle() {
-  riddleIndex = 0
-  riddleWrong = 0
-  showRiddle()
+    topBadge.textContent = "SPECIAL MISSION FOR YOU";
+    tinyPill.textContent = "klik aku";
+    miniTitle.textContent = "PSSST... SINI DULU";
+    mainTitle.textContent = "Haiii kamu";
+    heartStack.textContent = "💗💕";
+    desc.innerHTML = "Aku bikin sesuatu yang lucu buat kamu.<br>Mau main bentar nggak?";
+
+    noteBox.classList.remove("hide");
+    noteBox.innerHTML = `
+      <span>🌸</span>
+      <p>Awalnya gemes, tengahnya bikin salting, ujungnya manis banget.</p>
+    `;
+
+    contentArea.innerHTML = "";
+    mainBtn.textContent = "Mauu, mulai";
+    mainBtn.classList.remove("hide");
+    ghostBtn.classList.add("hide");
+    smallText.textContent = "ayo klik, jangan malu-malu 😚";
+    buddyText.textContent = "aku nemenin 🤍";
+
+    mainBtn.onclick = () => transitionTo(scenes.catchHeart);
+  },
+
+  catchHeart() {
+    scene = "catch";
+    caught = 0;
+    setMood("yellow excited");
+
+    topBadge.textContent = "LEVEL 1";
+    tinyPill.textContent = "tangkap dulu";
+    miniTitle.textContent = "LEVEL 1";
+    mainTitle.textContent = "Tangkap 5 hati";
+    heartStack.textContent = "";
+    desc.textContent = "Hatinya kabur. Tolong tangkapin dulu.";
+    noteBox.classList.add("hide");
+
+    contentArea.innerHTML = `
+      <div class="progress-pill">
+        <span>hati</span>
+        <span id="heartCount">0/5</span>
+      </div>
+
+      <div class="play-area" id="playArea">
+        <div class="center-hint" id="centerHint">klik hati yang muncul 💞</div>
+      </div>
+    `;
+
+    mainBtn.classList.add("hide");
+    ghostBtn.classList.add("hide");
+    smallText.textContent = "";
+    buddyText.textContent = "tangkap hatinya 💘";
+
+    const playArea = document.getElementById("playArea");
+    spawnHeart(playArea);
+  },
+
+  quiz() {
+    scene = "quiz";
+    quizIndex = 0;
+    showQuiz();
+  },
+
+  tease() {
+    scene = "tease";
+    setMood("peach shy");
+
+    topBadge.textContent = "LEVEL 3";
+    tinyPill.textContent = "eh kok salting";
+    miniTitle.textContent = "LEVEL 3";
+    mainTitle.textContent = "Sebentar...";
+    heartStack.textContent = "😳💗";
+    desc.innerHTML = "Kok kamu bisa jawab sampai sini?<br>Jangan-jangan kamu mulai senyum ya.";
+
+    noteBox.classList.remove("hide");
+    noteBox.innerHTML = `
+      <span>🤭</span>
+      <p>Kalau tadi bikin salting, sekarang aku mau bikin kamu penasaran dikit.</p>
+    `;
+
+    contentArea.innerHTML = `
+      <div class="quiz-wrap">
+        <button class="choice-btn" data-next="soft">Aku lanjut, tapi jangan bikin aku baper banget 😤</button>
+        <button class="choice-btn" data-next="soft">Udah terlanjur baper, lanjut aja 😌</button>
+        <button class="choice-btn" data-next="soft">Aku cuma penasaran kok... mungkin 😭</button>
+      </div>
+    `;
+
+    mainBtn.classList.add("hide");
+    ghostBtn.classList.add("hide");
+    smallText.textContent = "pilih yang paling kamu banget";
+    buddyText.textContent = "mulai salting ya 😚";
+
+    document.querySelectorAll(".choice-btn").forEach((btn) => {
+      btn.onclick = () => {
+        softUnlocked = true;
+        makeConfetti(["💗", "✨", "🌸"]);
+        transitionTo(scenes.soft);
+      };
+    });
+  },
+
+  soft() {
+    scene = "soft";
+    setMood("lilac sad");
+
+    topBadge.textContent = "LEVEL 4";
+    tinyPill.textContent = "pelan-pelan ya";
+    miniTitle.textContent = "LEVEL 4";
+    mainTitle.textContent = "Pelanin dulu ya...";
+    heartStack.textContent = "🌙";
+    desc.innerHTML = "Aku nggak cuma mau bikin kamu ketawa.<br>Aku juga mau bikin kamu ngerasa ditemenin.";
+
+    noteBox.classList.add("hide");
+
+    contentArea.innerHTML = `
+      <div class="mood-list">
+        <div class="mood-item">Kamu boleh capek.</div>
+        <div class="mood-item">Boleh diem dulu.</div>
+        <div class="mood-item">Boleh nggak selalu kuat.</div>
+        <div class="mood-item">Tapi jangan ngerasa sendirian ya.</div>
+        <div class="mood-item">Karena hari ini, aku ada di sini buat kamu 🤍</div>
+      </div>
+    `;
+
+    mainBtn.classList.remove("hide");
+    mainBtn.textContent = "Sekarang bikin ceria lagi";
+    ghostBtn.classList.add("hide");
+    smallText.textContent = "tenang, bagian manisnya makin dekat";
+    buddyText.textContent = "pelan-pelan dulu 🌙";
+
+    mainBtn.onclick = () => transitionTo(scenes.finalGate);
+  },
+
+  finalGate() {
+    scene = "finalGate";
+    setMood("mint excited");
+
+    topBadge.textContent = "FINAL LEVEL";
+    tinyPill.textContent = "akhirnya sampai";
+    miniTitle.textContent = "FINAL LEVEL";
+    mainTitle.textContent = "Ini buat kamu";
+    heartStack.textContent = "💌";
+    desc.innerHTML = "Bagian terakhirnya manis.<br>Dibuka pelan-pelan yaa.";
+
+    noteBox.classList.add("hide");
+    contentArea.innerHTML = "";
+
+    mainBtn.classList.remove("hide");
+    mainBtn.textContent = "Buka surat";
+    ghostBtn.classList.add("hide");
+    smallText.textContent = "";
+    buddyText.textContent = "akhirnya sampai 💌";
+
+    mainBtn.onclick = () => transitionTo(scenes.finalLetter);
+  },
+
+  finalLetter() {
+    scene = "finalLetter";
+    setMood("pink happy");
+
+    topBadge.textContent = "FINAL LEVEL";
+    tinyPill.textContent = "buat kamu";
+    miniTitle.textContent = "FINAL LEVEL";
+    mainTitle.textContent = "Ini buat kamu";
+    heartStack.textContent = "";
+    desc.innerHTML = "Klik tombolnya. Suratnya bakal kebuka pelan-pelan.";
+
+    noteBox.classList.add("hide");
+
+    contentArea.innerHTML = `
+      <div class="final-letter">
+        <p><b class="colorful">Hai kamu 💗</b></p>
+
+        <p>
+          Aku bikin ini bukan biar terlihat keren.
+          Aku cuma pengen kamu tahu, hadir kamu itu bikin hariku lebih manis. ✨
+        </p>
+
+        <p>
+          Aku suka caramu bikin aku senyum.
+          Aku suka caramu muncul di pikiranku tanpa diminta. 🌷
+        </p>
+
+        <p>
+          Mungkin aku sering bercanda, tapi bagian ini serius.
+        </p>
+
+        <span class="love-line">Aku suka kamu 💕</span>
+
+        <p>
+          Sederhana aja. Nggak ribet. Nggak dibuat-buat.
+        </p>
+
+        <p>
+          Kalau setelah baca ini kamu senyum,
+          berarti misi kecilku berhasil 🌸✨💖
+        </p>
+      </div>
+    `;
+
+    mainBtn.classList.remove("hide");
+    mainBtn.textContent = "Hujanin hati";
+    ghostBtn.classList.remove("hide");
+    ghostBtn.textContent = "Ulang dari awal";
+    smallText.textContent = "senyumnya jangan ditahan ya 😚";
+    buddyText.textContent = "aku senang kamu sampai sini 💗";
+
+    mainBtn.onclick = () => makeConfetti(["💗", "💕", "💖", "🌸", "✨"]);
+    ghostBtn.onclick = () => transitionTo(scenes.intro);
+  }
+};
+
+function setMood(moodClass) {
+  character.className = `character ${moodClass}`;
 }
 
-function showRiddle() {
-  const riddle = riddles[riddleIndex]
+function transitionTo(nextScene) {
+  card.classList.remove("switching");
+  void card.offsetWidth;
+  card.classList.add("switching");
 
-  if ($("riddleCounter")) {
-    $("riddleCounter").textContent = `gombalan ${riddleIndex + 1} dari ${riddles.length}`
-  }
-
-  if ($("riddleQuestion")) {
-    $("riddleQuestion").textContent = riddle.question
-  }
-
-  if ($("riddleFeedback")) $("riddleFeedback").classList.add("hidden")
-  if ($("nextRiddleBtn")) $("nextRiddleBtn").classList.add("hidden")
-
-  const options = $("riddleOptions")
-  if (!options) return
-
-  options.innerHTML = ""
-
-  riddle.options.forEach((option, index) => {
-    const button = document.createElement("button")
-    button.className = "riddle-option"
-    button.type = "button"
-    button.textContent = option
-    button.addEventListener("click", () => chooseRiddleOption(index, button))
-    options.appendChild(button)
-  })
+  setTimeout(() => {
+    nextScene();
+    const inner = document.querySelector(".inner");
+    inner.scrollTo({ top: 0, behavior: "smooth" });
+  }, 170);
 }
 
-function chooseRiddleOption(index, button) {
-  const riddle = riddles[riddleIndex]
-  const buttons = document.querySelectorAll(".riddle-option")
+function spawnHeart(playArea) {
+  const centerHint = document.getElementById("centerHint");
+  const heartCount = document.getElementById("heartCount");
 
-  buttons.forEach((item) => {
-    item.disabled = true
-  })
+  if (caught >= 5) {
+    centerHint.textContent = "yeay, hatinya ketangkep semua 😚";
+    mainBtn.classList.remove("hide");
+    mainBtn.textContent = "Lanjut ke teka-teki";
+    smallText.textContent = "";
+    mainBtn.onclick = () => transitionTo(scenes.quiz);
+    return;
+  }
 
-  if ($("riddleFeedback")) $("riddleFeedback").classList.remove("hidden")
+  centerHint.textContent = "klik hati yang muncul 💞";
 
-  if (index === riddle.correctIndex) {
-    button.classList.add("correct")
+  const btn = document.createElement("button");
+  btn.className = "catch-heart";
+  btn.textContent = ["💗", "💕", "💘", "💖", "💝"][caught % 5];
 
-    if ($("feedbackEmoji")) $("feedbackEmoji").textContent = riddle.emoji
-    if ($("feedbackText")) $("feedbackText").textContent = riddle.correctText
+  const areaRect = playArea.getBoundingClientRect();
+  const maxX = Math.max(40, areaRect.width - 58);
+  const maxY = Math.max(40, areaRect.height - 58);
 
-    if ($("nextRiddleBtn")) {
-      $("nextRiddleBtn").classList.remove("hidden")
-      $("nextRiddleBtn").textContent =
-        riddleIndex < riddles.length - 1
-          ? "Gombalan berikutnya"
-          : "Lanjut, jangan pura-pura nggak salting"
+  btn.style.left = `${Math.floor(Math.random() * maxX)}px`;
+  btn.style.top = `${Math.floor(Math.random() * maxY)}px`;
+
+  btn.onclick = () => {
+    caught += 1;
+    heartCount.textContent = `${caught}/5`;
+    btn.remove();
+
+    setMood(characterMoods[caught % characterMoods.length]);
+
+    if (caught === 5) {
+      makeConfetti(["💗", "✨", "🌸"]);
     }
 
-    for (let i = 0; i < 12; i++) {
-      setTimeout(spawnFloatingItem, i * 50)
-    }
+    setTimeout(() => spawnHeart(playArea), 180);
+  };
 
-    return
-  }
-
-  riddleWrong++
-  button.classList.add("wrong")
-
-  if ($("feedbackEmoji")) {
-    $("feedbackEmoji").textContent = riddleWrong >= 2 ? "🤭" : "😚"
-  }
-
-  if ($("feedbackText")) {
-    $("feedbackText").textContent =
-      riddle.wrongReplies[index] ||
-      "Hampir, tapi coba pilih yang paling bikin pipi panas."
-  }
-
-  setTimeout(() => {
-    buttons.forEach((item) => {
-      item.disabled = false
-      item.classList.remove("wrong")
-    })
-  }, 850)
+  playArea.appendChild(btn);
 }
 
-function nextRiddle() {
-  riddleIndex++
-  riddleWrong = 0
+function showQuiz() {
+  const item = riddles[quizIndex];
+  setMood(["peach shy", "pink happy", "yellow excited"][quizIndex] || "pink happy");
 
-  if (riddleIndex < riddles.length) {
-    showRiddle()
-  } else {
-    goTo("scene-4")
-    initMoodScene()
-  }
+  topBadge.textContent = item.label;
+  tinyPill.textContent = "jawab pakai hati";
+  miniTitle.textContent = item.label;
+  mainTitle.textContent = item.title;
+  heartStack.textContent = "💞";
+  desc.textContent = item.question;
+
+  noteBox.classList.add("hide");
+  mainBtn.classList.add("hide");
+  ghostBtn.classList.add("hide");
+  smallText.textContent = "jawaban salah juga ada balasannya kok";
+  buddyText.textContent = "siap-siap baper 😚";
+
+  contentArea.innerHTML = `
+    <div class="quiz-wrap">
+      ${item.options.map((opt, index) => `
+        <button class="choice-btn" data-index="${index}">
+          ${opt.text}
+        </button>
+      `).join("")}
+    </div>
+    <div id="feedback"></div>
+  `;
+
+  const feedback = document.getElementById("feedback");
+
+  document.querySelectorAll(".choice-btn").forEach((btn) => {
+    btn.onclick = () => {
+      const selected = item.options[Number(btn.dataset.index)];
+      const isCorrect = selected.text === item.correct;
+
+      document.querySelectorAll(".choice-btn").forEach((b) => {
+        b.classList.remove("correct");
+      });
+
+      if (isCorrect) {
+        btn.classList.add("correct");
+        setMood("yellow excited");
+        makeConfetti(["💗", "✨", "💕"]);
+      } else {
+        setMood("lilac sad");
+      }
+
+      feedback.innerHTML = `
+        <div class="feedback">
+          ${selected.reply}
+        </div>
+      `;
+
+      mainBtn.classList.remove("hide");
+
+      if (isCorrect) {
+        mainBtn.textContent = quizIndex < riddles.length - 1 ? "Lanjut gombalan berikutnya" : "Lanjut, aku penasaran";
+        mainBtn.onclick = () => {
+          if (quizIndex < riddles.length - 1) {
+            quizIndex += 1;
+            transitionTo(showQuiz);
+          } else {
+            transitionTo(scenes.tease);
+          }
+        };
+      } else {
+        mainBtn.textContent = "Coba pilih yang paling bener";
+        mainBtn.onclick = () => {
+          feedback.innerHTML = `
+            <div class="feedback">
+              Pelan-pelan. Petunjuknya: jawabannya bukan yang paling logis, tapi yang paling bikin aku senyum. 🤭
+            </div>
+          `;
+        };
+      }
+    };
+  });
 }
 
-/* scene 4 */
+function makeConfetti(items) {
+  const amount = 22;
 
-const moodReplies = {
-  baper: {
-    emoji: "😳",
-    text:
-      "Ketahuan. Tapi tenang, bapernya aman. Aku nggak bakal ngeledekin lama-lama kok. Paling cuma senyum dikit.",
-    bubble: "salting detected"
-  },
-  senyum: {
-    emoji: "🙈",
-    text:
-      "Aku tahu. Senyum kecil yang kamu tahan itu biasanya paling lucu. Jadi sekarang aku pura-pura nggak lihat yaa.",
-    bubble: "senyumnya ketahuan"
-  },
-  jail: {
-    emoji: "😤",
-    text:
-      "Iya, websitenya jail. Tapi jailnya bukan buat ngeselin. Cuma biar kamu tinggal sebentar lebih lama di sini.",
-    bubble: "ngambeknya lucu"
-  }
-}
+  for (let i = 0; i < amount; i++) {
+    const pop = document.createElement("div");
+    pop.className = "pop-confetti";
+    pop.textContent = items[Math.floor(Math.random() * items.length)];
+    pop.style.left = `${Math.random() * 100}vw`;
+    pop.style.top = `${70 + Math.random() * 24}vh`;
+    pop.style.animationDelay = `${Math.random() * 180}ms`;
 
-function initMoodScene() {
-  if ($("moodOptions")) $("moodOptions").classList.remove("hidden")
-  if ($("poutBox")) $("poutBox").classList.add("hidden")
-  if ($("toValidationBtn")) $("toValidationBtn").classList.add("hidden")
-  if ($("poutMeterFill")) $("poutMeterFill").style.width = "100%"
+    document.body.appendChild(pop);
 
-  if ($("moodText")) {
-    $("moodText").textContent =
-      "Habis teka-teki tadi, jangan pura-pura biasa aja. Pilih yang paling kamu rasain."
-  }
-}
-
-function chooseMood(event) {
-  const button = event.target.closest(".mood-btn")
-  if (!button) return
-
-  const mood = button.dataset.mood
-  const data = moodReplies[mood] || moodReplies.baper
-
-  if ($("moodOptions")) $("moodOptions").classList.add("hidden")
-  if ($("poutBox")) $("poutBox").classList.remove("hidden")
-  if ($("toValidationBtn")) $("toValidationBtn").classList.remove("hidden")
-
-  if ($("moodText")) {
-    $("moodText").textContent =
-      "Oke, aku ngerti. Sekarang aku bujuk pelan-pelan ya."
-  }
-
-  if ($("poutEmoji")) $("poutEmoji").textContent = data.emoji
-  if ($("poutMessage")) $("poutMessage").textContent = data.text
-
-  if ($("guideBubble")) $("guideBubble").textContent = data.bubble
-
-  setMascotMood($("guideMascot"), "yellow")
-
-  setTimeout(() => {
-    if ($("poutMeterFill")) $("poutMeterFill").style.width = "24%"
-  }, 260)
-
-  for (let i = 0; i < 12; i++) {
-    setTimeout(spawnFloatingItem, i * 60)
-  }
-}
-
-/* scene 5 */
-
-function initValidationScene() {
-  if ($("startValidationBtn")) $("startValidationBtn").classList.remove("hidden")
-  if ($("validationLines")) $("validationLines").classList.add("hidden")
-  if ($("nextToFinalBtn")) $("nextToFinalBtn").classList.add("hidden")
-
-  document.querySelectorAll(".validation-line").forEach((line) => {
-    line.classList.remove("show")
-  })
-}
-
-function startValidation() {
-  if ($("startValidationBtn")) $("startValidationBtn").classList.add("hidden")
-  if ($("validationLines")) $("validationLines").classList.remove("hidden")
-
-  const lines = document.querySelectorAll(".validation-line")
-
-  lines.forEach((line, index) => {
     setTimeout(() => {
-      line.classList.add("show")
-    }, index * 620)
-  })
-
-  setTimeout(() => {
-    if ($("nextToFinalBtn")) $("nextToFinalBtn").classList.remove("hidden")
-  }, lines.length * 620 + 260)
+      pop.remove();
+    }, 1100);
+  }
 }
 
-/* scene 6 */
+function buildBackground() {
+  const words = ["love", "cute", "hehe", "gemes", "baper"];
+  const totalWords = window.innerWidth < 560 ? 14 : 24;
+  const totalHearts = window.innerWidth < 560 ? 12 : 20;
 
-function initFinalScene() {
-  if ($("openLetterBtn")) $("openLetterBtn").classList.remove("hidden")
-  if ($("finalLetter")) $("finalLetter").classList.add("hidden")
-  if ($("finalActions")) $("finalActions").classList.add("hidden")
+  softBg.innerHTML = "";
 
-  document.querySelectorAll(".final-line").forEach((line) => {
-    line.classList.remove("show")
-  })
-}
-
-function openFinalLetter() {
-  if ($("openLetterBtn")) $("openLetterBtn").classList.add("hidden")
-  if ($("finalLetter")) $("finalLetter").classList.remove("hidden")
-
-  const lines = document.querySelectorAll(".final-line")
-
-  lines.forEach((line, index) => {
-    setTimeout(() => {
-      line.classList.add("show")
-    }, index * 520)
-  })
-
-  setTimeout(() => {
-    if ($("finalActions")) $("finalActions").classList.remove("hidden")
-    launchConfetti()
-  }, lines.length * 520 + 500)
-}
-
-function restartWebsite() {
-  clearInterval(heartInterval)
-  initFinalScene()
-
-  goTo("scene-1")
-  startHeroMoodLoop()
-}
-
-/* events */
-
-document.addEventListener("DOMContentLoaded", () => {
-  activeScene = "scene-1"
-  updateGuide("scene-1")
-  startHeroMoodLoop()
-
-  setInterval(spawnFloatingItem, 900)
-
-  for (let i = 0; i < 14; i++) {
-    setTimeout(spawnFloatingItem, i * 140)
+  for (let i = 0; i < totalWords; i++) {
+    const word = document.createElement("span");
+    word.className = "float-word";
+    word.textContent = words[i % words.length];
+    word.style.left = `${Math.random() * 96}%`;
+    word.style.top = `${Math.random() * 96}%`;
+    word.style.animationDuration = `${8 + Math.random() * 8}s`;
+    word.style.animationDelay = `${Math.random() * 5}s`;
+    softBg.appendChild(word);
   }
 
-  document.addEventListener("mousemove", (event) => {
-    spawnCursorHeart(event.clientX, event.clientY)
-  })
-
-  document.addEventListener("touchstart", (event) => {
-    const touch = event.touches[0]
-    if (!touch) return
-    spawnCursorHeart(touch.clientX, touch.clientY)
-  }, { passive: true })
-
-  on("startBtn", "click", startIntro)
-
-  on("nextToRiddleBtn", "click", () => {
-    goTo("scene-3")
-    initRiddle()
-  })
-
-  on("nextRiddleBtn", "click", nextRiddle)
-
-  const moodOptions = $("moodOptions")
-  if (moodOptions) {
-    moodOptions.addEventListener("click", chooseMood)
+  for (let i = 0; i < totalHearts; i++) {
+    const heart = document.createElement("span");
+    heart.className = "float-heart";
+    heart.textContent = ["♡", "💗", "✧", "❀"][i % 4];
+    heart.style.left = `${Math.random() * 96}%`;
+    heart.style.top = `${Math.random() * 96}%`;
+    heart.style.animationDuration = `${7 + Math.random() * 7}s`;
+    heart.style.animationDelay = `${Math.random() * 6}s`;
+    softBg.appendChild(heart);
   }
+}
 
-  on("toValidationBtn", "click", () => {
-    goTo("scene-5")
-    initValidationScene()
-  })
+window.addEventListener("resize", () => {
+  document.documentElement.style.setProperty("--screen-h", `${window.innerHeight}px`);
+});
 
-  on("startValidationBtn", "click", startValidation)
-
-  on("nextToFinalBtn", "click", () => {
-    goTo("scene-6")
-    initFinalScene()
-  })
-
-  on("openLetterBtn", "click", openFinalLetter)
-  on("celebrateBtn", "click", launchConfetti)
-  on("restartBtn", "click", restartWebsite)
-})
+document.documentElement.style.setProperty("--screen-h", `${window.innerHeight}px`);
+buildBackground();
+scenes.intro();
