@@ -2,265 +2,323 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="theme-color" content="#ffe2f1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>Buat Kamu 💗</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Great+Vibes&family=Nunito:wght@600;700;800;900&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Cherry+Bomb+One&family=Dancing+Script:wght@600;700&family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@500;600;700&display=swap"
     rel="stylesheet"
   />
 
   <link rel="stylesheet" href="style.css" />
-  <script src="script.js" defer></script>
 </head>
 
 <body>
-  <div class="soft-bg"></div>
-  <div class="soft-frame"></div>
+  <div class="pink-bg"></div>
+  <div class="glow-orb orb-1"></div>
+  <div class="glow-orb orb-2"></div>
+  <div class="glow-orb orb-3"></div>
+
   <div id="floatingArea" class="floating-area"></div>
   <div id="confettiArea" class="confetti-area"></div>
+  <div id="cursorArea" class="cursor-area"></div>
 
-  <div class="buddy" aria-hidden="true">
-    <div id="buddyPet" class="pet mini mood-happy"></div>
-    <div id="buddyText" class="buddy-text">aku nemenin 💛</div>
+  <div id="nailongGuide" class="nailong-guide">
+    <div id="guideBubble" class="guide-bubble">aku nemenin 💛</div>
+
+    <div class="nailong nailong-mini">
+      <div class="nl-spike spike-1"></div>
+      <div class="nl-spike spike-2"></div>
+      <div class="nl-spike spike-3"></div>
+      <div class="nl-tail"></div>
+      <div class="nl-body">
+        <div class="nl-face">•ᴗ•</div>
+        <div class="nl-cheek cheek-left"></div>
+        <div class="nl-cheek cheek-right"></div>
+        <div class="nl-belly"></div>
+        <div class="nl-arm arm-left"></div>
+        <div class="nl-arm arm-right"></div>
+        <div class="nl-foot foot-left"></div>
+        <div class="nl-foot foot-right"></div>
+      </div>
+    </div>
   </div>
 
   <main id="app">
     <!-- SCENE 1 -->
     <section id="scene-1" class="scene active">
-      <article class="card intro-card">
-        <div class="top-ribbon">special for you</div>
+      <div class="cute-card intro-card">
+        <div class="top-pill">for my favorite person</div>
 
-        <div class="pet-zone">
-          <div class="pet mood-happy" data-pet></div>
-          <div id="mascotBubble" class="pet-bubble">jangan malu</div>
-        </div>
+        <div class="nailong-wrap">
+          <div id="mascotBubble" class="mascot-bubble">haiii 💗</div>
 
-        <p class="kicker">pssst... sini dulu</p>
-
-        <h1>Aku punya<br />kejutan kecil</h1>
-
-        <p class="lead">
-          Dibuat khusus buat kamu.
-          Lucu dulu, baper nanti.
-        </p>
-
-        <button id="introEnvelope" class="envelope-btn" type="button" aria-label="Buka amplop">
-          <span class="envelope">
-            <span class="envelope-flap"></span>
-            <span class="envelope-heart">♡</span>
-          </span>
-        </button>
-
-        <p class="tiny-note">klik amplopnya yaa, jangan cuma dipandangi 🫣</p>
-      </article>
-    </section>
-
-    <!-- SCENE 2: CATCH HEART -->
-    <section id="scene-2" class="scene">
-      <article class="card game-card">
-        <div class="pet-zone compact">
-          <div class="pet mood-spark" data-pet></div>
-        </div>
-
-        <p class="kicker">level 1</p>
-        <h2>Tangkap 5 hati</h2>
-
-        <p class="lead small">
-          Hatinya kabur. Tolong tangkapin dulu.
-        </p>
-
-        <div class="progress-pill">
-          <span>hati</span>
-          <strong id="heartScore">0/5</strong>
-        </div>
-
-        <div id="catchBox" class="catch-box">
-          <p id="catchHint" class="catch-hint">klik hati yang muncul 💕</p>
-        </div>
-
-        <button id="toRiddleBtn" class="btn-main hidden" type="button">
-          Lanjut ke teka-teki
-        </button>
-      </article>
-    </section>
-
-    <!-- SCENE 3: RIDDLE -->
-    <section id="scene-3" class="scene">
-      <article class="card quiz-card">
-        <div class="pet-zone compact">
-          <div class="pet mood-love" data-pet></div>
-        </div>
-
-        <p id="riddleCounter" class="kicker">gombalan 1 dari 3</p>
-        <h2 id="riddleTitle">Teka-teki baper</h2>
-
-        <p id="riddleQuestion" class="lead small"></p>
-
-        <div id="riddleOptions" class="choice-grid"></div>
-
-        <div id="riddleResponse" class="response-card hidden">
-          <div id="riddleEmoji" class="response-emoji">🫣</div>
-          <p id="riddleText"></p>
-          <button id="riddleResponseBtn" class="btn-secondary" type="button">
-            Coba lagi
-          </button>
-        </div>
-      </article>
-    </section>
-
-    <!-- SCENE 4: SALTING BRIDGE -->
-    <section id="scene-4" class="scene">
-      <article class="card vibe-card">
-        <div class="pet-zone compact">
-          <div class="pet mood-shy" data-pet></div>
-        </div>
-
-        <p class="kicker">level 3</p>
-        <h2>Efek sampingnya...</h2>
-
-        <p class="lead small">
-          Kalau dari tadi kamu senyum sendiri,
-          pilih yang paling kena.
-        </p>
-
-        <div class="choice-grid soft-choice">
-          <button class="choice-btn vibe-btn" data-vibe="salting" type="button">
-            Aku salting dikit 🫠
-          </button>
-
-          <button class="choice-btn vibe-btn" data-vibe="gengsi" type="button">
-            Aku biasa aja kok 😌
-          </button>
-
-          <button class="choice-btn vibe-btn" data-vibe="curiga" type="button">
-            Aku mulai curiga ini buat aku 👀
-          </button>
-
-          <button class="choice-btn vibe-btn" data-vibe="senyum" type="button">
-            Aku senyum tapi gengsi 🙈
-          </button>
-        </div>
-
-        <div id="vibeResult" class="response-card hidden">
-          <div id="vibeEmoji" class="response-emoji">💗</div>
-          <p id="vibeText"></p>
-          <button id="toSoftBtn" class="btn-main" type="button">
-            Pelanin dulu ya...
-          </button>
-        </div>
-      </article>
-    </section>
-
-    <!-- SCENE 5: SOFT VALIDATION -->
-    <section id="scene-5" class="scene">
-      <article class="card soft-card">
-        <div class="pet-zone compact">
-          <div class="pet mood-soft" data-pet></div>
-        </div>
-
-        <p class="kicker">level 4</p>
-        <h2>Pelan-pelan dulu</h2>
-
-        <p class="lead small">
-          Aku nggak cuma mau bikin kamu ketawa.
-          Aku juga mau bikin kamu ngerasa ditemenin.
-        </p>
-
-        <div class="soft-window">
-          <div class="mini-sky">
-            <span class="cloud c1"></span>
-            <span class="cloud c2"></span>
-            <span class="moon"></span>
-            <span class="small-heart">♡</span>
-          </div>
-        </div>
-
-        <p class="soft-instruction">
-          Buka 5 kalimat kecil ini satu-satu ya.
-        </p>
-
-        <div id="softGrid" class="soft-grid"></div>
-
-        <div id="softNote" class="soft-note hidden"></div>
-
-        <button id="toFinalBtn" class="btn-main hidden" type="button">
-          Sekarang buka yang terakhir
-        </button>
-      </article>
-    </section>
-
-    <!-- SCENE 6: FINAL -->
-    <section id="scene-6" class="scene">
-      <article class="card final-card">
-        <div class="pet-zone compact">
-          <div class="pet mood-love" data-pet></div>
-        </div>
-
-        <p class="kicker">final level</p>
-        <h2>Ini buat kamu</h2>
-
-        <p class="lead small">
-          Bagian terakhirnya manis.
-          Dibuka pelan-pelan yaa.
-        </p>
-
-        <button id="openLetterBtn" class="btn-main" type="button">
-          Buka surat
-        </button>
-
-        <div id="letterWrap" class="letter-wrap hidden">
-          <div class="letter-paper">
-            <p class="letter-greet">Hai kamu 💌</p>
-
-            <p>
-              Aku bikin ini bukan biar kelihatan keren.
-              Aku cuma pengen kamu tahu,
-              hadir kamu itu bisa bikin hariku lebih manis ✨
-            </p>
-
-            <p>
-              Aku suka caramu bikin aku senyum.
-              Aku suka caramu muncul di pikiranku,
-              bahkan saat kamu nggak sedang ngapa-ngapain.
-            </p>
-
-            <p>
-              Mungkin aku sering bercanda,
-              tapi bagian ini serius.
-            </p>
-
-            <p class="big-love">
-              Aku suka kamu 💞
-            </p>
-
-            <p>
-              Sederhana aja.
-              Nggak ribet.
-              Nggak dibuat-buat.
-            </p>
-
-            <div class="color-note">
-              Kalau setelah baca ini kamu senyum,
-              berarti misi kecilku berhasil 🌸✨💗
+          <div id="introNailong" class="nailong nailong-big">
+            <div class="nl-spike spike-1"></div>
+            <div class="nl-spike spike-2"></div>
+            <div class="nl-spike spike-3"></div>
+            <div class="nl-tail"></div>
+            <div class="nl-body">
+              <div id="nailongFace" class="nl-face">♥ᴗ♥</div>
+              <div class="nl-cheek cheek-left"></div>
+              <div class="nl-cheek cheek-right"></div>
+              <div class="nl-belly"></div>
+              <div class="nl-arm arm-left"></div>
+              <div class="nl-arm arm-right"></div>
+              <div class="nl-foot foot-left"></div>
+              <div class="nl-foot foot-right"></div>
             </div>
           </div>
-
-          <div class="final-actions">
-            <button id="celebrateBtn" class="btn-main" type="button">
-              Hujanin hati
-            </button>
-
-            <button id="restartBtn" class="btn-secondary" type="button">
-              Ulang dari awal
-            </button>
-          </div>
         </div>
-      </article>
+
+        <p class="mini-text">pssst... buka pelan-pelan</p>
+
+        <h1>Aku punya kejutan kecil</h1>
+
+        <p class="main-text">
+          Bukan apa-apa sih.
+          Cuma sesuatu yang dibuat khusus buat kamu.
+        </p>
+
+        <button id="startBtn" class="envelope-btn" aria-label="Buka amplop">
+          <div id="secretEnvelope" class="secret-envelope">
+            <div class="env-back"></div>
+            <div class="env-letter">
+              <span>buat kamu</span>
+              <strong>💌</strong>
+            </div>
+            <div class="env-front"></div>
+            <div class="env-flap"></div>
+            <div class="env-heart">♡</div>
+          </div>
+        </button>
+
+        <p class="tiny-note">klik amplopnya yaa, jangan cuma dipandangi 😚</p>
+      </div>
+    </section>
+
+    <!-- SCENE 2 -->
+    <section id="scene-2" class="scene">
+      <div class="cute-card">
+        <div class="scene-icon">💘</div>
+
+        <p class="mini-text">level 1</p>
+        <h2>Tangkap 5 hati</h2>
+
+        <p class="main-text">
+          Hatinya kabur. Tolong tangkapin dulu yaa.
+        </p>
+
+        <div class="score-card">
+          <span>hati terkumpul</span>
+          <strong><span id="cuteScore">0</span>/5</strong>
+        </div>
+
+        <div id="heartGame" class="heart-game">
+          <p id="cuteHint" class="game-hint">siap-siap yaa...</p>
+        </div>
+
+        <button id="nextToRiddleBtn" class="btn-primary hidden">
+          Lanjut ke misi gombal
+        </button>
+      </div>
+    </section>
+
+    <!-- SCENE 3 -->
+    <section id="scene-3" class="scene">
+      <div class="cute-card riddle-card">
+        <div class="scene-icon">💞</div>
+
+        <p id="riddleCounter" class="mini-text">gombalan 1 dari 3</p>
+        <h2>Teka-teki baper</h2>
+
+        <p id="riddleQuestion" class="main-text riddle-question">
+          Pertanyaan muncul di sini.
+        </p>
+
+        <div id="riddleOptions" class="riddle-options"></div>
+
+        <div id="riddleFeedback" class="feedback-box hidden">
+          <div id="feedbackEmoji" class="feedback-emoji">💗</div>
+          <p id="feedbackText"></p>
+        </div>
+
+        <button id="nextRiddleBtn" class="btn-primary hidden">
+          Gombalan berikutnya
+        </button>
+      </div>
+    </section>
+
+    <!-- SCENE 4 -->
+    <section id="scene-4" class="scene">
+      <div class="cute-card mood-card">
+        <div class="scene-icon pout-icon">😤</div>
+
+        <p class="mini-text">level 3</p>
+        <h2>Sekarang kamu boleh ngambek</h2>
+
+        <p id="moodText" class="main-text">
+          Pilih alasan ngambek kamu.
+          Tapi ngambeknya yang lucu aja ya.
+        </p>
+
+        <div id="moodOptions" class="mood-options">
+          <button class="mood-btn" data-mood="baper">Aku mulai baper 😳</button>
+          <button class="mood-btn" data-mood="jail">Websitenya jail banget 😤</button>
+          <button class="mood-btn" data-mood="senyum">Aku senyum sendiri 🙈</button>
+        </div>
+
+        <div id="poutBox" class="pout-box hidden">
+          <div class="pout-face">😾</div>
+
+          <div class="pout-meter">
+            <div id="poutMeterFill" class="pout-meter-fill"></div>
+          </div>
+
+          <p id="poutMessage">
+            Oke, kamu boleh ngambek sebentar.
+            Tapi jangan lama-lama yaa.
+          </p>
+        </div>
+
+        <button id="toValidationBtn" class="btn-primary hidden">
+          Validasi aku dulu
+        </button>
+      </div>
+    </section>
+
+    <!-- SCENE 5 -->
+    <section id="scene-5" class="scene">
+      <div class="cute-card validation-card">
+        <div class="scene-icon moon-icon">🌙</div>
+
+        <p class="mini-text">level 4</p>
+        <h2>Pelanin dulu ya...</h2>
+
+        <div class="soft-window">
+          <div class="moon"></div>
+          <div class="soft-star star-a">✦</div>
+          <div class="soft-star star-b">✧</div>
+          <div class="cloud cloud-a"></div>
+          <div class="cloud cloud-b"></div>
+          <div class="window-heart">♡</div>
+        </div>
+
+        <p class="main-text">
+          Aku nggak cuma mau bikin kamu ketawa.
+          Aku juga mau bikin kamu merasa ditemenin.
+        </p>
+
+        <button id="startValidationBtn" class="btn-primary">
+          Aku dengerin
+        </button>
+
+        <div id="validationLines" class="validation-lines hidden">
+          <p class="validation-line">Kamu boleh capek.</p>
+          <p class="validation-line">Boleh diem dulu.</p>
+          <p class="validation-line">Boleh nggak selalu kuat.</p>
+          <p class="validation-line">Tapi jangan ngerasa sendirian ya.</p>
+          <p class="validation-line colorful-line">
+            Karena hari ini, aku ada di sini buat kamu 🤍
+          </p>
+        </div>
+
+        <button id="nextToFinalBtn" class="btn-primary hidden">
+          Sekarang bikin ceria lagi
+        </button>
+      </div>
+    </section>
+
+    <!-- SCENE 6 -->
+    <section id="scene-6" class="scene">
+      <div class="cute-card final-card">
+        <div class="final-sticky-head">
+          <div class="scene-icon love-icon">💌</div>
+
+          <p class="mini-text">final level</p>
+          <h2>Ini buat kamu.</h2>
+
+          <p class="main-text">
+            Bagian terakhirnya manis.
+            Dibuka pelan-pelan yaa.
+          </p>
+
+          <button id="openLetterBtn" class="btn-primary">
+            Buka surat
+          </button>
+        </div>
+
+        <div id="finalLetter" class="final-letter hidden">
+          <p class="final-line">
+            Hai kamu <span class="emoji-pop">💗</span>
+          </p>
+
+          <p class="final-line">
+            Aku bikin website ini bukan cuma buat lucu-lucuan.
+            Aku bikin ini karena kamu punya tempat kecil yang manis di pikiranku
+            <span class="emoji-pop">🌷</span>
+          </p>
+
+          <p class="final-line">
+            Dari awal aku pengen kamu senyum,
+            terus sedikit baper,
+            terus pura-pura ngambek,
+            lalu akhirnya ngerasa hangat lagi
+            <span class="emoji-pop">😚</span>
+          </p>
+
+          <p class="final-line">
+            Aku suka caramu hadir.
+            Suka caramu bikin hal kecil terasa lebih hidup.
+            Suka caramu bikin aku senyum tanpa sadar
+            <span class="emoji-pop">✨</span>
+          </p>
+
+          <p class="final-line colorful-line">
+            Kamu itu seperti warna pink di hari yang abu-abu.
+            Datang pelan, tapi bikin semuanya kelihatan lebih lembut
+            <span class="emoji-pop">🎀</span>
+          </p>
+
+          <p class="final-line">
+            Mungkin aku sering bercanda,
+            tapi bagian ini serius.
+          </p>
+
+          <p class="final-line big-love">
+            <span class="rainbow-word">Aku suka kamu.</span>
+            <span class="emoji-pop">💞</span>
+          </p>
+
+          <p class="final-line">
+            Sederhana aja.
+            Nggak ribet.
+            Nggak dibuat-buat.
+          </p>
+
+          <p class="final-line colorful-line">
+            Kalau setelah baca ini kamu senyum,
+            berarti misi kecilku berhasil
+            <span class="emoji-pop">🌸✨💗</span>
+          </p>
+        </div>
+
+        <div id="finalActions" class="final-actions hidden">
+          <button id="celebrateBtn" class="btn-primary">
+            Hujanin hati
+          </button>
+
+          <button id="restartBtn" class="btn-secondary">
+            Ulang dari awal
+          </button>
+        </div>
+      </div>
     </section>
   </main>
+
+  <script src="script.js" defer></script>
 </body>
 </html>
