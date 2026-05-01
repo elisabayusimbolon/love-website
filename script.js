@@ -13,11 +13,9 @@ function goTo(sceneId) {
   }
 }
 
-/* =========================
-   BACKGROUND
-========================= */
+/* BACKGROUND */
 
-const floatingItems = ["♡", "✦", "love", "bloom", "miss you", "♡", "✧"]
+const floatingItems = ["♡", "✦", "miss you", "love", "bloom", "dear you", "♡", "✧"]
 
 function spawnFloatingItem() {
   const area = $("floatingArea")
@@ -33,18 +31,16 @@ function spawnFloatingItem() {
 
   area.appendChild(item)
 
-  setTimeout(() => {
-    item.remove()
-  }, 16000)
+  setTimeout(() => item.remove(), 16000)
 }
 
 function launchConfetti() {
   const area = $("confettiArea")
   if (!area) return
 
-  const colors = ["#d63384", "#f5a3c7", "#ffd1e3", "#ffffff", "#c42f78"]
+  const colors = ["#d63384", "#ff9fcb", "#ffd1e3", "#ffffff", "#c42f78"]
 
-  for (let i = 0; i < 90; i++) {
+  for (let i = 0; i < 100; i++) {
     const item = document.createElement("div")
     const size = 6 + Math.random() * 8
 
@@ -55,54 +51,15 @@ function launchConfetti() {
     item.style.background = colors[Math.floor(Math.random() * colors.length)]
     item.style.animationDuration = 2.4 + Math.random() * 2.8 + "s"
     item.style.animationDelay = Math.random() * 0.8 + "s"
-    item.style.setProperty("--move-x", (Math.random() - 0.5) * 160 + "px")
+    item.style.setProperty("--move-x", (Math.random() - 0.5) * 170 + "px")
 
     area.appendChild(item)
 
-    setTimeout(() => {
-      item.remove()
-    }, 6000)
+    setTimeout(() => item.remove(), 6000)
   }
 }
 
-/* =========================
-   INTRO
-========================= */
-
-const introIcons = ["💌", "♡", "🌷", "✨", "🫶"]
-let introIndex = 0
-let introTimer = null
-
-function startIntroAnimation() {
-  stopIntroAnimation()
-
-  introTimer = setInterval(() => {
-    const icon = $("introIcon")
-    if (!icon) return
-
-    introIndex = (introIndex + 1) % introIcons.length
-
-    icon.style.transform = "scale(0.82)"
-    icon.style.opacity = "0.5"
-
-    setTimeout(() => {
-      icon.textContent = introIcons[introIndex]
-      icon.style.transform = "scale(1)"
-      icon.style.opacity = "1"
-    }, 180)
-  }, 1400)
-}
-
-function stopIntroAnimation() {
-  if (introTimer) {
-    clearInterval(introTimer)
-    introTimer = null
-  }
-}
-
-/* =========================
-   QUIZ
-========================= */
+/* QUIZ */
 
 const quizData = [
   {
@@ -114,28 +71,28 @@ const quizData = [
         correct: false,
         emoji: "🌙",
         response:
-          "Bisa jadi. Tapi ini bukan tentang scrolling. Ini tentang seseorang yang bikin malam terasa sedikit lebih panjang."
+          "Hampir, tapi bukan. Ini bukan tentang layar yang bikin susah tidur, ini tentang satu orang yang kabarnya diam-diam ditunggu."
       },
       {
         text: "Nunggu satu chat yang bikin tenang",
         correct: true,
         emoji: "💬",
         response:
-          "Iya. Kadang yang ditunggu bukan pesan panjang, cukup satu kabar kecil dari orang yang tepat."
+          "Iya, benar. Kadang yang ditunggu bukan pesan panjang, cukup satu kabar kecil dari orang yang tepat."
       },
       {
         text: "Jam dinding sedang curhat",
         correct: false,
         emoji: "🕰️",
         response:
-          "Lucu juga kalau jam bisa curhat. Tapi kali ini bukan jamnya yang gelisah, melainkan orang yang menunggu."
+          "Lucu juga kalau jam bisa curhat. Tapi kali ini bukan jamnya yang gelisah, melainkan hati yang sedang menunggu."
       },
       {
         text: "Malam yang terlalu sunyi",
         correct: false,
         emoji: "✨",
         response:
-          "Hampir. Tapi sunyinya bukan karena malam. Sunyinya karena ada satu orang yang belum muncul di layar."
+          "Dekat, tapi belum tepat. Malamnya bukan cuma sunyi, ada satu nama yang bikin sunyinya terasa lebih panjang."
       }
     ]
   },
@@ -155,10 +112,10 @@ const quizData = [
         correct: false,
         emoji: "☕",
         response:
-          "Hujan memang suka bikin lapar. Tapi ini bukan soal makanan, ini soal perasaan yang pelan-pelan datang."
+          "Hujan memang sering bikin lapar, tapi ini bukan soal makanan. Ini soal perasaan yang datang pelan-pelan."
       },
       {
-        text: "Tenang, tapi pengin ditemani",
+        text: "Tenang, tapi ingin ditemani",
         correct: true,
         emoji: "🌧️",
         response:
@@ -189,7 +146,7 @@ const quizData = [
         correct: false,
         emoji: "🏠",
         response:
-          "Aesthetic sih. Tapi ini bukan tentang rumah yang terlihat indah, melainkan tentang seseorang yang terasa seperti rumah."
+          "Aesthetic, tapi bukan itu. Ini bukan tentang rumah yang terlihat indah, melainkan seseorang yang terasa seperti rumah."
       },
       {
         text: "Tempat pulang yang paling hangat",
@@ -203,7 +160,7 @@ const quizData = [
         correct: false,
         emoji: "🎀",
         response:
-          "Manis, tapi bukan itu. Warna pink hanya suasananya. Maksud sebenarnya jauh lebih dalam."
+          "Manis, tapi belum tepat. Warna pink cuma suasananya. Maksud aslinya jauh lebih dalam."
       }
     ]
   }
@@ -222,7 +179,7 @@ function initQuiz() {
 function showQuiz() {
   const quiz = quizData[quizIndex]
 
-  $("quizCounter").textContent = `tebakan ${quizIndex + 1} dari ${quizData.length}`
+  $("quizCounter").textContent = `Tebakan ${quizIndex + 1} dari ${quizData.length}`
   $("quizEmoji").textContent = quiz.emoji
   $("quizQuestion").textContent = quiz.question
 
@@ -237,7 +194,6 @@ function showQuiz() {
     button.className = "option-btn"
     button.textContent = option.text
     button.onclick = () => answerQuiz(index)
-
     grid.appendChild(button)
   })
 }
@@ -256,11 +212,10 @@ function answerQuiz(optionIndex) {
     $("responseText").textContent = selected.response
     $("responseBtn").textContent =
       quizIndex < quizData.length - 1
-        ? "Tebakan berikutnya"
+        ? "Buka tebakan berikutnya"
         : "Lanjut ke bagian yang lebih jujur"
 
     $("responseBtn").onclick = nextQuiz
-
     return
   }
 
@@ -268,7 +223,7 @@ function answerQuiz(optionIndex) {
 
   if (wrongCount >= MAX_WRONG) {
     $("responseText").textContent =
-      `${selected.response} Aku kasih lewat ya. Kamu sudah salah 3 kali, tapi nggak apa-apa. Kadang perasaan memang nggak harus selalu ditebak dengan benar.`
+      `${selected.response} Aku kasih lewat ya. Kamu sudah salah 3 kali, tapi nggak apa-apa. Kadang perasaan memang nggak harus selalu bisa ditebak.`
 
     $("responseBtn").textContent =
       quizIndex < quizData.length - 1
@@ -280,7 +235,7 @@ function answerQuiz(optionIndex) {
     const remaining = MAX_WRONG - wrongCount
 
     $("responseText").textContent =
-      `${selected.response} Coba sekali lagi. Kesempatan salah kamu tinggal ${remaining}.`
+      `${selected.response} Coba sekali lagi ya. Kesempatan salah kamu tinggal ${remaining}.`
 
     $("responseBtn").textContent = "Coba lagi"
     $("responseBtn").onclick = showQuiz
@@ -299,14 +254,12 @@ function nextQuiz() {
   }
 }
 
-/* =========================
-   MEMORY CARDS
-========================= */
+/* MEMORY CARDS */
 
 const memoryTexts = [
   "Hadirmu itu sederhana, tapi efeknya besar. Kamu bisa bikin hari yang biasa saja terasa punya alasan untuk disyukuri.",
   "Senyummu punya cara sendiri untuk tinggal di kepala. Bahkan setelah percakapan selesai, rasanya masih ada yang hangat tertinggal.",
-  "Aku mungkin tidak selalu pandai menjelaskan perasaan. Tapi kalau harus jujur, aku suka caramu hadir: pelan, tapi sulit hilang."
+  "Aku mungkin nggak selalu pandai menjelaskan perasaan. Tapi kalau harus jujur, aku suka caramu hadir: pelan, lembut, tapi sulit hilang."
 ]
 
 let openedCards = new Set()
@@ -314,11 +267,11 @@ let openedCards = new Set()
 function initMemoryCards() {
   openedCards = new Set()
 
-  document.querySelectorAll(".memory-card").forEach((card) => {
+  document.querySelectorAll(".letter-btn").forEach((card) => {
     card.classList.remove("opened")
   })
 
-  $("memoryText").textContent = "Pilih salah satu kartu dulu."
+  $("memoryText").textContent = "Pilih salah satu dulu. Aku tungguin."
   $("toScene4Btn").classList.add("hidden")
 }
 
@@ -333,9 +286,7 @@ function openMemoryCard(index, element) {
   }
 }
 
-/* =========================
-   LOADING
-========================= */
+/* LOADING */
 
 const loadingSteps = [
   {
@@ -344,7 +295,7 @@ const loadingSteps = [
   },
   {
     percent: 18,
-    text: "Mencari kata yang cukup tenang, tapi tetap sampai ke hati..."
+    text: "Mencari kata yang cukup manis, tapi nggak berlebihan..."
   },
   {
     percent: 31,
@@ -382,8 +333,7 @@ function startLoading() {
 
   $("loadingFill").style.width = "0%"
   $("loadingPercent").textContent = "0%"
-  $("loadingStatus").textContent =
-    "Memulai dari hal kecil yang bikin aku suka kamu..."
+  $("loadingStatus").textContent = "Mengumpulkan alasan kenapa kamu mudah dirindukan..."
   $("toFinalBtn").classList.add("hidden")
 
   runLoading()
@@ -409,42 +359,35 @@ function runLoading() {
   loadingTimer = setTimeout(runLoading, 850)
 }
 
-/* =========================
-   FINAL
-========================= */
+/* FINAL */
 
 function initFinal() {
   setTimeout(() => {
     launchConfetti()
-  }, 600)
+  }, 700)
 }
 
 function restart() {
   goTo("scene-1")
-  startIntroAnimation()
 }
 
-/* =========================
-   EVENTS
-========================= */
+/* EVENTS */
 
 document.addEventListener("DOMContentLoaded", () => {
   goTo("scene-1")
-  startIntroAnimation()
 
-  setInterval(spawnFloatingItem, 950)
+  setInterval(spawnFloatingItem, 900)
 
   for (let i = 0; i < 12; i++) {
     setTimeout(spawnFloatingItem, i * 180)
   }
 
   $("startBtn").addEventListener("click", () => {
-    stopIntroAnimation()
     goTo("scene-2")
     initQuiz()
   })
 
-  document.querySelectorAll(".memory-card").forEach((card) => {
+  document.querySelectorAll(".letter-btn").forEach((card) => {
     card.addEventListener("click", () => {
       const index = Number(card.dataset.card)
       openMemoryCard(index, card)
