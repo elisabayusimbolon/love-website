@@ -5,115 +5,193 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
   <title>Buat Kamu 💕</title>
   <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;700&display=swap" rel="stylesheet" />
 </head>
+
 <body>
   <div class="hearts-bg" id="heartsContainer"></div>
   <div class="confetti-container" id="confettiContainer"></div>
+
   <div id="app">
 
+    <!-- SCENE 1 -->
     <section class="scene active" id="scene-1">
-      <div class="scene-content">
+      <div class="scene-content intro-card">
+        <div class="cute-badge">secret mission unlocked 💌</div>
         <div class="intro-emoji" id="introEmoji">👀</div>
-        <p class="scene-label">Psst... ini buat kamu</p>
-        <h1 class="scene-title">Ada sesuatu<br>buat kamu~</h1>
-        <p class="scene-sub">Tapi sebelumnya...<br>kamu harus lulus beberapa <b>ujian</b> dulu 😏</p>
-        <button class="btn-main" id="scene1Btn">Oke, aku siap! 💪</button>
+
+        <p class="scene-label">Psst... hai cantik</p>
+        <h1 class="scene-title">Ada misi kecil<br>buat kamu~</h1>
+
+        <p class="scene-sub">
+          Website ini nggak bisa langsung dibuka gitu aja 😌<br>
+          Kamu harus lewatin beberapa ujian dulu:
+          <b>lucu, ngeselin, melow,</b> terus baru romantis 💕
+        </p>
+
+        <button class="btn-main" id="scene1Btn">Mulai dong, aku penasaran 😳</button>
+        <p class="tiny-note">tenang, ini aman... cuma hati kamu aja yang mungkin keganggu 🤭</p>
       </div>
     </section>
 
+    <!-- SCENE 2 QUIZ LUCU -->
     <section class="scene" id="scene-2">
       <div class="scene-content">
-        <p class="scene-label" id="tebakProgress">Soal 1 dari 3 🎯</p>
-        <h2 class="scene-title" id="tebakTitle">Tebak artinya!</h2>
+        <p class="scene-label" id="quizProgress">Soal 1 dari 3 🎯</p>
+        <h2 class="scene-title" id="quizTitle">Tebak artinya!</h2>
+
         <div class="emoji-box" id="emojiDisplay">🐸 + 🌙 + 🧋</div>
-        <p class="scene-sub" id="tebakSub">Pilih jawaban yang paling bener~</p>
+
+        <p class="scene-sub" id="quizSub">
+          Pilih jawaban yang menurutmu paling bener~
+        </p>
+
         <div class="options-grid" id="optionsGrid"></div>
+
         <div class="reaction-box" id="reactionBox" style="display:none">
-          <p class="reaction-emoji" id="reactionEmoji"></p>
+          <p class="reaction-emoji" id="reactionEmoji">😂</p>
           <p class="reaction-text" id="reactionText"></p>
           <button class="btn-main" id="reactionBtn">Coba lagi 😤</button>
         </div>
       </div>
     </section>
 
+    <!-- SCENE 3 NGAMBEK -->
     <section class="scene" id="scene-3">
       <div class="scene-content">
-        <p class="scene-label" id="tesProgress">Pertanyaan 1 dari 4 🧠</p>
-        <h2 class="scene-title">Tes Kepribadian<br><span style="font-size:1.2rem">(yang sangat ilmiah)</span></h2>
-        <div class="emoji-box" id="tesEmoji" style="font-size:3rem">🔬</div>
-        <p class="scene-sub" id="tesQuestion">Loading pertanyaan...</p>
-        <div class="options-grid" id="tesGrid"></div>
+        <p class="scene-label">Mode ngambek aktif 😤</p>
+        <h2 class="scene-title">Sekarang aku<br>ngambek dulu</h2>
+
+        <div class="mood-card" id="moodCard">
+          <div class="big-emoji" id="moodEmoji">😤</div>
+          <p class="scene-sub mood-text" id="moodText">
+            Kamu tadi salah-salah mulu. Aku ngambek dikit boleh kan? 😒
+          </p>
+
+          <div class="mood-bar-bg">
+            <div class="mood-bar-fill" id="moodFill"></div>
+          </div>
+
+          <p class="mood-percent" id="moodPercent">Luluh: 0%</p>
+
+          <div class="mood-actions">
+            <button class="btn-main" id="apologyBtn">Maafin aku dong 🥺</button>
+            <button class="btn-secondary" id="teaseBtn">Aku nggak salah kok 😌</button>
+          </div>
+        </div>
+
+        <div class="done-box" id="ngambekDone" style="display:none">
+          <p class="reaction-emoji">🥹</p>
+          <p class="reaction-text">
+            Yaudah... aku luluh. Tapi jangan seneng dulu, sekarang aku mau melow dikit.
+          </p>
+          <button class="btn-main" id="toSadBtn">Lanjut pelan-pelan 🌧️</button>
+        </div>
       </div>
     </section>
 
+    <!-- SCENE 4 SEDIH / MELOW -->
     <section class="scene" id="scene-4">
       <div class="scene-content">
-        <p class="scene-label">Mini Game 💘</p>
-        <h2 class="scene-title" id="gameTitle">Tangkap Hatiku!</h2>
-        <p class="scene-sub" id="gameSub">Klik hati pink sebanyak mungkin<br>dalam <b>10 detik</b>! Tapi ada satu yang kabur terus... 😏</p>
-        <div class="game-stats">
-          <div class="stat-box">
-            <span class="stat-num" id="scoreDisplay">0</span>
-            <span class="stat-label">Tertangkap</span>
-          </div>
-          <div class="stat-box">
-            <span class="stat-num" id="timerDisplay">10</span>
-            <span class="stat-label">Detik</span>
-          </div>
+        <p class="scene-label">Bagian melow dikit 🌧️</p>
+        <h2 class="scene-title">Baca pelan-pelan ya</h2>
+
+        <div class="sad-card">
+          <div class="big-emoji" id="sadEmoji">☁️</div>
+          <p class="sad-text" id="sadText">
+            Kadang aku suka bercanda terus, biar kamu ketawa...
+          </p>
+
+          <button class="btn-main" id="sadNextBtn">Buka lanjutannya 💌</button>
         </div>
-        <div class="game-area" id="gameArea"></div>
-        <button class="btn-main" id="startGameBtn">Mulai Game! 🎮</button>
-        <div class="game-result" id="gameResult" style="display:none">
-          <p class="reaction-emoji" id="resultEmoji">🎉</p>
-          <p class="reaction-text" id="resultText"></p>
-          <button class="btn-main" id="nextFromGame">Lanjut~ ➡️</button>
+
+        <div class="done-box" id="sadDone" style="display:none">
+          <p class="reaction-emoji">🤍</p>
+          <p class="reaction-text">
+            Makasih udah baca sampai sini. Sekarang bagian terakhir...
+            yang paling aku simpan dari awal.
+          </p>
+          <button class="btn-main" id="toLoadingBtn">Lihat yang terakhir ✨</button>
         </div>
       </div>
     </section>
 
+    <!-- SCENE 5 LOADING ROMANTIS -->
     <section class="scene" id="scene-5">
       <div class="scene-content">
-        <p class="scene-label">Memproses sesuatu... 💻</p>
-        <h2 class="scene-title" id="loadingTitle">Ngitung Cintaku<br>buat Kamu</h2>
+        <p class="scene-label">Memproses perasaan... 💻</p>
+        <h2 class="scene-title">Ngitung rasa<br>sayangku ke kamu</h2>
+
         <div class="loading-wrap">
           <div class="loading-bar-bg">
             <div class="loading-bar-fill" id="loadingFill"></div>
           </div>
           <p class="loading-percent" id="loadingPercent">0%</p>
         </div>
-        <p class="loading-status" id="loadingStatus">Menginisialisasi perasaan...</p>
+
+        <p class="loading-status" id="loadingStatus">Menginisialisasi rasa kangen...</p>
+
         <div class="loading-result" id="loadingResult" style="display:none">
           <p class="load-result-emoji">💖</p>
           <p class="load-result-num">∞</p>
-          <p class="load-result-label">Hasilnya... tidak bisa dihitung.</p>
-          <button class="btn-main" id="toFinalBtn">Lihat sesuatu yang spesial ✨</button>
+          <p class="load-result-label">
+            Hasilnya error... karena terlalu banyak.
+          </p>
+          <button class="btn-main" id="toFinalBtn">Buka suratnya 💌</button>
         </div>
       </div>
     </section>
 
+    <!-- SCENE 6 FINAL -->
     <section class="scene" id="scene-6">
       <div class="scene-content final-content">
         <div class="final-heart" id="finalHeart">💖</div>
-        <h2 class="scene-title" id="finalTitle">Ini Buat Kamu</h2>
+        <p class="scene-label">Akhirnya sampai sini</p>
+        <h2 class="scene-title">Ini buat kamu</h2>
+
         <div class="letter-card">
           <p class="letter-from">💌 Untuk kamu, yang selalu ada di pikiranku~</p>
+
           <div class="letter-body">
             Hai sayang 🌸<br><br>
-            Aku mungkin bukan yang paling romantis di dunia ini. Aku sering salah kata, sering lebay, dan kadang nggak tau cara ngungkapin apa yang aku rasain.<br><br>
-            Tapi satu hal yang aku tau pasti — <b>kamu bikin hidupku jauh lebih seru</b>. Setiap hari bareng kamu itu kayak dapet hadiah yang nggak pernah aku minta, tapi sangat aku syukuri.<br><br>
-            Kamu nggak sempurna. Aku juga nggak sempurna. Tapi entah kenapa, kita sempurna kalau bareng 🤭<br><br>
-            Terima kasih udah sabar sama aku. Terima kasih udah mau ada buat aku. Terima kasih udah jadi kamu.<br><br>
-            Aku cinta kamu — kemarin, hari ini, dan semua hari yang belum kita tahu. 💕
+
+            Aku tau website ini awalnya isinya receh, ngeselin, bikin kamu klik-klik,
+            bahkan mungkin bikin kamu mikir, “ini apaan sih?” 😭<br><br>
+
+            Tapi sebenernya dari awal aku cuma mau bikin kamu senyum.
+            Karena senyum kamu itu salah satu hal kecil yang bisa bikin hariku
+            langsung terasa lebih baik.<br><br>
+
+            Aku mungkin bukan orang yang paling romantis.
+            Kadang aku salah ngomong, kadang terlalu bercanda, kadang juga nggak pandai
+            nunjukin perasaan dengan cara yang sempurna.<br><br>
+
+            Tapi satu hal yang aku tau pasti:
+            <b>aku sayang kamu, dan aku bersyukur banget kamu ada.</b><br><br>
+
+            Kalau suatu hari kamu capek, sedih, atau ngerasa sendirian,
+            aku pengen kamu inget satu hal:
+            ada aku yang selalu pengen jadi tempat kamu pulang,
+            tempat kamu cerita, dan tempat kamu merasa disayang. 🤍<br><br>
+
+            Terima kasih udah jadi kamu.
+            Terima kasih udah hadir di hidupku.
+            Dan terima kasih karena tanpa sadar,
+            kamu udah bikin hidupku jauh lebih indah. 💕<br><br>
+
+            Aku cinta kamu — hari ini, besok, dan semua hari setelahnya.
           </div>
-          <p class="letter-sign">— Dari yang selalu kangen kamu 😊</p>
+
+          <p class="letter-sign">— Dari orang yang selalu kangen kamu 😊</p>
         </div>
-        <button class="btn-main" id="confettiBtn" style="margin-top:28px">Rayakan! 🎉</button>
-        <button class="btn-secondary" onclick="goTo('scene-1'); initAll()">Ulang dari awal 🔄</button>
+
+        <button class="btn-main" id="confettiBtn">Rayakan! 🎉</button>
+        <button class="btn-secondary" id="restartBtn">Ulang dari awal 🔄</button>
       </div>
     </section>
 
   </div>
+
   <script src="script.js"></script>
 </body>
 </html>
