@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Buat Kamu 💕</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div class="hearts-bg" id="heartsContainer"></div>
+  <div class="confetti-container" id="confettiContainer"></div>
+  <div id="app">
+
+    <section class="scene active" id="scene-1">
+      <div class="scene-content">
+        <div class="intro-emoji" id="introEmoji">👀</div>
+        <p class="scene-label">Psst... ini buat kamu</p>
+        <h1 class="scene-title">Ada sesuatu<br>buat kamu~</h1>
+        <p class="scene-sub">Tapi sebelumnya...<br>kamu harus lulus beberapa <b>ujian</b> dulu 😏</p>
+        <button class="btn-main" id="scene1Btn">Oke, aku siap! 💪</button>
+      </div>
+    </section>
+
+    <section class="scene" id="scene-2">
+      <div class="scene-content">
+        <p class="scene-label" id="tebakProgress">Soal 1 dari 3 🎯</p>
+        <h2 class="scene-title" id="tebakTitle">Tebak artinya!</h2>
+        <div class="emoji-box" id="emojiDisplay">🐸 + 🌙 + 🧋</div>
+        <p class="scene-sub" id="tebakSub">Pilih jawaban yang paling bener~</p>
+        <div class="options-grid" id="optionsGrid"></div>
+        <div class="reaction-box" id="reactionBox" style="display:none">
+          <p class="reaction-emoji" id="reactionEmoji"></p>
+          <p class="reaction-text" id="reactionText"></p>
+          <button class="btn-main" id="reactionBtn">Coba lagi 😤</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene" id="scene-3">
+      <div class="scene-content">
+        <p class="scene-label" id="tesProgress">Pertanyaan 1 dari 4 🧠</p>
+        <h2 class="scene-title">Tes Kepribadian<br><span style="font-size:1.2rem">(yang sangat ilmiah)</span></h2>
+        <div class="emoji-box" id="tesEmoji" style="font-size:3rem">🔬</div>
+        <p class="scene-sub" id="tesQuestion">Loading pertanyaan...</p>
+        <div class="options-grid" id="tesGrid"></div>
+      </div>
+    </section>
+
+    <section class="scene" id="scene-4">
+      <div class="scene-content">
+        <p class="scene-label">Mini Game 💘</p>
+        <h2 class="scene-title" id="gameTitle">Tangkap Hatiku!</h2>
+        <p class="scene-sub" id="gameSub">Klik hati pink sebanyak mungkin<br>dalam <b>10 detik</b>! Tapi ada satu yang kabur terus... 😏</p>
+        <div class="game-stats">
+          <div class="stat-box">
+            <span class="stat-num" id="scoreDisplay">0</span>
+            <span class="stat-label">Tertangkap</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-num" id="timerDisplay">10</span>
+            <span class="stat-label">Detik</span>
+          </div>
+        </div>
+        <div class="game-area" id="gameArea"></div>
+        <button class="btn-main" id="startGameBtn">Mulai Game! 🎮</button>
+        <div class="game-result" id="gameResult" style="display:none">
+          <p class="reaction-emoji" id="resultEmoji">🎉</p>
+          <p class="reaction-text" id="resultText"></p>
+          <button class="btn-main" id="nextFromGame">Lanjut~ ➡️</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene" id="scene-5">
+      <div class="scene-content">
+        <p class="scene-label">Memproses sesuatu... 💻</p>
+        <h2 class="scene-title" id="loadingTitle">Ngitung Cintaku<br>buat Kamu</h2>
+        <div class="loading-wrap">
+          <div class="loading-bar-bg">
+            <div class="loading-bar-fill" id="loadingFill"></div>
+          </div>
+          <p class="loading-percent" id="loadingPercent">0%</p>
+        </div>
+        <p class="loading-status" id="loadingStatus">Menginisialisasi perasaan...</p>
+        <div class="loading-result" id="loadingResult" style="display:none">
+          <p class="load-result-emoji">💖</p>
+          <p class="load-result-num">∞</p>
+          <p class="load-result-label">Hasilnya... tidak bisa dihitung.</p>
+          <button class="btn-main" id="toFinalBtn">Lihat sesuatu yang spesial ✨</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene" id="scene-6">
+      <div class="scene-content final-content">
+        <div class="final-heart" id="finalHeart">💖</div>
+        <h2 class="scene-title" id="finalTitle">Ini Buat Kamu</h2>
+        <div class="letter-card">
+          <p class="letter-from">💌 Untuk kamu, yang selalu ada di pikiranku~</p>
+          <div class="letter-body">
+            Hai sayang 🌸<br><br>
+            Aku mungkin bukan yang paling romantis di dunia ini. Aku sering salah kata, sering lebay, dan kadang nggak tau cara ngungkapin apa yang aku rasain.<br><br>
+            Tapi satu hal yang aku tau pasti — <b>kamu bikin hidupku jauh lebih seru</b>. Setiap hari bareng kamu itu kayak dapet hadiah yang nggak pernah aku minta, tapi sangat aku syukuri.<br><br>
+            Kamu nggak sempurna. Aku juga nggak sempurna. Tapi entah kenapa, kita sempurna kalau bareng 🤭<br><br>
+            Terima kasih udah sabar sama aku. Terima kasih udah mau ada buat aku. Terima kasih udah jadi kamu.<br><br>
+            Aku cinta kamu — kemarin, hari ini, dan semua hari yang belum kita tahu. 💕
+          </div>
+          <p class="letter-sign">— Dari yang selalu kangen kamu 😊</p>
+        </div>
+        <button class="btn-main" id="confettiBtn" style="margin-top:28px">Rayakan! 🎉</button>
+        <button class="btn-secondary" onclick="goTo('scene-1'); initAll()">Ulang dari awal 🔄</button>
+      </div>
+    </section>
+
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
