@@ -2,83 +2,34 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Buat Kamu 💗</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Pacifico&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Pacifico&display=swap"
+    rel="stylesheet"
+  >
 
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <main class="page">
+  <div class="app" id="app">
     <div class="soft-bg" id="softBg"></div>
 
-    <section class="phone-stage">
-      <div class="card" id="card">
-        <div class="top-badge" id="topBadge">SPECIAL MISSION FOR YOU</div>
+    <main class="stage">
+      <section class="card" id="card">
+        <div class="ribbon" id="ribbon">SPECIAL MISSION FOR YOU</div>
+        <div class="scene" id="scene"></div>
+      </section>
+    </main>
 
-        <div class="inner">
-          <div class="tiny-pill" id="tinyPill">gemes ya?</div>
-
-          <div class="character-wrap">
-            <div class="character peach happy" id="character">
-              <div class="ear ear-left"></div>
-              <div class="ear ear-right"></div>
-              <div class="face">
-                <div class="eye eye-left"></div>
-                <div class="eye eye-right"></div>
-                <div class="cheek cheek-left"></div>
-                <div class="cheek cheek-right"></div>
-                <div class="mouth"></div>
-              </div>
-              <div class="body-dot"></div>
-              <div class="hand hand-left"></div>
-              <div class="hand hand-right"></div>
-            </div>
-          </div>
-
-          <p class="mini-title" id="miniTitle">PSSST... SINI DULU</p>
-          <h1 id="mainTitle">Haiii kamu</h1>
-          <div class="heart-stack" id="heartStack">💗💕</div>
-
-          <p class="desc" id="desc">
-            Aku bikin sesuatu yang lucu buat kamu.<br>
-            Mau main bentar nggak?
-          </p>
-
-          <div class="note-box" id="noteBox">
-            <span>🌸</span>
-            <p>Awalnya gemes, tengahnya bikin salting, ujungnya manis banget.</p>
-          </div>
-
-          <div class="content-area" id="contentArea"></div>
-
-          <button class="main-btn" id="mainBtn">Mauu, mulai</button>
-          <button class="ghost-btn hide" id="ghostBtn">Ulang dari awal</button>
-
-          <p class="small-text" id="smallText">ayo klik, jangan malu-malu 😚</p>
-        </div>
-      </div>
-    </section>
-
-    <div class="buddy" id="buddy">
-      <span id="buddyText">aku nemenin 🤍</span>
-      <div class="mini-character peach happy">
-        <div class="ear ear-left"></div>
-        <div class="ear ear-right"></div>
-        <div class="face">
-          <div class="eye eye-left"></div>
-          <div class="eye eye-right"></div>
-          <div class="cheek cheek-left"></div>
-          <div class="cheek cheek-right"></div>
-          <div class="mouth"></div>
-        </div>
-        <div class="body-dot"></div>
-      </div>
+    <div class="sidekick" aria-hidden="true">
+      <div class="side-bubble" id="sideBubble">aku nemenin 💛</div>
+      <div class="mini-char"></div>
     </div>
-  </main>
+  </div>
 
   <script src="script.js"></script>
 </body>
