@@ -6,203 +6,205 @@
 
   <title>Buat Kamu 💌</title>
 
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
   <link rel="stylesheet" href="style.css" />
-
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Pacifico&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 </head>
-
 <body>
-  <div class="soft-bg"></div>
-  <div class="floating-area" id="floatingArea"></div>
-  <div class="confetti-area" id="confettiArea"></div>
+  <div class="pink-bg"></div>
+  <div class="bubble bubble-1"></div>
+  <div class="bubble bubble-2"></div>
+  <div class="bubble bubble-3"></div>
+
+  <div id="floatingArea" class="floating-area"></div>
+  <div id="confettiArea" class="confetti-area"></div>
 
   <main id="app">
-
     <!-- SCENE 1 -->
-    <section class="scene active" id="scene-1">
-      <div class="invite-card opening-card">
-        <div class="ribbon">private invitation</div>
-        <div class="wax-seal">💌</div>
+    <section id="scene-1" class="scene active">
+      <div class="cute-card intro-card">
+        <div class="top-pill">ada misi kecil buat kamu</div>
 
-        <p class="small-title">Untuk seseorang yang diam-diam sering aku pikirin</p>
-
-        <h1>
-          Ada undangan kecil<br>
-          buat kamu
-        </h1>
-
-        <p class="opening-text">
-          Tapi ini bukan undangan biasa.  
-          Isinya ada tebak-tebakan kecil, beberapa kalimat yang aku simpan,
-          dan satu bagian terakhir yang cuma pantas dibaca pelan-pelan.
-        </p>
-
-        <p class="soft-warning">
-          Kalau kamu lanjut, kamu harus siap sedikit senyum, sedikit kesel,
-          dan mungkin sedikit baper.
-        </p>
-
-        <button class="btn-main" id="startBtn">Buka undangannya pelan-pelan</button>
-
-        <p class="tiny-note">jangan diskip ya, aku bikinnya sambil mikirin kamu.</p>
-      </div>
-    </section>
-
-    <!-- SCENE 2 -->
-    <section class="scene" id="scene-2">
-      <div class="invite-card">
-        <p class="small-title" id="quizCounter">Tebakan 1 dari 3</p>
-
-        <h2 id="quizTitle">Tebak maksudnya</h2>
-
-        <div class="emoji-frame" id="quizEmoji">
-          🌙 + 💬 + 🕰️
-        </div>
-
-        <p class="scene-text" id="quizQuestion">
-          Kalau digabung, ini paling dekat artinya apa?
-        </p>
-
-        <div class="option-grid" id="optionGrid"></div>
-
-        <div class="response-box" id="responseBox">
-          <div class="response-emoji" id="responseEmoji">✨</div>
-          <p id="responseText"></p>
-          <button class="btn-main" id="responseBtn">Lanjut</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- SCENE 3 -->
-    <section class="scene" id="scene-3">
-      <div class="invite-card">
-        <p class="small-title">Bagian yang mulai jujur</p>
-
-        <h2>
-          Aku simpan beberapa<br>
-          hal kecil di sini
-        </h2>
-
-        <p class="scene-text">
-          Klik satu-satu ya. Aku nggak mau semuanya langsung kebuka,
-          karena beberapa rasa memang lebih indah kalau dibaca pelan-pelan.
-        </p>
-
-        <div class="letter-options">
-          <button class="letter-btn" data-card="0">
-            <span>01</span>
-            Tentang hadirmu
-          </button>
-
-          <button class="letter-btn" data-card="1">
-            <span>02</span>
-            Tentang senyummu
-          </button>
-
-          <button class="letter-btn" data-card="2">
-            <span>03</span>
-            Tentang rasaku
-          </button>
-        </div>
-
-        <div class="message-paper" id="memoryMessage">
-          <p id="memoryText">Pilih salah satu dulu. Aku tungguin.</p>
-        </div>
-
-        <button class="btn-main hidden" id="toScene4Btn">Aku sudah baca semuanya</button>
-      </div>
-    </section>
-
-    <!-- SCENE 4 -->
-    <section class="scene" id="scene-4">
-      <div class="invite-card">
-        <p class="small-title">Sedang diproses</p>
-
-        <h2>
-          Menghitung rasa<br>
-          yang nggak pernah selesai
-        </h2>
-
-        <div class="loading-wrap">
-          <div class="loading-track">
-            <div class="loading-fill" id="loadingFill"></div>
+        <div class="cute-mascot">
+          <div class="ear ear-left"></div>
+          <div class="ear ear-right"></div>
+          <div class="face">
+            <div class="eye eye-left"></div>
+            <div class="eye eye-right"></div>
+            <div class="blush blush-left"></div>
+            <div class="blush blush-right"></div>
+            <div class="mouth">ω</div>
           </div>
-
-          <p class="loading-percent" id="loadingPercent">0%</p>
-
-          <p class="loading-status" id="loadingStatus">
-            Mengumpulkan alasan kenapa kamu mudah dirindukan...
-          </p>
         </div>
 
-        <button class="btn-main hidden" id="toFinalBtn">Buka surat terakhir</button>
+        <p class="mini-text">pssst... jangan langsung senyum dulu</p>
+
+        <h1>Hai kamu, aku punya sesuatu nih 💗</h1>
+
+        <p class="main-text">
+          Tapi bukanya nggak boleh biasa aja. Kamu harus lewatin beberapa misi kecil dulu.
+          Tenang, nggak susah kok. Cuma agak gemes, agak ngeselin, terus ujungnya...
+          yaa lihat sendiri nanti.
+        </p>
+
+        <div class="hint-box">
+          <span>🌸</span>
+          <p>Siap-siap. Awalnya lucu, nanti ada ngambeknya dikit, terus agak mellow, baru terakhir manis banget.</p>
+        </div>
+
+        <button id="startBtn" class="btn-primary">
+          Aku mau mulai dong
+        </button>
+
+        <p class="tiny-note">jangan kabur ya, udah sampai sini masa mundur 😌</p>
       </div>
     </section>
 
-    <!-- SCENE 5 -->
-    <section class="scene" id="scene-5">
-      <div class="invite-card final-card">
-        <div class="wax-seal final-seal">♡</div>
+    <!-- SCENE 2: LUCU -->
+    <section id="scene-2" class="scene">
+      <div class="cute-card game-card">
+        <p class="mini-text">misi pertama</p>
 
-        <p class="small-title">Surat terakhir</p>
+        <h2>Tangkap hati yang kabur dulu 💕</h2>
 
-        <h2>
-          Ini bagian yang<br>
-          paling aku maksud
-        </h2>
+        <p class="main-text">
+          Katanya kalau bisa nangkep 5 hati, kamu boleh lanjut.
+          Tapi hatinya malu-malu, jadi harus diklik cepat.
+        </p>
 
-        <div class="final-letter">
-          <p>Hai kamu.</p>
-
-          <p>
-            Aku nggak tahu harus mulai dari mana, karena setiap kali tentang kamu,
-            rasanya selalu ada terlalu banyak hal yang ingin aku bilang.
-          </p>
-
-          <p>
-            Aku suka caramu hadir. Nggak selalu ramai, nggak harus berlebihan,
-            tapi cukup untuk bikin hari yang biasa saja terasa lebih hangat.
-          </p>
-
-          <p>
-            Kadang aku bercanda, kadang aku kelihatan santai, tapi sebenarnya
-            ada banyak hal kecil dari kamu yang diam-diam aku ingat:
-            caramu membalas pesan, caramu cerita, caramu bikin aku merasa
-            bahwa dunia ini nggak seberat itu.
-          </p>
-
-          <p>
-            Aku nggak janji akan selalu sempurna. Tapi aku mau terus belajar
-            jadi seseorang yang bisa kamu percaya, kamu cari, dan kamu pulangi
-            saat semuanya terasa melelahkan.
-          </p>
-
-          <p class="highlight">
-            Karena buat aku, kamu bukan cuma seseorang yang aku suka.
-            Kamu adalah rasa tenang yang pelan-pelan jadi rumah.
-          </p>
-
-          <p>
-            Jadi kalau suatu hari kamu merasa kurang dicintai, kurang dihargai,
-            atau lupa betapa berharganya kamu, buka lagi halaman ini.
-            Biar kamu ingat, ada aku yang melihatmu seindah itu.
-          </p>
-
-          <p class="signature">
-            Dari aku,<br>
-            yang selalu punya ruang buat kamu.
-          </p>
+        <div class="score-card">
+          <span>Hati terkumpul</span>
+          <strong><span id="cuteScore">0</span>/5</strong>
         </div>
 
-        <div class="final-actions">
-          <button class="btn-main" id="celebrateBtn">Rayakan kecil-kecilan</button>
-          <button class="btn-secondary" id="restartBtn">Ulang dari awal</button>
+        <div id="heartGame" class="heart-game">
+          <p id="cuteHint" class="game-hint">Hatinya sebentar lagi muncul... siap-siap yaa.</p>
         </div>
+
+        <button id="nextToAngryBtn" class="btn-primary hidden">
+          Lanjut, aku udah jago nih
+        </button>
       </div>
     </section>
 
+    <!-- SCENE 3: MARAH / NGAMBEK -->
+    <section id="scene-3" class="scene">
+      <div class="cute-card angry-card">
+        <div class="angry-emoji">😤</div>
+
+        <p class="mini-text">eh tunggu dulu</p>
+
+        <h2>Aku lagi pura-pura ngambek.</h2>
+
+        <p id="angryText" class="main-text">
+          Soalnya kamu terlalu lucu. Kan jadi nyebelin, aku kepikiran terus.
+          Sekarang tugas kamu: bujuk aku sampai ngambeknya turun.
+        </p>
+
+        <div class="angry-meter">
+          <div id="angryMeterFill" class="angry-meter-fill"></div>
+        </div>
+
+        <p class="meter-label">level ngambek</p>
+
+        <div class="angry-actions">
+          <button id="calmBtn" class="btn-primary">
+            Maafin aku dong 🥺
+          </button>
+
+          <button id="runawayBtn" class="btn-secondary runaway-btn">
+            Nggak mau 😝
+          </button>
+        </div>
+
+        <button id="nextToSadBtn" class="btn-primary hidden">
+          Oke, lanjut. Jangan ngambek lagi ya
+        </button>
+      </div>
+    </section>
+
+    <!-- SCENE 4: SEDIH -->
+    <section id="scene-4" class="scene sad-scene">
+      <div class="rain"></div>
+
+      <div class="cute-card sad-card">
+        <p class="mini-text">sekarang agak pelan ya</p>
+
+        <h2>Aku mau jujur sedikit...</h2>
+
+        <p class="main-text">
+          Kadang aku kelihatan bercanda terus, tapi sebenarnya ada hal yang aku simpan baik-baik.
+        </p>
+
+        <div class="sad-window">
+          <div class="moon"></div>
+          <div class="cloud cloud-a"></div>
+          <div class="cloud cloud-b"></div>
+          <div class="window-heart">♡</div>
+        </div>
+
+        <p class="main-text">
+          Aku kadang takut terlalu kelihatan peduli. Takut kamu risih, takut aku terlalu banyak berharap,
+          takut rasa ini cuma lucu buatku sendiri.
+        </p>
+
+        <button id="hugBtn" class="btn-primary">
+          Kasih peluk virtual dulu
+        </button>
+
+        <div id="sadReveal" class="sad-reveal hidden">
+          <p>
+            Makasih. Ternyata satu peluk kecil aja bisa bikin kalimat berat jadi lebih ringan.
+          </p>
+        </div>
+
+        <button id="nextToFinalBtn" class="btn-primary hidden">
+          Buka bagian terakhir
+        </button>
+      </div>
+    </section>
+
+    <!-- SCENE 5: ROMANTIS -->
+    <section id="scene-5" class="scene">
+      <div class="cute-card final-card">
+        <div class="love-lock">
+          <span>💌</span>
+        </div>
+
+        <p class="mini-text">akhirnya sampai juga</p>
+
+        <h2>Ini bagian yang dari tadi aku simpan.</h2>
+
+        <p class="main-text">
+          Klik tombolnya, nanti suratnya kebuka pelan-pelan.
+        </p>
+
+        <button id="openLetterBtn" class="btn-primary">
+          Buka suratnya
+        </button>
+
+        <div id="letterBox" class="letter-box hidden">
+          <p id="typedLetter"></p>
+        </div>
+
+        <div id="finalActions" class="final-actions hidden">
+          <button id="celebrateBtn" class="btn-primary">
+            Bikin hatinya rame
+          </button>
+
+          <button id="restartBtn" class="btn-secondary">
+            Ulang dari awal
+          </button>
+        </div>
+      </div>
+    </section>
   </main>
 
-  <script src="script.js"></script>
+  <script src="script.js" defer></script>
 </body>
 </html>

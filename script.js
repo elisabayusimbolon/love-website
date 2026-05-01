@@ -7,15 +7,26 @@ function goTo(sceneId) {
 
   const target = $(sceneId)
 
-  if (target) {
-    target.scrollTop = 0
-    target.classList.add("active")
-  }
+  if (!target) return
+
+  target.scrollTop = 0
+  target.classList.add("active")
 }
 
-/* BACKGROUND */
+/* BACKGROUND FLOATING */
 
-const floatingItems = ["♡", "✦", "miss you", "love", "bloom", "dear you", "♡", "✧"]
+const floatingItems = [
+  "♡",
+  "✧",
+  "💕",
+  "gemes",
+  "hehe",
+  "miss u",
+  "🌸",
+  "cute",
+  "love",
+  "💗"
+]
 
 function spawnFloatingItem() {
   const area = $("floatingArea")
@@ -34,15 +45,17 @@ function spawnFloatingItem() {
   setTimeout(() => item.remove(), 16000)
 }
 
+/* CONFETTI */
+
 function launchConfetti() {
   const area = $("confettiArea")
   if (!area) return
 
-  const colors = ["#d63384", "#ff9fcb", "#ffd1e3", "#ffffff", "#c42f78"]
+  const colors = ["#ff7fbd", "#e13691", "#ffd1e6", "#ffffff", "#ffb6d9", "#c92d7c"]
 
-  for (let i = 0; i < 100; i++) {
+  for (let i = 0; i < 110; i++) {
     const item = document.createElement("div")
-    const size = 6 + Math.random() * 8
+    const size = 5 + Math.random() * 8
 
     item.className = "confetti"
     item.style.left = Math.random() * 100 + "vw"
@@ -50,8 +63,8 @@ function launchConfetti() {
     item.style.height = size + "px"
     item.style.background = colors[Math.floor(Math.random() * colors.length)]
     item.style.animationDuration = 2.4 + Math.random() * 2.8 + "s"
-    item.style.animationDelay = Math.random() * 0.8 + "s"
-    item.style.setProperty("--move-x", (Math.random() - 0.5) * 170 + "px")
+    item.style.animationDelay = Math.random() * 0.7 + "s"
+    item.style.setProperty("--move-x", (Math.random() - 0.5) * 180 + "px")
 
     area.appendChild(item)
 
@@ -59,315 +72,251 @@ function launchConfetti() {
   }
 }
 
-/* QUIZ */
+/* SCENE 2: CUTE GAME */
 
-const quizData = [
-  {
-    emoji: "🌙 + 💬 + 🕰️",
-    question: "Kalau digabung, ini paling dekat artinya apa?",
-    options: [
-      {
-        text: "Lupa tidur karena scrolling",
-        correct: false,
-        emoji: "🌙",
-        response:
-          "Hampir, tapi bukan. Ini bukan tentang layar yang bikin susah tidur, ini tentang satu orang yang kabarnya diam-diam ditunggu."
-      },
-      {
-        text: "Nunggu satu chat yang bikin tenang",
-        correct: true,
-        emoji: "💬",
-        response:
-          "Iya, benar. Kadang yang ditunggu bukan pesan panjang, cukup satu kabar kecil dari orang yang tepat."
-      },
-      {
-        text: "Jam dinding sedang curhat",
-        correct: false,
-        emoji: "🕰️",
-        response:
-          "Lucu juga kalau jam bisa curhat. Tapi kali ini bukan jamnya yang gelisah, melainkan hati yang sedang menunggu."
-      },
-      {
-        text: "Malam yang terlalu sunyi",
-        correct: false,
-        emoji: "✨",
-        response:
-          "Dekat, tapi belum tepat. Malamnya bukan cuma sunyi, ada satu nama yang bikin sunyinya terasa lebih panjang."
-      }
-    ]
-  },
-  {
-    emoji: "☕ + 🌧️ + 📖",
-    question: "Kalau suasana ini jadi perasaan, artinya apa?",
-    options: [
-      {
-        text: "Hari yang cocok untuk rebahan",
-        correct: false,
-        emoji: "☁️",
-        response:
-          "Memang cocok. Tapi rasanya belum lengkap kalau cuma rebahan tanpa seseorang yang ingin diajak cerita."
-      },
-      {
-        text: "Hujan yang bikin lapar",
-        correct: false,
-        emoji: "☕",
-        response:
-          "Hujan memang sering bikin lapar, tapi ini bukan soal makanan. Ini soal perasaan yang datang pelan-pelan."
-      },
-      {
-        text: "Tenang, tapi ingin ditemani",
-        correct: true,
-        emoji: "🌧️",
-        response:
-          "Benar. Ada tenang yang indah, tapi tetap lebih hangat kalau dibagi dengan orang yang kita sayang."
-      },
-      {
-        text: "Buku yang belum selesai dibaca",
-        correct: false,
-        emoji: "📖",
-        response:
-          "Bisa saja. Tapi cerita yang paling ingin dibaca kali ini bukan di buku, melainkan dari seseorang."
-      }
-    ]
-  },
-  {
-    emoji: "🌷 + 🏠 + ♡",
-    question: "Menurut kamu, ini maksudnya apa?",
-    options: [
-      {
-        text: "Bunga yang lupa jalan pulang",
-        correct: false,
-        emoji: "🌷",
-        response:
-          "Bunganya mungkin tersesat. Tapi perasaan ini justru sedang menemukan arah pulang."
-      },
-      {
-        text: "Rumah yang banyak tanaman",
-        correct: false,
-        emoji: "🏠",
-        response:
-          "Aesthetic, tapi bukan itu. Ini bukan tentang rumah yang terlihat indah, melainkan seseorang yang terasa seperti rumah."
-      },
-      {
-        text: "Tempat pulang yang paling hangat",
-        correct: true,
-        emoji: "♡",
-        response:
-          "Iya. Karena kadang rumah bukan alamat. Kadang rumah adalah seseorang yang membuat hati merasa aman."
-      },
-      {
-        text: "Dekorasi kamar warna pink",
-        correct: false,
-        emoji: "🎀",
-        response:
-          "Manis, tapi belum tepat. Warna pink cuma suasananya. Maksud aslinya jauh lebih dalam."
-      }
-    ]
-  }
-]
+let cuteScore = 0
+let heartInterval = null
+const maxCuteScore = 5
 
-let quizIndex = 0
-let wrongCount = 0
-const MAX_WRONG = 3
+function initCuteGame() {
+  cuteScore = 0
+  $("cuteScore").textContent = cuteScore
+  $("nextToAngryBtn").classList.add("hidden")
+  $("cuteHint").textContent = "Hatinya sebentar lagi muncul... siap-siap yaa."
 
-function initQuiz() {
-  quizIndex = 0
-  wrongCount = 0
-  showQuiz()
-}
+  const game = $("heartGame")
+  game.querySelectorAll(".catch-heart").forEach((heart) => heart.remove())
 
-function showQuiz() {
-  const quiz = quizData[quizIndex]
+  clearInterval(heartInterval)
 
-  $("quizCounter").textContent = `Tebakan ${quizIndex + 1} dari ${quizData.length}`
-  $("quizEmoji").textContent = quiz.emoji
-  $("quizQuestion").textContent = quiz.question
-
-  $("responseBox").style.display = "none"
-  $("optionGrid").style.display = "grid"
-
-  const grid = $("optionGrid")
-  grid.innerHTML = ""
-
-  quiz.options.forEach((option, index) => {
-    const button = document.createElement("button")
-    button.className = "option-btn"
-    button.textContent = option.text
-    button.onclick = () => answerQuiz(index)
-    grid.appendChild(button)
-  })
-}
-
-function answerQuiz(optionIndex) {
-  const quiz = quizData[quizIndex]
-  const selected = quiz.options[optionIndex]
-
-  $("optionGrid").style.display = "none"
-  $("responseBox").style.display = "block"
-  $("responseEmoji").textContent = selected.emoji
-
-  if (selected.correct) {
-    wrongCount = 0
-
-    $("responseText").textContent = selected.response
-    $("responseBtn").textContent =
-      quizIndex < quizData.length - 1
-        ? "Buka tebakan berikutnya"
-        : "Lanjut ke bagian yang lebih jujur"
-
-    $("responseBtn").onclick = nextQuiz
-    return
-  }
-
-  wrongCount++
-
-  if (wrongCount >= MAX_WRONG) {
-    $("responseText").textContent =
-      `${selected.response} Aku kasih lewat ya. Kamu sudah salah 3 kali, tapi nggak apa-apa. Kadang perasaan memang nggak harus selalu bisa ditebak.`
-
-    $("responseBtn").textContent =
-      quizIndex < quizData.length - 1
-        ? "Lanjut dulu"
-        : "Lanjut ke bagian yang lebih jujur"
-
-    $("responseBtn").onclick = nextQuiz
-  } else {
-    const remaining = MAX_WRONG - wrongCount
-
-    $("responseText").textContent =
-      `${selected.response} Coba sekali lagi ya. Kesempatan salah kamu tinggal ${remaining}.`
-
-    $("responseBtn").textContent = "Coba lagi"
-    $("responseBtn").onclick = showQuiz
-  }
-}
-
-function nextQuiz() {
-  quizIndex++
-  wrongCount = 0
-
-  if (quizIndex < quizData.length) {
-    showQuiz()
-  } else {
-    goTo("scene-3")
-    initMemoryCards()
-  }
-}
-
-/* MEMORY CARDS */
-
-const memoryTexts = [
-  "Hadirmu itu sederhana, tapi efeknya besar. Kamu bisa bikin hari yang biasa saja terasa punya alasan untuk disyukuri.",
-  "Senyummu punya cara sendiri untuk tinggal di kepala. Bahkan setelah percakapan selesai, rasanya masih ada yang hangat tertinggal.",
-  "Aku mungkin nggak selalu pandai menjelaskan perasaan. Tapi kalau harus jujur, aku suka caramu hadir: pelan, lembut, tapi sulit hilang."
-]
-
-let openedCards = new Set()
-
-function initMemoryCards() {
-  openedCards = new Set()
-
-  document.querySelectorAll(".letter-btn").forEach((card) => {
-    card.classList.remove("opened")
-  })
-
-  $("memoryText").textContent = "Pilih salah satu dulu. Aku tungguin."
-  $("toScene4Btn").classList.add("hidden")
-}
-
-function openMemoryCard(index, element) {
-  openedCards.add(index)
-  element.classList.add("opened")
-
-  $("memoryText").textContent = memoryTexts[index]
-
-  if (openedCards.size === memoryTexts.length) {
-    $("toScene4Btn").classList.remove("hidden")
-  }
-}
-
-/* LOADING */
-
-const loadingSteps = [
-  {
-    percent: 9,
-    text: "Mengumpulkan alasan kenapa kamu mudah dirindukan..."
-  },
-  {
-    percent: 18,
-    text: "Mencari kata yang cukup manis, tapi nggak berlebihan..."
-  },
-  {
-    percent: 31,
-    text: "Mengingat caramu membuat hal sederhana terasa berarti..."
-  },
-  {
-    percent: 44,
-    text: "Menghitung berapa kali namamu muncul di pikiranku..."
-  },
-  {
-    percent: 58,
-    text: "Hasil sementara: terlalu sering untuk dianggap biasa."
-  },
-  {
-    percent: 72,
-    text: "Merapikan perasaan supaya tidak tumpah terlalu banyak..."
-  },
-  {
-    percent: 86,
-    text: "Menyiapkan bagian yang paling jujur..."
-  },
-  {
-    percent: 100,
-    text: "Selesai. Beberapa rasa memang tidak bisa dibuat singkat."
-  }
-]
-
-let loadingIndex = 0
-let loadingTimer = null
-
-function startLoading() {
-  clearTimeout(loadingTimer)
-
-  loadingIndex = 0
-
-  $("loadingFill").style.width = "0%"
-  $("loadingPercent").textContent = "0%"
-  $("loadingStatus").textContent = "Mengumpulkan alasan kenapa kamu mudah dirindukan..."
-  $("toFinalBtn").classList.add("hidden")
-
-  runLoading()
-}
-
-function runLoading() {
-  if (loadingIndex >= loadingSteps.length) {
-    setTimeout(() => {
-      $("toFinalBtn").classList.remove("hidden")
-    }, 500)
-
-    return
-  }
-
-  const step = loadingSteps[loadingIndex]
-
-  $("loadingFill").style.width = step.percent + "%"
-  $("loadingPercent").textContent = step.percent + "%"
-  $("loadingStatus").textContent = step.text
-
-  loadingIndex++
-
-  loadingTimer = setTimeout(runLoading, 850)
-}
-
-/* FINAL */
-
-function initFinal() {
   setTimeout(() => {
-    launchConfetti()
-  }, 700)
+    $("cuteHint").textContent = "Klik hati yang muncul. Jangan kasih kabur 😤💕"
+    spawnCatchHeart()
+    heartInterval = setInterval(spawnCatchHeart, 820)
+  }, 600)
 }
 
-function restart() {
+function spawnCatchHeart() {
+  const game = $("heartGame")
+  if (!game || cuteScore >= maxCuteScore) return
+
+  const heart = document.createElement("button")
+  heart.className = "catch-heart"
+
+  const hearts = ["💗", "💕", "💖", "💘", "🌸"]
+  heart.textContent = hearts[Math.floor(Math.random() * hearts.length)]
+
+  const maxX = game.clientWidth - 52
+  const maxY = game.clientHeight - 52
+
+  heart.style.left = Math.max(10, Math.random() * maxX) + "px"
+  heart.style.top = Math.max(10, Math.random() * maxY) + "px"
+
+  heart.addEventListener("click", () => {
+    cuteScore++
+    $("cuteScore").textContent = cuteScore
+
+    heart.textContent = "✨"
+    heart.style.pointerEvents = "none"
+
+    setTimeout(() => heart.remove(), 180)
+
+    if (cuteScore >= maxCuteScore) {
+      finishCuteGame()
+    }
+  })
+
+  game.appendChild(heart)
+
+  setTimeout(() => {
+    if (heart.parentElement) {
+      heart.remove()
+    }
+  }, 1350)
+}
+
+function finishCuteGame() {
+  clearInterval(heartInterval)
+
+  const game = $("heartGame")
+  game.querySelectorAll(".catch-heart").forEach((heart) => heart.remove())
+
+  $("cuteHint").textContent =
+    "Oke, kamu berhasil. Agak nyebelin sih karena jago banget. Tapi yaudah, boleh lanjut 😌"
+  $("nextToAngryBtn").classList.remove("hidden")
+
+  launchMiniSparkles()
+}
+
+function launchMiniSparkles() {
+  for (let i = 0; i < 20; i++) {
+    setTimeout(spawnFloatingItem, i * 45)
+  }
+}
+
+/* SCENE 3: ANGRY */
+
+let angryLevel = 5
+
+const angryMessages = [
+  "Hmm... masih ngambek. Bujuk lagi dong, jangan setengah-setengah 😤",
+  "Oke, dikit lagi turun. Tapi aku masih pura-pura kesel nih.",
+  "Sebenernya udah agak luluh, tapi gengsi dulu boleh kan?",
+  "Aduh, jangan lucu-lucu. Nanti aku beneran maafin.",
+  "Yaudah deh... ngambeknya kalah sama gemesnya kamu."
+]
+
+function initAngryScene() {
+  angryLevel = 5
+  updateAngryMeter()
+
+  $("calmBtn").classList.remove("hidden")
+  $("runawayBtn").classList.remove("hidden")
+  $("nextToSadBtn").classList.add("hidden")
+
+  $("angryText").textContent =
+    "Soalnya kamu terlalu lucu. Kan jadi nyebelin, aku kepikiran terus. Sekarang tugas kamu: bujuk aku sampai ngambeknya turun."
+
+  $("runawayBtn").style.transform = "translate(0, 0)"
+}
+
+function updateAngryMeter() {
+  const percent = (angryLevel / 5) * 100
+  $("angryMeterFill").style.width = percent + "%"
+}
+
+function calmAngry() {
+  if (angryLevel <= 0) return
+
+  angryLevel--
+  updateAngryMeter()
+
+  const messageIndex = Math.min(5 - angryLevel - 1, angryMessages.length - 1)
+  $("angryText").textContent = angryMessages[messageIndex]
+
+  if (angryLevel <= 0) {
+    $("calmBtn").classList.add("hidden")
+    $("runawayBtn").classList.add("hidden")
+    $("nextToSadBtn").classList.remove("hidden")
+    $("angryText").textContent =
+      "Oke, aku udah nggak ngambek. Tapi habis ini jangan ketawa dulu ya, soalnya bagian berikutnya agak pelan."
+  }
+}
+
+function moveRunawayButton() {
+  const btn = $("runawayBtn")
+  if (!btn) return
+
+  const x = Math.floor(Math.random() * 130) - 65
+  const y = Math.floor(Math.random() * 70) - 35
+  const rotate = Math.floor(Math.random() * 18) - 9
+
+  btn.style.transform = `translate(${x}px, ${y}px) rotate(${rotate}deg)`
+}
+
+/* SCENE 4: SAD */
+
+function initSadScene() {
+  $("sadReveal").classList.add("hidden")
+  $("nextToFinalBtn").classList.add("hidden")
+  $("hugBtn").classList.remove("hidden")
+}
+
+function virtualHug() {
+  $("hugBtn").classList.add("hidden")
+  $("sadReveal").classList.remove("hidden")
+
+  setTimeout(() => {
+    $("nextToFinalBtn").classList.remove("hidden")
+  }, 650)
+
+  for (let i = 0; i < 18; i++) {
+    setTimeout(spawnFloatingItem, i * 80)
+  }
+}
+
+/* SCENE 5: FINAL LETTER */
+
+const finalLetter = `Hai kamu.
+
+Aku awalnya cuma mau bikin sesuatu yang lucu.
+Tapi makin lama, aku sadar...
+yang paling ingin aku kasih ke kamu bukan cuma game kecil ini.
+
+Aku cuma mau kamu tahu,
+hadirmu itu punya tempat sendiri di pikiranku.
+
+Kamu punya cara yang sederhana
+buat bikin hari yang biasa aja terasa lebih hangat.
+
+Aku suka caramu muncul.
+Aku suka caramu bikin aku senyum tanpa sadar.
+Aku suka hal-hal kecil tentang kamu
+yang mungkin kamu sendiri nggak sadar kalau itu manis.
+
+Dan kalau website ini terasa agak lucu,
+agak nyebelin,
+agak sedih,
+lalu akhirnya romantis...
+
+itu karena perasaanku juga begitu.
+
+Kadang gemes.
+Kadang takut.
+Kadang kangen.
+Tapi ujung-ujungnya tetap sama:
+
+aku senang mengenal kamu.
+
+Jadi hari ini,
+tolong simpan satu hal kecil ini ya...
+
+kamu itu spesial.
+bukan karena harus sempurna,
+tapi karena kamu adalah kamu. 💗`
+
+let typingTimer = null
+let isTyping = false
+
+function initFinalScene() {
+  $("letterBox").classList.add("hidden")
+  $("typedLetter").textContent = ""
+  $("finalActions").classList.add("hidden")
+  $("openLetterBtn").classList.remove("hidden")
+
+  clearInterval(typingTimer)
+  isTyping = false
+}
+
+function openFinalLetter() {
+  if (isTyping) return
+
+  isTyping = true
+  $("openLetterBtn").classList.add("hidden")
+  $("letterBox").classList.remove("hidden")
+
+  let index = 0
+  $("typedLetter").textContent = ""
+
+  typingTimer = setInterval(() => {
+    $("typedLetter").textContent += finalLetter[index]
+    index++
+
+    if (index >= finalLetter.length) {
+      clearInterval(typingTimer)
+      isTyping = false
+
+      setTimeout(() => {
+        $("finalActions").classList.remove("hidden")
+        launchConfetti()
+      }, 500)
+    }
+  }, 26)
+}
+
+function restartWebsite() {
+  clearInterval(heartInterval)
+  clearInterval(typingTimer)
   goTo("scene-1")
 }
 
@@ -376,34 +325,47 @@ function restart() {
 document.addEventListener("DOMContentLoaded", () => {
   goTo("scene-1")
 
-  setInterval(spawnFloatingItem, 900)
+  setInterval(spawnFloatingItem, 750)
 
-  for (let i = 0; i < 12; i++) {
-    setTimeout(spawnFloatingItem, i * 180)
+  for (let i = 0; i < 15; i++) {
+    setTimeout(spawnFloatingItem, i * 150)
   }
 
   $("startBtn").addEventListener("click", () => {
     goTo("scene-2")
-    initQuiz()
+    initCuteGame()
   })
 
-  document.querySelectorAll(".letter-btn").forEach((card) => {
-    card.addEventListener("click", () => {
-      const index = Number(card.dataset.card)
-      openMemoryCard(index, card)
-    })
+  $("nextToAngryBtn").addEventListener("click", () => {
+    goTo("scene-3")
+    initAngryScene()
   })
 
-  $("toScene4Btn").addEventListener("click", () => {
+  $("calmBtn").addEventListener("click", calmAngry)
+
+  $("runawayBtn").addEventListener("mouseenter", moveRunawayButton)
+  $("runawayBtn").addEventListener("touchstart", moveRunawayButton)
+  $("runawayBtn").addEventListener("click", () => {
+    moveRunawayButton()
+    $("angryText").textContent =
+      "Loh kok malah milih nggak mau? Tombolnya aja kabur tuh. Bujuk yang bener dong 😤"
+  })
+
+  $("nextToSadBtn").addEventListener("click", () => {
     goTo("scene-4")
-    startLoading()
+    initSadScene()
   })
 
-  $("toFinalBtn").addEventListener("click", () => {
+  $("hugBtn").addEventListener("click", virtualHug)
+
+  $("nextToFinalBtn").addEventListener("click", () => {
     goTo("scene-5")
-    initFinal()
+    initFinalScene()
   })
+
+  $("openLetterBtn").addEventListener("click", openFinalLetter)
 
   $("celebrateBtn").addEventListener("click", launchConfetti)
-  $("restartBtn").addEventListener("click", restart)
+
+  $("restartBtn").addEventListener("click", restartWebsite)
 })
