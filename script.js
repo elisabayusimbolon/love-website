@@ -1,545 +1,582 @@
-const screenEl = document.getElementById("screen");
-const ribbonText = document.getElementById("ribbonText");
-const toastEl = document.getElementById("toast");
-const buddy = document.getElementById("cornerBuddy");
+const scene = document.getElementById("scene");
+const card = document.getElementById("card");
+const ribbon = document.getElementById("ribbon");
+const sideBubble = document.getElementById("sideBubble");
+const softBg = document.getElementById("softBg");
 
-let heartCount = 0;
-let currentQuiz = 0;
-let selectedCorrect = false;
-let flowerCount = 0;
+const state = {
+  page: "intro",
+  locked: false,
+  hearts: [false, false, false, false, false],
+  quizIndex: 0,
+  quizFeedback: null,
+  quizCorrect: false,
+  ngambekChoice: null,
+  cheerTap: 0
+};
 
-function setRealHeight() {
-  const vh = window.innerHeight * 0.01;
-  document.documentElement.style.setProperty("--vh", `${vh}px`);
-}
+const heartPositions = [
+  { x: "18%", y: "70%" },
+  { x: "78%", y: "30%" },
+  { x: "48%", y: "58%" },
+  { x: "30%", y: "28%" },
+  { x: "70%", y: "76%" }
+];
 
-setRealHeight();
-window.addEventListener("resize", setRealHeight);
-window.addEventListener("orientationchange", () => {
-  setTimeout(setRealHeight, 350);
-});
-
-function setRibbon(text) {
-  ribbonText.textContent = text;
-}
-
-function toast(message) {
-  toastEl.textContent = message;
-  toastEl.classList.add("show");
-
-  clearTimeout(window.toastTimer);
-  window.toastTimer = setTimeout(() => {
-    toastEl.classList.remove("show");
-  }, 1600);
-}
-
-function bunny(color = "pink", mood = "") {
-  return `
-    <div class="bunny ${color} ${mood}">
-      <span class="ears"></span>
-      <span class="head"></span>
-      <span class="eye"></span>
-      <span class="cheek"></span>
-      <span class="cheek right"></span>
-      <span class="mouth"></span>
-    </div>
-  `;
-}
-
-function setBuddyMood(mood = "normal") {
-  if (!buddy) return;
-
-  if (mood === "love") {
-    buddy.querySelector(".eye").style.width = "18px";
-    buddy.querySelector(".eye").style.height = "12px";
-    buddy.querySelector(".eye").style.borderRadius = "0";
-    buddy.querySelector(".eye").style.background = "transparent";
-    buddy.querySelector(".eye").textContent = "♥";
-    buddy.querySelector(".eye").style.color = "#7b164f";
-    buddy.querySelector(".eye").style.fontWeight = "900";
-    buddy.querySelector(".eye").style.fontSize = "18px";
-    buddy.querySelector(".eye").style.lineHeight = "10px";
-  } else {
-    buddy.querySelector(".eye").removeAttribute("style");
-    buddy.querySelector(".eye").textContent = "";
-  }
-}
-
-function render(html) {
-  screenEl.innerHTML = html;
-}
-
-function popHeart(x, y, emoji = "💗") {
-  const item = document.createElement("div");
-  item.className = "heart-pop";
-  item.textContent = emoji;
-  item.style.left = `${x}px`;
-  item.style.top = `${y}px`;
-  document.body.appendChild(item);
-
-  setTimeout(() => item.remove(), 900);
-}
-
-function rainHearts(total = 18) {
-  for (let i = 0; i < total; i++) {
-    setTimeout(() => {
-      popHeart(
-        Math.random() * window.innerWidth,
-        window.innerHeight - 80 - Math.random() * 120,
-        ["💗", "💖", "🌸", "✨"][Math.floor(Math.random() * 4)]
-      );
-    }, i * 65);
-  }
-}
-
-function showOpening() {
-  heartCount = 0;
-  currentQuiz = 0;
-  selectedCorrect = false;
-  flowerCount = 0;
-  setBuddyMood("normal");
-  setRibbon("SPECIAL MISSION FOR YOU");
-
-  render(`
-    <div class="view">
-      <div class="click-pill">klik aku</div>
-      ${bunny("pink")}
-      <p class="kicker">pssst... sini dulu</p>
-      <h1 class="title">Haiii kamu</h1>
-      <div class="emoji-row">💗💕</div>
-      <p class="desc">
-        Aku bikin sesuatu yang lucu buat kamu.<br>
-        Mau main bentar nggak?
-      </p>
-      <div class="note-box">
-        <span>🌸</span>
-        <span>Awalnya gemes, tengahnya bikin salting, ujungnya manis banget.</span>
-      </div>
-      <button class="primary-btn" onclick="showHeartGame()">Mauu, mulai</button>
-      <p class="hint">ayo klik, jangan malu-malu 😚</p>
-    </div>
-  `);
-}
-
-function showHeartGame() {
-  heartCount = 0;
-  setRibbon("LEVEL 1");
-  setBuddyMood("normal");
-
-  render(`
-    <div class="view">
-      ${bunny("orange")}
-      <p class="kicker">level 1</p>
-      <h1 class="title compact">Tangkap 5 hati</h1>
-      <p class="desc small">Hatinya kabur. Tolong tangkapin dulu.</p>
-
-      <div class="progress-pill">
-        <span>hati</span>
-        <span id="heartScore">0/5</span>
-      </div>
-
-      <div class="game-area" id="gameArea">
-        <div class="game-instruction" id="gameInstruction">klik hati yang muncul 💕</div>
-      </div>
-
-      <p class="hint" id="heartHint">pelan aja, jangan panik yaa</p>
-    </div>
-  `);
-
-  spawnHearts();
-}
-
-function spawnHearts() {
-  const area = document.getElementById("gameArea");
-  if (!area) return;
-
-  area.querySelectorAll(".heart-target").forEach((el) => el.remove());
-
-  const positions = [
-    { left: "22%", top: "42%" },
-    { left: "54%", top: "48%" },
-    { left: "78%", top: "31%" },
-    { left: "36%", top: "23%" },
-    { left: "18%", top: "66%" },
-  ];
-
-  positions.forEach((pos, index) => {
-    const btn = document.createElement("button");
-    btn.className = "heart-target";
-    btn.textContent = "💖";
-    btn.style.left = pos.left;
-    btn.style.top = pos.top;
-    btn.style.animationDelay = `${index * 0.12}s`;
-
-    btn.addEventListener("click", (event) => {
-      if (btn.classList.contains("hide")) return;
-
-      btn.classList.add("hide");
-      heartCount += 1;
-
-      const rect = btn.getBoundingClientRect();
-      popHeart(rect.left + 20, rect.top + 10);
-
-      document.getElementById("heartScore").textContent = `${heartCount}/5`;
-      updateHeartHint();
-
-      if (heartCount >= 5) {
-        completeHeartGame();
-      }
-    });
-
-    area.appendChild(btn);
-  });
-}
-
-function updateHeartHint() {
-  const hint = document.getElementById("heartHint");
-  if (!hint) return;
-
-  const hints = [
-    "pelan aja, jangan panik yaa",
-    "nah, satu hati berhasil diamankan 😚",
-    "wah, makin jago nih kamu",
-    "tinggal dikit, jangan kabur dulu",
-    "satu lagi... hati-hati salting",
-  ];
-
-  hint.textContent = hints[Math.min(heartCount, hints.length - 1)];
-}
-
-function completeHeartGame() {
-  const area = document.getElementById("gameArea");
-  if (!area) return;
-
-  setBuddyMood("love");
-  rainHearts(12);
-
-  area.innerHTML = `
-    <div class="feedback">
-      yeay, hatinya ketangkep semua 😚
-    </div>
-  `;
-  area.classList.add("done");
-
-  const view = screenEl.querySelector(".view");
-  const button = document.createElement("button");
-  button.className = "primary-btn";
-  button.textContent = "Lanjut ke teka-teki";
-  button.onclick = showQuiz;
-  view.appendChild(button);
-}
-
-const quizzes = [
+const quiz = [
   {
-    tag: "Gombalan 1 dari 3",
+    label: "GOMBALAN 1 DARI 3",
     title: "Teka-teki baper",
     question: "Kalau aku disuruh pilih tempat paling nyaman, aku pilih...",
+    correct: 2,
     options: [
       {
         text: "Kasur empuk",
-        correct: false,
-        response: "Kasur empuk memang nyaman, tapi dia nggak bisa bikin aku senyum cuma gara-gara muncul notif. 😌",
+        response: "Kasur empuk memang nyaman, tapi dia nggak bisa bikin aku senyum cuma gara-gara muncul notif. 😌"
       },
       {
         text: "Rumah yang tenang",
-        correct: false,
-        response: "Rumah tenang itu enak, tapi rasanya belum lengkap kalau nggak ada kamu di pikiranku. 🤭",
+        response: "Rumah tenang itu enak, tapi rasanya belum lengkap kalau nggak ada kamu di pikiranku. 🫣"
       },
       {
         text: "Kamu",
-        correct: true,
-        response: "Nah, itu. Jawaban paling bahaya: sederhana, tapi bikin saltingnya lama. 💗",
+        response: "Nah, itu. Jawaban paling bahaya: sederhana, tapi bikin saltingnya lama. 💗"
       },
       {
         text: "Kafe lucu",
-        correct: false,
-        response: "Kafe lucu boleh, tapi kalau duduknya bukan sama kamu, tetap aja kurang manis. ☕",
-      },
-    ],
+        response: "Kafe lucu boleh, tapi kalau duduknya bukan sama kamu, tetap aja kurang manis. ☕"
+      }
+    ]
   },
   {
-    tag: "Gombalan 2 dari 3",
+    label: "GOMBALAN 2 DARI 3",
     title: "Masih lanjut ya",
     question: "Yang paling sering bikin aku senyum diam-diam itu...",
+    correct: 1,
     options: [
       {
         text: "Makanan enak",
-        correct: false,
-        response: "Iya. Kadang pendek, tapi efeknya bisa bikin mood aku naik lama. 🥺",
+        response: "Makanan enak bikin kenyang, tapi belum tentu bikin hati aku tiba-tiba hangat. 🍰"
       },
       {
         text: "Chat dari kamu",
-        correct: true,
-        response: "Betul. Kadang cuma sebentar, tapi bisa bikin hariku lebih manis dari yang aku kira. 💕",
+        response: "Iya. Kadang pendek, tapi efeknya bisa bikin mood aku naik lama. 🥺"
       },
       {
         text: "Tidur siang",
-        correct: false,
-        response: "Tidur siang bikin segar, tapi nggak bikin aku senyum-senyum sendiri kayak kamu. 😭",
+        response: "Tidur siang bikin segar, tapi nggak bikin aku senyum-senyum sendiri kayak kamu. 😭"
       },
       {
         text: "Lagu lucu",
-        correct: false,
-        response: "Lagu lucu bisa keulang di kepala, tapi kamu lebih sering nyangkut di sana. 🎧",
-      },
-    ],
+        response: "Lagu lucu bisa keulang di kepala, tapi kamu lebih sering nyangkut di sana. 🎧"
+      }
+    ]
   },
   {
-    tag: "Gombalan 3 dari 3",
+    label: "GOMBALAN 3 DARI 3",
     title: "Terakhir nih",
     question: "Kalau hati aku lagi loading, tombol yang harus dipencet adalah...",
+    correct: 3,
     options: [
       {
         text: "Refresh",
-        correct: false,
-        response: "Refresh bisa bantu halaman, tapi hati aku butuh yang lebih gemes dari itu. 😚",
+        response: "Refresh bisa bantu halaman, tapi hati aku butuh yang lebih gemes dari itu. 😗"
       },
       {
         text: "Restart",
-        correct: false,
-        response: "Restart terlalu teknis. Ini urusan hati, bukan laptop error. 😭",
+        response: "Restart terlalu teknis. Ini urusan hati, bukan laptop error. 😭"
       },
       {
         text: "Skip",
-        correct: false,
-        response: "Jangan diskip dong. Bagian ini justru mulai manis-manisnya. 🥺",
+        response: "Jangan diskip dong. Bagian ini justru mulai manis-manisnya. 🫢"
       },
       {
         text: "Senyum kamu",
-        correct: true,
-        response: "Betul. Satu senyum kamu cukup buat hati aku jalan lagi. 💞",
-      },
-    ],
-  },
+        response: "Betul. Satu senyum kamu cukup buat hati aku jalan lagi. 💞"
+      }
+    ]
+  }
 ];
 
-function showQuiz() {
-  selectedCorrect = false;
-  setRibbon("TEKA-TEKI BAPER");
-
-  const quiz = quizzes[currentQuiz];
-
-  render(`
-    <div class="view">
-      ${bunny(currentQuiz % 2 === 0 ? "pink" : "orange")}
-      <p class="kicker">${quiz.tag}</p>
-      <h1 class="title compact">${quiz.title}</h1>
-      <p class="desc small">${quiz.question}</p>
-
-      <div class="options">
-        ${quiz.options
-          .map((option, index) => {
-            return `<button class="answer-btn" onclick="chooseAnswer(${index})">${option.text}</button>`;
-          })
-          .join("")}
-      </div>
-
-      <p class="hint" id="quizHint">pilih pakai hati, jangan pakai logika dulu 🤭</p>
-      <div id="feedbackSlot"></div>
-    </div>
-  `);
+function setAppHeight() {
+  const height = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+  document.documentElement.style.setProperty("--app-h", `${height}px`);
 }
 
-function chooseAnswer(index) {
-  const quiz = quizzes[currentQuiz];
-  const option = quiz.options[index];
-  const slot = document.getElementById("feedbackSlot");
+window.addEventListener("resize", setAppHeight);
+window.addEventListener("orientationchange", setAppHeight);
+if (window.visualViewport) {
+  window.visualViewport.addEventListener("resize", setAppHeight);
+}
+setAppHeight();
 
-  selectedCorrect = option.correct;
+function buildBackground() {
+  const items = ["love", "cute", "gemes", "hehe", "♡", "✧", "❀"];
+  const total = window.innerWidth < 520 ? 22 : 34;
 
-  slot.innerHTML = `
-    <div class="feedback">${option.response}</div>
-    ${
-      option.correct
-        ? `<button class="primary-btn" onclick="nextQuiz()">Lanjut</button>`
-        : ``
+  softBg.innerHTML = "";
+
+  for (let i = 0; i < total; i++) {
+    const item = document.createElement("span");
+    const type = Math.random();
+
+    if (type < 0.55) {
+      item.className = "float-item float-word";
+      item.textContent = items[Math.floor(Math.random() * items.length)];
+      item.style.setProperty("--size", `${Math.random() * 0.55 + 0.72}rem`);
+    } else if (type < 0.82) {
+      item.className = "float-item float-heart";
+      item.textContent = Math.random() > 0.5 ? "♡" : "💗";
+      item.style.setProperty("--size", `${Math.random() * 0.7 + 0.75}rem`);
+    } else {
+      item.className = "float-item float-dot";
+      item.style.setProperty("--size", `${Math.random() * 4.2 + 2.8}rem`);
     }
-  `;
 
-  if (option.correct) {
-    setBuddyMood("love");
-    rainHearts(8);
-  } else {
-    setBuddyMood("normal");
+    item.style.left = `${Math.random() * 96}%`;
+    item.style.top = `${Math.random() * 96}%`;
+    item.style.setProperty("--dur", `${Math.random() * 4 + 4}s`);
+    item.style.setProperty("--mx", `${Math.random() * 24 - 12}px`);
+    item.style.setProperty("--my", `${Math.random() * 28 - 14}px`);
+    item.style.setProperty("--rot", `${Math.random() * 30 - 15}deg`);
+
+    softBg.appendChild(item);
   }
+}
+
+buildBackground();
+
+function charHTML(mood = "happy") {
+  return `
+    <div class="char mood-${mood}" aria-hidden="true">
+      <div class="ear left"></div>
+      <div class="ear right"></div>
+      <div class="hand left"></div>
+      <div class="hand right"></div>
+      <div class="face">
+        <span class="eye left"></span>
+        <span class="eye right"></span>
+        <span class="cheek left"></span>
+        <span class="cheek right"></span>
+        <span class="mouth"></span>
+      </div>
+    </div>
+  `;
+}
+
+function setTexts(ribbonText, bubbleText) {
+  ribbon.textContent = ribbonText;
+  sideBubble.textContent = bubbleText;
+}
+
+function go(page) {
+  if (state.locked) return;
+
+  state.locked = true;
+  card.classList.add("is-leaving");
+
+  setTimeout(() => {
+    state.page = page;
+    card.classList.remove("is-leaving");
+    render();
+
+    setTimeout(() => {
+      state.locked = false;
+    }, 260);
+  }, 190);
+}
+
+function render() {
+  if (state.page === "intro") renderIntro();
+  if (state.page === "hearts") renderHearts();
+  if (state.page === "quiz") renderQuiz();
+  if (state.page === "ngambek") renderNgambek();
+  if (state.page === "validasi") renderValidasi();
+  if (state.page === "ceria") renderCeria();
+  if (state.page === "finalGate") renderFinalGate();
+  if (state.page === "letter") renderLetter();
+}
+
+function renderIntro() {
+  setTexts("SPECIAL MISSION FOR YOU", "aku nemenin 💛");
+
+  scene.innerHTML = `
+    <div class="scene-inner">
+      <div class="tiny-pill">klik aku</div>
+      ${charHTML("shy")}
+
+      <div class="eyebrow">Pssst... sini dulu</div>
+
+      <h1 class="title">Haiii kamu</h1>
+
+      <div class="heart-pair">
+        <span class="big-heart">💗</span>
+        <span class="big-heart">💞</span>
+      </div>
+
+      <p class="subtitle">
+        Aku bikin sesuatu yang lucu buat kamu.<br>
+        Mau main bentar nggak?
+      </p>
+
+      <div class="note">
+        <span class="emoji">🌸</span>
+        <span>Awalnya gemes, tengahnya bikin salting, ujungnya manis banget.</span>
+      </div>
+
+      <button class="main-btn" onclick="startGame()">Mauu, mulai</button>
+      <p class="caption">ayo klik, jangan malu-malu 😚</p>
+    </div>
+  `;
+}
+
+function startGame() {
+  state.hearts = [false, false, false, false, false];
+  state.quizIndex = 0;
+  state.quizFeedback = null;
+  state.quizCorrect = false;
+  state.ngambekChoice = null;
+  state.cheerTap = 0;
+  go("hearts");
+}
+
+function renderHearts() {
+  setTexts("LEVEL 1", "tangkap hatinya 💘");
+
+  const count = state.hearts.filter(Boolean).length;
+  const allDone = count === 5;
+
+  const heartsHTML = heartPositions.map((pos, index) => {
+    if (state.hearts[index]) return "";
+
+    return `
+      <button
+        class="heart-target"
+        style="--x:${pos.x}; --y:${pos.y};"
+        onclick="catchHeart(${index})"
+        aria-label="Tangkap hati"
+      >
+        💖
+      </button>
+    `;
+  }).join("");
+
+  scene.innerHTML = `
+    <div class="scene-inner">
+      ${charHTML(allDone ? "excited" : "happy")}
+
+      <div class="eyebrow">Level 1</div>
+      <h2 class="title small-title">Tangkap 5 hati</h2>
+      <p class="subtitle">Hatinya kabur. Tolong tangkapin dulu.</p>
+
+      <div class="progress-pill">
+        <span>hati</span>
+        <b>${count}/5</b>
+      </div>
+
+      <div class="heart-field">
+        ${
+          allDone
+            ? `<div class="success-box" style="position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);">
+                yeay, hatinya ketangkep semua 😚
+              </div>`
+            : heartsHTML + `<p class="caption" style="position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);">klik hati yang muncul 💕</p>`
+        }
+      </div>
+
+      ${
+        allDone
+          ? `<button class="main-btn" onclick="nextQuiz()">Lanjut ke teka-teki</button>`
+          : `<p class="caption">pelan aja, jangan panik yaa</p>`
+      }
+    </div>
+  `;
+}
+
+function catchHeart(index) {
+  if (state.hearts[index]) return;
+  state.hearts[index] = true;
+  popBurst(["💗", "💞", "🌸"]);
+  renderHearts();
 }
 
 function nextQuiz() {
-  currentQuiz += 1;
+  state.quizIndex = 0;
+  state.quizFeedback = null;
+  state.quizCorrect = false;
+  go("quiz");
+}
 
-  if (currentQuiz >= quizzes.length) {
-    showReactionLevel();
+function renderQuiz() {
+  const q = quiz[state.quizIndex];
+  setTexts("TEKA-TEKI BAPER", "siap-siap salting 😚");
+
+  const optionsHTML = q.options.map((option, index) => {
+    return `
+      <button class="choice-btn" onclick="answerQuiz(${index})">
+        ${option.text}
+      </button>
+    `;
+  }).join("");
+
+  scene.innerHTML = `
+    <div class="scene-inner">
+      ${charHTML(state.quizCorrect ? "love" : "shy")}
+
+      <div class="eyebrow">${q.label}</div>
+      <h2 class="title small-title">${q.title}</h2>
+      <p class="subtitle">${q.question}</p>
+
+      <div class="choice-list">
+        ${optionsHTML}
+      </div>
+
+      ${
+        state.quizFeedback
+          ? `<div class="feedback ${state.quizCorrect ? "good" : ""}">
+              ${state.quizFeedback}
+            </div>`
+          : `<p class="caption">pilih pakai hati, jangan pakai logika dulu 🫣</p>`
+      }
+
+      ${
+        state.quizCorrect
+          ? `<button class="main-btn" onclick="continueQuiz()">Lanjut</button>`
+          : ""
+      }
+    </div>
+  `;
+}
+
+function answerQuiz(index) {
+  const q = quiz[state.quizIndex];
+  const option = q.options[index];
+
+  state.quizFeedback = option.response;
+  state.quizCorrect = index === q.correct;
+
+  if (state.quizCorrect) {
+    popBurst(["💗", "✨", "🌷"]);
+  }
+
+  renderQuiz();
+}
+
+function continueQuiz() {
+  if (state.quizIndex < quiz.length - 1) {
+    state.quizIndex += 1;
+    state.quizFeedback = null;
+    state.quizCorrect = false;
+    renderQuiz();
   } else {
-    showQuiz();
+    go("ngambek");
   }
 }
 
-function showReactionLevel() {
-  setRibbon("LEVEL 3");
-  setBuddyMood("normal");
+function renderNgambek() {
+  setTexts("LEVEL 3", "ngambeknya lucu aja 🥺");
 
-  render(`
-    <div class="view">
-      ${bunny("blue")}
-      <p class="kicker">level 3</p>
-      <h1 class="title compact">Sekarang giliran kamu</h1>
-      <p class="desc small">
+  const responseMap = {
+    baper: "Aduh iya, maaf. Efek sampingnya memang bikin pipi agak panas. 😭💗",
+    jail: "Iya, websitenya agak jail. Tapi jujur, aku cuma pengen bikin kamu senyum. 🫶",
+    senyum: "Kalau kamu senyum sendiri, berarti aku menang dikit dong? Tapi tetap maaf yaa. 🫣"
+  };
+
+  scene.innerHTML = `
+    <div class="scene-inner">
+      ${charHTML(state.ngambekChoice ? "sad" : "shy")}
+
+      <div class="eyebrow">Level 3</div>
+      <h2 class="title small-title">Sekarang giliran kamu</h2>
+      <p class="subtitle">
         Tadi aku yang jailin kamu.<br>
         Jadi kamu boleh ngambek lucu sebentar.
       </p>
 
-      <div class="options">
-        <button class="answer-btn" onclick="chooseReaction(0)">Aku mulai baper 🥺</button>
-        <button class="answer-btn" onclick="chooseReaction(1)">Websitenya jail banget 😤</button>
-        <button class="answer-btn" onclick="chooseReaction(2)">Aku senyum sendiri 🙈</button>
+      <div class="choice-list">
+        <button class="choice-btn" onclick="chooseNgambek('baper')">Aku mulai baper 🥺</button>
+        <button class="choice-btn" onclick="chooseNgambek('jail')">Websitenya jail banget 😤</button>
+        <button class="choice-btn" onclick="chooseNgambek('senyum')">Aku senyum sendiri 🙈</button>
       </div>
 
-      <p class="hint">pilih yang paling kamu rasain sekarang 😚</p>
-      <div id="feedbackSlot"></div>
+      ${
+        state.ngambekChoice
+          ? `<div class="feedback good">${responseMap[state.ngambekChoice]}</div>
+             <button class="main-btn" onclick="go('validasi')">Oke, lanjut pelan-pelan</button>`
+          : `<p class="caption">pilih yang paling kamu rasain sekarang 😚</p>`
+      }
     </div>
-  `);
-}
-
-function chooseReaction(index) {
-  const responses = [
-    "Aduh iya, maaf. Efek sampingnya memang bikin pipi agak panas. 😭💗",
-    "Iya, websitenya agak jail. Tapi jujur, aku cuma pengen bikin kamu senyum. 🫶",
-    "Kalau kamu senyum sendiri, berarti aku menang dikit dong? Tapi tetap maaf yaa. 🤭",
-  ];
-
-  const slot = document.getElementById("feedbackSlot");
-  slot.innerHTML = `
-    <div class="feedback">${responses[index]}</div>
-    <button class="primary-btn" onclick="showSoftLevel()">Oke, lanjut pelan-pelan</button>
   `;
-
-  setBuddyMood("love");
-  rainHearts(10);
 }
 
-function showSoftLevel() {
-  setRibbon("LEVEL 4");
+function chooseNgambek(type) {
+  state.ngambekChoice = type;
+  popBurst(["🥺", "💗", "🌸"]);
+  renderNgambek();
+}
 
-  render(`
-    <div class="view">
-      ${bunny("blue")}
-      <p class="kicker">level 4</p>
-      <h1 class="title compact">Pelanin dulu ya...</h1>
+function renderValidasi() {
+  setTexts("LEVEL 4", "pelan-pelan dulu 🌙");
 
-      <div class="soft-scene">
-        <span class="sun"></span>
+  scene.innerHTML = `
+    <div class="scene-inner">
+      ${charHTML("sad")}
+
+      <div class="eyebrow">Level 4</div>
+      <h2 class="title small-title">Pelanin dulu ya...</h2>
+
+      <div class="mini-scenery">
         <span class="cloud"></span>
+        <span class="cloud two"></span>
+        <span class="scenery-heart">♡</span>
       </div>
 
-      <p class="desc small">
+      <p class="subtitle">
         Aku nggak cuma mau bikin kamu ketawa.<br>
         Aku juga mau bikin kamu ngerasa ditemenin.
       </p>
 
-      <div class="message-list">
-        <div class="message-item">Kamu boleh capek.</div>
-        <div class="message-item">Boleh diem dulu.</div>
-        <div class="message-item">Boleh nggak selalu kuat.</div>
-        <div class="message-item">Tapi jangan ngerasa sendirian ya.</div>
+      <div class="soft-list">
+        <div class="soft-line" style="--delay:0s;">Kamu boleh capek.</div>
+        <div class="soft-line" style="--delay:.08s;">Boleh diem dulu.</div>
+        <div class="soft-line" style="--delay:.16s;">Boleh nggak selalu kuat.</div>
+        <div class="soft-line" style="--delay:.24s;">Tapi jangan ngerasa sendirian ya.</div>
       </div>
 
-      <button class="primary-btn" onclick="showBonusLevel()">Sekarang ceria lagi</button>
+      <button class="main-btn" onclick="go('ceria')">Sekarang ceria lagi</button>
     </div>
-  `);
+  `;
 }
 
-function showBonusLevel() {
-  flowerCount = 0;
-  setRibbon("BONUS LEVEL");
-  setBuddyMood("normal");
+function renderCeria() {
+  setTexts("BONUS LEVEL", "balik ceria 🌷");
 
-  render(`
-    <div class="view">
-      ${bunny("orange", "love")}
-      <p class="kicker">bonus level</p>
-      <h1 class="title compact">Balik senyum dulu</h1>
-      <p class="desc small">
+  scene.innerHTML = `
+    <div class="scene-inner">
+      ${charHTML("excited")}
+
+      <div class="eyebrow">Bonus level</div>
+      <h2 class="title small-title">Balik senyum dulu</h2>
+      <p class="subtitle">
         Aku punya bunga kecil buat mood kamu.<br>
         Klik bunganya biar makin rame.
       </p>
 
-      <div class="flower-box" id="flowerBox">
-        <button class="flower-btn" onclick="growFlower()">klik bunganya pelan-pelan ✨</button>
+      <div class="heart-field">
+        <button
+          class="heart-target"
+          style="--x:50%; --y:50%; font-size:2.5rem;"
+          onclick="tapFlower()"
+          aria-label="Klik bunga"
+        >
+          🌷
+        </button>
+
+        <div class="success-box" style="position:absolute; left:50%; bottom:18px; transform:translateX(-50%); width:82%;">
+          ${state.cheerTap < 3 ? "klik bunganya pelan-pelan ✨" : "nah, senyumnya udah balik kan? 💗"}
+        </div>
       </div>
 
-      <p class="hint" id="flowerHint">minimal 3 kali yaa, biar manjur 😚</p>
-      <div id="bonusAction"></div>
+      ${
+        state.cheerTap >= 3
+          ? `<button class="main-btn" onclick="go('finalGate')">Buka yang terakhir</button>`
+          : `<p class="caption">minimal 3 kali yaa, biar manjur 😚</p>`
+      }
     </div>
-  `);
+  `;
 }
 
-function growFlower() {
-  const box = document.getElementById("flowerBox");
-  const hint = document.getElementById("flowerHint");
-  const action = document.getElementById("bonusAction");
-
-  flowerCount += 1;
-
-  const flower = document.createElement("span");
-  flower.className = "flower";
-  flower.textContent = ["🌷", "🌸", "🌼", "💐"][Math.floor(Math.random() * 4)];
-  flower.style.left = `${20 + Math.random() * 60}%`;
-  flower.style.top = `${24 + Math.random() * 42}%`;
-  box.appendChild(flower);
-
-  if (flowerCount === 1) {
-    hint.textContent = "nah, satu bunga dulu 🌷";
-  } else if (flowerCount === 2) {
-    hint.textContent = "wah mulai rame nih 🌸";
-  } else if (flowerCount >= 3) {
-    hint.textContent = "nah, senyumnya udah balik kan? 💗";
-    action.innerHTML = `<button class="primary-btn" onclick="showFinalGate()">Buka yang terakhir</button>`;
-    setBuddyMood("love");
-  }
+function tapFlower() {
+  state.cheerTap += 1;
+  popBurst(["🌷", "💗", "✨", "🫶"]);
+  renderCeria();
 }
 
-function showFinalGate() {
-  setRibbon("FINAL LEVEL");
+function renderFinalGate() {
+  setTexts("FINAL LEVEL", "akhirnya sampai 💌");
 
-  render(`
-    <div class="view">
-      ${bunny("orange", "love")}
-      <p class="kicker">final level</p>
-      <h1 class="title final">Ini buat kamu</h1>
-      <p class="desc">
+  scene.innerHTML = `
+    <div class="scene-inner">
+      ${charHTML("love")}
+
+      <div class="eyebrow">Final level</div>
+      <h2 class="title small-title">Ini buat kamu</h2>
+      <p class="subtitle">
         Bagian terakhirnya manis.<br>
         Dibuka pelan-pelan yaa.
       </p>
-      <button class="primary-btn" onclick="showLetter()">Buka surat</button>
+
+      <button class="main-btn" onclick="go('letter')">Buka surat</button>
     </div>
-  `);
+  `;
 }
 
-function showLetter() {
-  setRibbon("FINAL LEVEL");
-  setBuddyMood("love");
+function renderLetter() {
+  setTexts("FINAL LEVEL", "jangan lupa senyum 💗");
 
-  render(`
-    <div class="view">
-      ${bunny("orange", "love")}
-      <p class="kicker">surat kecil</p>
-      <h1 class="title final">Hai kamu</h1>
+  scene.innerHTML = `
+    <div class="scene-inner">
+      ${charHTML("love")}
 
-      <div class="letter">
+      <div class="eyebrow">Surat kecil</div>
+      <h2 class="title small-title">Hai kamu</h2>
+
+      <div class="letter-panel">
         <p>💌 Aku bikin ini bukan biar terlihat keren.</p>
-        <p>Aku cuma pengen kamu tahu, hadir kamu itu bikin hariku lebih manis.</p>
-        <p>Aku suka caramu bikin aku senyum. Aku suka caramu muncul di pikiranku tanpa diminta.</p>
-        <p class="big-love">Aku suka kamu 💞</p>
-        <p>Sederhana aja. Nggak ribet. Nggak dibuat-buat.</p>
-        <p>Kalau setelah baca ini kamu senyum, berarti misi kecilku berhasil. 🌸✨💗</p>
+
+        <p>
+          Aku cuma pengen kamu tahu,
+          hadir kamu itu bikin hariku lebih manis.
+        </p>
+
+        <p>
+          Aku suka caramu bikin aku senyum.
+          Aku suka caramu muncul di pikiranku tanpa diminta.
+        </p>
+
+        <span class="love-line">Aku suka kamu 💞</span>
+
+        <p>
+          Sederhana aja. Nggak ribet. Nggak dibuat-buat.
+        </p>
+
+        <p>
+          Kalau setelah baca ini kamu senyum,
+          berarti misi kecilku berhasil. 🌸✨💗
+        </p>
       </div>
 
-      <button class="primary-btn" onclick="rainHearts(28)">Hujanin hati</button>
-      <button class="secondary-btn" onclick="showOpening()">Ulang dari awal</button>
+      <div class="final-actions">
+        <button class="main-btn" onclick="loveRain()">Hujanin hati</button>
+        <button class="ghost-btn" onclick="startGame()">Ulang dari awal</button>
+      </div>
     </div>
-  `);
-
-  rainHearts(18);
+  `;
 }
 
-showOpening();
+function popBurst(list = ["💗"]) {
+  const amount = 12;
+
+  for (let i = 0; i < amount; i++) {
+    const span = document.createElement("span");
+    span.className = "burst";
+    span.textContent = list[Math.floor(Math.random() * list.length)];
+    span.style.setProperty("--x", `${Math.random() * 260 - 130}px`);
+    span.style.setProperty("--y", `${Math.random() * 260 - 130}px`);
+    document.body.appendChild(span);
+
+    setTimeout(() => {
+      span.remove();
+    }, 1000);
+  }
+}
+
+function loveRain() {
+  popBurst(["💗", "💞", "🌷", "✨", "🫶"]);
+}
+
+document.addEventListener("touchmove", function (event) {
+  event.preventDefault();
+}, { passive: false });
+
+render();
