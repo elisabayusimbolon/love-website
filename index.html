@@ -2,34 +2,51 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Buat Kamu 💗</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Pacifico&display=swap"
-    rel="stylesheet"
-  >
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Pacifico&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="app" id="app">
-    <div class="soft-bg" id="softBg"></div>
-
-    <main class="stage">
-      <section class="card" id="card">
-        <div class="ribbon" id="ribbon">SPECIAL MISSION FOR YOU</div>
-        <div class="scene" id="scene"></div>
-      </section>
-    </main>
-
-    <div class="sidekick" aria-hidden="true">
-      <div class="side-bubble" id="sideBubble">aku nemenin 💛</div>
-      <div class="mini-char"></div>
+  <main class="app">
+    <div class="bg-soft">
+      <span class="bubble bubble-1"></span>
+      <span class="bubble bubble-2"></span>
+      <span class="bubble bubble-3"></span>
+      <span class="floating-word word-1">gemes</span>
+      <span class="floating-word word-2">cute</span>
+      <span class="floating-word word-3">hehe</span>
+      <span class="floating-word word-4">love</span>
+      <span class="tiny-heart heart-bg-1">♡</span>
+      <span class="tiny-heart heart-bg-2">♡</span>
+      <span class="tiny-heart heart-bg-3">♡</span>
     </div>
-  </div>
+
+    <section class="phone-card">
+      <div class="card-ribbon" id="ribbonText">SPECIAL MISSION FOR YOU</div>
+
+      <div class="card-inner">
+        <div class="screen" id="screen"></div>
+      </div>
+    </section>
+
+    <div class="buddy-wrap" aria-hidden="true">
+      <div class="mini-bunny" id="cornerBuddy">
+        <span class="ear left"></span>
+        <span class="ear right"></span>
+        <span class="face">
+          <span class="eye"></span>
+          <span class="mouth"></span>
+        </span>
+      </div>
+    </div>
+  </main>
+
+  <div class="toast" id="toast"></div>
 
   <script src="script.js"></script>
 </body>
