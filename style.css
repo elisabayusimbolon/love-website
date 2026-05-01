@@ -73,11 +73,9 @@ body {
 }
 
 @keyframes bubbleMove {
-  0%,
-  100% {
+  0%, 100% {
     transform: translateY(0) scale(1);
   }
-
   50% {
     transform: translateY(-22px) scale(1.04);
   }
@@ -113,11 +111,9 @@ body {
     opacity: 0;
     transform: translateY(0) rotate(0deg);
   }
-
   15% {
     opacity: 0.72;
   }
-
   100% {
     opacity: 0;
     transform: translateY(-112vh) rotate(18deg);
@@ -136,14 +132,13 @@ body {
     opacity: 1;
     transform: translateY(0) translateX(0) rotate(0deg);
   }
-
   100% {
     opacity: 0;
     transform: translateY(110vh) translateX(var(--move-x)) rotate(720deg);
   }
 }
 
-/* SCENE */
+/* APP */
 
 #app {
   position: relative;
@@ -164,9 +159,7 @@ body {
   opacity: 0;
   pointer-events: none;
   transform: translateY(18px) scale(0.98);
-  transition:
-    opacity 0.45s ease,
-    transform 0.45s ease;
+  transition: opacity 0.45s ease, transform 0.45s ease;
 }
 
 .scene.active {
@@ -176,9 +169,9 @@ body {
 }
 
 .cute-card {
-  width: min(100%, 450px);
+  width: min(100%, 440px);
   position: relative;
-  padding: 34px 20px 26px;
+  padding: 30px 20px 24px;
   text-align: center;
   border-radius: 32px;
   background:
@@ -188,7 +181,7 @@ body {
     0 26px 70px rgba(200, 65, 132, 0.16),
     inset 0 0 0 7px rgba(255, 230, 243, 0.66);
   backdrop-filter: blur(14px);
-  animation: cardPop 0.5s ease both;
+  animation: cardPop 0.45s ease both;
 }
 
 .cute-card::before {
@@ -205,7 +198,6 @@ body {
     opacity: 0;
     transform: translateY(18px) scale(0.96);
   }
-
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
@@ -230,22 +222,75 @@ body {
   white-space: nowrap;
 }
 
+.scene-badge {
+  width: 62px;
+  height: 62px;
+  margin: 0 auto 12px;
+  display: grid;
+  place-items: center;
+  border-radius: 22px;
+  background: linear-gradient(145deg, #fff, #ffe3f2);
+  border: 1px solid rgba(225, 54, 145, 0.15);
+  box-shadow: 0 14px 28px rgba(223, 47, 143, 0.14);
+  font-size: 2rem;
+  animation: badgeBounce 2.4s ease-in-out infinite;
+}
+
+.angry-badge {
+  animation: angryShake 0.8s ease-in-out infinite;
+}
+
+@keyframes badgeBounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
 /* MASCOT */
+
+.mascot-wrap {
+  position: relative;
+  margin: 2px auto 14px;
+  width: 120px;
+}
+
+.mascot-bubble {
+  min-width: 90px;
+  margin: 0 auto 8px;
+  padding: 7px 12px;
+  border-radius: 999px;
+  background: #fff;
+  color: #d8378c;
+  font-size: 0.78rem;
+  font-weight: 700;
+  box-shadow: 0 10px 20px rgba(223, 47, 143, 0.14);
+  animation: bubbleTalk 2s ease-in-out infinite;
+}
+
+@keyframes bubbleTalk {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
 
 .cute-mascot {
   width: 94px;
   height: 90px;
   position: relative;
-  margin: 0 auto 18px;
+  margin: 0 auto;
   animation: mascotBounce 2.4s ease-in-out infinite;
 }
 
 @keyframes mascotBounce {
-  0%,
-  100% {
+  0%, 100% {
     transform: translateY(0) rotate(-1deg);
   }
-
   50% {
     transform: translateY(-7px) rotate(1deg);
   }
@@ -285,33 +330,22 @@ body {
 }
 
 .eye {
-  width: 9px;
-  height: 13px;
   position: absolute;
-  top: 25px;
-  border-radius: 999px;
-  background: #7b2c55;
-  animation: blink 3.2s infinite;
+  top: 22px;
+  width: 12px;
+  text-align: center;
+  color: #7b2c55;
+  font-size: 0.95rem;
+  font-weight: 700;
+  transition: all 0.25s ease;
 }
 
 .eye-left {
-  left: 25px;
+  left: 22px;
 }
 
 .eye-right {
-  right: 25px;
-}
-
-@keyframes blink {
-  0%,
-  92%,
-  100% {
-    transform: scaleY(1);
-  }
-
-  95% {
-    transform: scaleY(0.1);
-  }
+  right: 22px;
 }
 
 .blush {
@@ -334,14 +368,15 @@ body {
 .mouth {
   position: absolute;
   left: 50%;
-  top: 35px;
+  top: 34px;
   transform: translateX(-50%);
   color: #7b2c55;
   font-size: 1rem;
   font-weight: 700;
+  transition: all 0.25s ease;
 }
 
-/* TYPOGRAPHY */
+/* TEXT */
 
 .mini-text {
   margin-bottom: 8px;
@@ -354,7 +389,7 @@ body {
 
 h1,
 h2 {
-  margin: 0 auto 16px;
+  margin: 0 auto 14px;
   color: #cf2f84;
   font-family: "Dancing Script", cursive;
   font-weight: 700;
@@ -362,57 +397,61 @@ h2 {
 }
 
 h1 {
-  max-width: 390px;
-  font-size: clamp(2.45rem, 10vw, 4.2rem);
+  max-width: 350px;
+  font-size: clamp(2.35rem, 10vw, 4rem);
 }
 
 h2 {
-  max-width: 380px;
-  font-size: clamp(2.25rem, 9vw, 3.5rem);
+  max-width: 350px;
+  font-size: clamp(2rem, 8vw, 3.25rem);
 }
 
 .main-text {
-  max-width: 390px;
-  margin: 0 auto 16px;
+  max-width: 360px;
+  margin: 0 auto 14px;
   color: #773156;
   font-family: "Quicksand", sans-serif;
-  font-size: 0.96rem;
+  font-size: 0.95rem;
   font-weight: 700;
-  line-height: 1.72;
+  line-height: 1.7;
+}
+
+.short-text {
+  max-width: 320px;
 }
 
 .tiny-note {
-  margin-top: 14px;
+  margin-top: 12px;
   color: #b95c91;
-  font-size: 0.83rem;
+  font-size: 0.82rem;
   font-weight: 600;
 }
 
 .hint-box {
-  max-width: 360px;
-  margin: 18px auto 22px;
-  padding: 14px 16px;
+  max-width: 330px;
+  margin: 16px auto 20px;
+  padding: 12px 14px;
   display: flex;
-  gap: 10px;
-  align-items: flex-start;
+  gap: 9px;
+  align-items: center;
   text-align: left;
-  border-radius: 22px;
+  border-radius: 20px;
   background: rgba(255, 239, 248, 0.9);
   border: 1px solid rgba(225, 54, 145, 0.15);
 }
 
 .hint-box span {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
 }
 
 .hint-box p {
   color: #8a3b63;
-  font-size: 0.86rem;
+  font-size: 0.84rem;
   font-weight: 700;
-  line-height: 1.55;
+  line-height: 1.45;
 }
 
-/* BUTTON */
+/* BUTTONS */
 
 button {
   font-family: "Fredoka", sans-serif;
@@ -420,23 +459,20 @@ button {
 
 .btn-primary,
 .btn-secondary {
-  min-height: 48px;
+  min-height: 46px;
   position: relative;
   z-index: 4;
   border: 0;
   border-radius: 999px;
   cursor: pointer;
-  font-size: 0.94rem;
+  font-size: 0.93rem;
   font-weight: 700;
-  transition:
-    transform 0.18s ease,
-    box-shadow 0.18s ease,
-    background 0.18s ease;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
   touch-action: manipulation;
 }
 
 .btn-primary {
-  padding: 13px 24px;
+  padding: 12px 22px;
   color: white;
   background: linear-gradient(135deg, #ff84c1, #df2f8f);
   box-shadow: 0 16px 30px rgba(223, 47, 143, 0.25);
@@ -462,9 +498,9 @@ button {
 /* GAME */
 
 .score-card {
-  width: min(100%, 270px);
-  margin: 0 auto 16px;
-  padding: 12px 16px;
+  width: min(100%, 250px);
+  margin: 0 auto 14px;
+  padding: 10px 14px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -472,7 +508,7 @@ button {
   background: rgba(255, 255, 255, 0.76);
   border: 1px solid rgba(225, 54, 145, 0.14);
   color: #8a3b63;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   font-weight: 700;
 }
 
@@ -483,9 +519,9 @@ button {
 
 .heart-game {
   width: 100%;
-  height: 230px;
+  height: 220px;
   position: relative;
-  margin: 0 auto 20px;
+  margin: 0 auto 18px;
   overflow: hidden;
   border-radius: 28px;
   background:
@@ -502,7 +538,7 @@ button {
   place-items: center;
   padding: 20px;
   color: #ad5b8b;
-  font-size: 0.92rem;
+  font-size: 0.9rem;
   font-weight: 700;
   line-height: 1.5;
 }
@@ -518,11 +554,9 @@ button {
 }
 
 @keyframes heartWiggle {
-  0%,
-  100% {
+  0%, 100% {
     transform: rotate(-8deg) scale(1);
   }
-
   50% {
     transform: rotate(8deg) scale(1.12);
   }
@@ -530,38 +564,22 @@ button {
 
 /* ANGRY */
 
-.angry-emoji {
-  width: 72px;
-  height: 72px;
-  margin: 0 auto 14px;
-  display: grid;
-  place-items: center;
-  border-radius: 26px;
-  background: #fff0f7;
-  box-shadow: 0 14px 30px rgba(223, 47, 143, 0.14);
-  font-size: 2.6rem;
-  animation: angryShake 0.7s ease-in-out infinite;
-}
-
 @keyframes angryShake {
-  0%,
-  100% {
+  0%, 100% {
     transform: rotate(0);
   }
-
   25% {
     transform: rotate(-4deg);
   }
-
   75% {
     transform: rotate(4deg);
   }
 }
 
 .angry-meter {
-  width: min(100%, 330px);
-  height: 16px;
-  margin: 18px auto 7px;
+  width: min(100%, 300px);
+  height: 14px;
+  margin: 16px auto 6px;
   overflow: hidden;
   border-radius: 999px;
   background: #ffe1ef;
@@ -577,16 +595,16 @@ button {
 }
 
 .meter-label {
-  margin-bottom: 18px;
+  margin-bottom: 16px;
   color: #b95c91;
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1.2px;
 }
 
 .angry-actions {
-  min-height: 110px;
+  min-height: 108px;
   position: relative;
   display: flex;
   justify-content: center;
@@ -596,17 +614,13 @@ button {
 
 /* SAD */
 
-.sad-card {
-  overflow: hidden;
-}
-
 .sad-window {
-  width: min(100%, 290px);
-  height: 170px;
+  width: min(100%, 280px);
+  height: 160px;
   position: relative;
-  margin: 18px auto;
+  margin: 14px auto 16px;
   overflow: hidden;
-  border-radius: 30px;
+  border-radius: 28px;
   background:
     linear-gradient(180deg, #ffc6e4, #ffeef7 65%, #fff9fc);
   border: 8px solid rgba(255, 255, 255, 0.72);
@@ -616,11 +630,11 @@ button {
 }
 
 .moon {
-  width: 46px;
-  height: 46px;
+  width: 42px;
+  height: 42px;
   position: absolute;
-  right: 36px;
-  top: 24px;
+  right: 32px;
+  top: 22px;
   border-radius: 50%;
   background: #fff7c8;
   box-shadow: 0 0 25px rgba(255, 247, 200, 0.95);
@@ -641,56 +655,54 @@ button {
 }
 
 .cloud-a {
-  width: 92px;
-  height: 30px;
-  left: 30px;
+  width: 86px;
+  height: 28px;
+  left: 28px;
   top: 48px;
   animation: cloudMove 6s ease-in-out infinite;
 }
 
 .cloud-a::before {
-  width: 40px;
-  height: 40px;
+  width: 38px;
+  height: 38px;
   left: 12px;
   top: -18px;
 }
 
 .cloud-a::after {
-  width: 44px;
-  height: 44px;
+  width: 42px;
+  height: 42px;
   right: 10px;
   top: -20px;
 }
 
 .cloud-b {
-  width: 80px;
-  height: 26px;
-  right: 26px;
-  bottom: 38px;
+  width: 76px;
+  height: 24px;
+  right: 24px;
+  bottom: 36px;
   opacity: 0.72;
   animation: cloudMove 7s ease-in-out infinite reverse;
 }
 
 .cloud-b::before {
-  width: 34px;
-  height: 34px;
+  width: 32px;
+  height: 32px;
   left: 13px;
   top: -15px;
 }
 
 .cloud-b::after {
-  width: 38px;
-  height: 38px;
+  width: 36px;
+  height: 36px;
   right: 9px;
   top: -17px;
 }
 
 @keyframes cloudMove {
-  0%,
-  100% {
+  0%, 100% {
     transform: translateX(0);
   }
-
   50% {
     transform: translateX(18px);
   }
@@ -699,63 +711,47 @@ button {
 .window-heart {
   position: absolute;
   left: 50%;
-  bottom: 22px;
+  bottom: 18px;
   transform: translateX(-50%);
   color: #d8378c;
   font-family: "Dancing Script", cursive;
-  font-size: 2.6rem;
+  font-size: 2.4rem;
   animation: softBeat 1.5s ease-in-out infinite;
 }
 
 @keyframes softBeat {
-  0%,
-  100% {
+  0%, 100% {
     transform: translateX(-50%) scale(1);
   }
-
   50% {
     transform: translateX(-50%) scale(1.14);
   }
 }
 
 .sad-reveal {
-  max-width: 350px;
-  margin: 16px auto;
-  padding: 15px 16px;
-  border-radius: 22px;
+  max-width: 320px;
+  margin: 14px auto;
+  padding: 13px 14px;
+  border-radius: 18px;
   background: rgba(255, 239, 248, 0.92);
   border: 1px solid rgba(225, 54, 145, 0.13);
   color: #83345d;
   font-family: "Quicksand", sans-serif;
-  font-size: 0.92rem;
+  font-size: 0.9rem;
   font-weight: 700;
-  line-height: 1.6;
+  line-height: 1.5;
   animation: fadeUp 0.35s ease both;
 }
 
 /* FINAL */
 
-.love-lock {
-  width: 74px;
-  height: 74px;
-  margin: 0 auto 15px;
-  display: grid;
-  place-items: center;
-  border-radius: 28px;
-  background: linear-gradient(145deg, #fff, #ffe2f1);
-  border: 1px solid rgba(225, 54, 145, 0.15);
-  box-shadow: 0 16px 34px rgba(223, 47, 143, 0.17);
-  font-size: 2.4rem;
-  animation: mascotBounce 2.5s ease-in-out infinite;
-}
-
 .letter-box {
-  max-width: 390px;
-  min-height: 240px;
-  margin: 20px auto 18px;
-  padding: 22px 20px;
+  max-width: 360px;
+  min-height: 210px;
+  margin: 18px auto 16px;
+  padding: 20px 18px;
   text-align: left;
-  border-radius: 28px;
+  border-radius: 24px;
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(255, 246, 251, 0.95));
   border: 1px solid rgba(225, 54, 145, 0.16);
@@ -769,9 +765,9 @@ button {
   white-space: pre-line;
   color: #6f2d50;
   font-family: "Quicksand", sans-serif;
-  font-size: 0.95rem;
+  font-size: 0.93rem;
   font-weight: 700;
-  line-height: 1.75;
+  line-height: 1.7;
 }
 
 .final-actions {
@@ -781,7 +777,7 @@ button {
   flex-wrap: wrap;
 }
 
-/* UTILITY */
+/* UTIL */
 
 .hidden {
   display: none !important;
@@ -792,7 +788,6 @@ button {
     opacity: 0;
     transform: translateY(12px);
   }
-
   to {
     opacity: 1;
     transform: translateY(0);
@@ -814,7 +809,7 @@ button {
   .cute-card {
     width: 100%;
     max-width: 380px;
-    padding: 30px 17px 23px;
+    padding: 28px 16px 22px;
     border-radius: 28px;
   }
 
@@ -824,48 +819,22 @@ button {
   }
 
   h1 {
-    font-size: 2.55rem;
+    font-size: 2.45rem;
   }
 
   h2 {
-    font-size: 2.25rem;
+    font-size: 2.15rem;
   }
 
   .main-text {
     font-size: 0.9rem;
-    line-height: 1.66;
-  }
-
-  .cute-mascot {
-    width: 82px;
-    height: 80px;
-    margin-bottom: 14px;
-  }
-
-  .face {
-    width: 74px;
-    height: 60px;
-  }
-
-  .ear {
-    width: 28px;
-    height: 45px;
-  }
-
-  .heart-game {
-    height: 210px;
-    border-radius: 24px;
-  }
-
-  .sad-window {
-    height: 150px;
-    border-radius: 26px;
+    line-height: 1.62;
   }
 
   .btn-primary,
   .btn-secondary {
     width: 100%;
-    max-width: 285px;
+    max-width: 270px;
   }
 
   .angry-actions {
@@ -873,14 +842,17 @@ button {
     flex-direction: column;
   }
 
-  .letter-box {
-    min-height: 260px;
-    padding: 20px 18px;
-  }
-
   .final-actions {
     flex-direction: column;
     align-items: center;
+  }
+
+  .heart-game {
+    height: 205px;
+  }
+
+  .letter-box {
+    min-height: 230px;
   }
 }
 
@@ -891,15 +863,5 @@ button {
 
   .cute-card {
     margin: 14px 0;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
   }
 }

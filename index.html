@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <title>Buat Kamu 💌</title>
+  <title>Buat Kamu 💗</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -28,118 +27,116 @@
     <!-- SCENE 1 -->
     <section id="scene-1" class="scene active">
       <div class="cute-card intro-card">
-        <div class="top-pill">ada misi kecil buat kamu</div>
+        <div class="top-pill">special mission for you</div>
 
-        <div class="cute-mascot">
-          <div class="ear ear-left"></div>
-          <div class="ear ear-right"></div>
-          <div class="face">
-            <div class="eye eye-left"></div>
-            <div class="eye eye-right"></div>
-            <div class="blush blush-left"></div>
-            <div class="blush blush-right"></div>
-            <div class="mouth">ω</div>
+        <div class="mascot-wrap">
+          <div id="mascotBubble" class="mascot-bubble">haiii 💗</div>
+
+          <div class="cute-mascot">
+            <div class="ear ear-left"></div>
+            <div class="ear ear-right"></div>
+
+            <div class="face">
+              <div class="eye eye-left" id="leftEye">•</div>
+              <div class="eye eye-right" id="rightEye">•</div>
+              <div class="blush blush-left"></div>
+              <div class="blush blush-right"></div>
+              <div class="mouth" id="mascotMouth">ᴗ</div>
+            </div>
           </div>
         </div>
 
-        <p class="mini-text">pssst... jangan langsung senyum dulu</p>
+        <p class="mini-text">pssst... sini dulu</p>
 
-        <h1>Hai kamu, aku punya sesuatu nih 💗</h1>
+        <h1>Haiii kamu 💕</h1>
 
-        <p class="main-text">
-          Tapi bukanya nggak boleh biasa aja. Kamu harus lewatin beberapa misi kecil dulu.
-          Tenang, nggak susah kok. Cuma agak gemes, agak ngeselin, terus ujungnya...
-          yaa lihat sendiri nanti.
+        <p class="main-text short-text">
+          Aku bikin sesuatu yang lucu buat kamu.
+          Mau main bentar nggak?
         </p>
 
         <div class="hint-box">
           <span>🌸</span>
-          <p>Siap-siap. Awalnya lucu, nanti ada ngambeknya dikit, terus agak mellow, baru terakhir manis banget.</p>
+          <p>Awalnya gemes, tengahnya ngeselin dikit, ujungnya manis banget.</p>
         </div>
 
         <button id="startBtn" class="btn-primary">
-          Aku mau mulai dong
+          Mauu, mulai
         </button>
 
-        <p class="tiny-note">jangan kabur ya, udah sampai sini masa mundur 😌</p>
+        <p class="tiny-note">ayo klik, jangan malu-malu 😚</p>
       </div>
     </section>
 
-    <!-- SCENE 2: LUCU -->
+    <!-- SCENE 2 -->
     <section id="scene-2" class="scene">
       <div class="cute-card game-card">
-        <p class="mini-text">misi pertama</p>
+        <div class="scene-badge">💗</div>
 
-        <h2>Tangkap hati yang kabur dulu 💕</h2>
+        <p class="mini-text">level 1</p>
+        <h2>Tangkap 5 hati dulu</h2>
 
-        <p class="main-text">
-          Katanya kalau bisa nangkep 5 hati, kamu boleh lanjut.
-          Tapi hatinya malu-malu, jadi harus diklik cepat.
+        <p class="main-text short-text">
+          Kalau berhasil, kamu boleh lanjut.
         </p>
 
         <div class="score-card">
-          <span>Hati terkumpul</span>
+          <span>hati terkumpul</span>
           <strong><span id="cuteScore">0</span>/5</strong>
         </div>
 
         <div id="heartGame" class="heart-game">
-          <p id="cuteHint" class="game-hint">Hatinya sebentar lagi muncul... siap-siap yaa.</p>
+          <p id="cuteHint" class="game-hint">siap-siap yaa...</p>
         </div>
 
         <button id="nextToAngryBtn" class="btn-primary hidden">
-          Lanjut, aku udah jago nih
+          Lanjut dong
         </button>
       </div>
     </section>
 
-    <!-- SCENE 3: MARAH / NGAMBEK -->
+    <!-- SCENE 3 -->
     <section id="scene-3" class="scene">
       <div class="cute-card angry-card">
-        <div class="angry-emoji">😤</div>
+        <div class="scene-badge angry-badge">😤</div>
 
-        <p class="mini-text">eh tunggu dulu</p>
+        <p class="mini-text">level 2</p>
+        <h2>Aku ngambek.</h2>
 
-        <h2>Aku lagi pura-pura ngambek.</h2>
-
-        <p id="angryText" class="main-text">
-          Soalnya kamu terlalu lucu. Kan jadi nyebelin, aku kepikiran terus.
-          Sekarang tugas kamu: bujuk aku sampai ngambeknya turun.
+        <p id="angryText" class="main-text short-text">
+          Soalnya kamu bikin aku gemes.
+          Sekarang bujuk aku dulu.
         </p>
 
         <div class="angry-meter">
           <div id="angryMeterFill" class="angry-meter-fill"></div>
         </div>
 
-        <p class="meter-label">level ngambek</p>
+        <p class="meter-label">mode ngambek</p>
 
         <div class="angry-actions">
           <button id="calmBtn" class="btn-primary">
-            Maafin aku dong 🥺
+            Maafin ya 🥺
           </button>
 
           <button id="runawayBtn" class="btn-secondary runaway-btn">
-            Nggak mau 😝
+            Gak mau 😝
           </button>
         </div>
 
         <button id="nextToSadBtn" class="btn-primary hidden">
-          Oke, lanjut. Jangan ngambek lagi ya
+          Oke, lanjut
         </button>
       </div>
     </section>
 
-    <!-- SCENE 4: SEDIH -->
-    <section id="scene-4" class="scene sad-scene">
-      <div class="rain"></div>
-
+    <!-- SCENE 4 -->
+    <section id="scene-4" class="scene">
       <div class="cute-card sad-card">
-        <p class="mini-text">sekarang agak pelan ya</p>
+        <div class="scene-badge">🌙</div>
 
-        <h2>Aku mau jujur sedikit...</h2>
-
-        <p class="main-text">
-          Kadang aku kelihatan bercanda terus, tapi sebenarnya ada hal yang aku simpan baik-baik.
-        </p>
+        <p class="mini-text">level 3</p>
+        <h2>Sekarang pelan ya...</h2>
 
         <div class="sad-window">
           <div class="moon"></div>
@@ -148,44 +145,39 @@
           <div class="window-heart">♡</div>
         </div>
 
-        <p class="main-text">
-          Aku kadang takut terlalu kelihatan peduli. Takut kamu risih, takut aku terlalu banyak berharap,
-          takut rasa ini cuma lucu buatku sendiri.
+        <p class="main-text short-text">
+          Kadang aku bercanda terus,
+          padahal ada rasa yang aku simpan.
         </p>
 
         <button id="hugBtn" class="btn-primary">
-          Kasih peluk virtual dulu
+          Peluk virtual dulu
         </button>
 
         <div id="sadReveal" class="sad-reveal hidden">
-          <p>
-            Makasih. Ternyata satu peluk kecil aja bisa bikin kalimat berat jadi lebih ringan.
-          </p>
+          <p>Makasih ya... sekarang rasanya lebih tenang 🤍</p>
         </div>
 
         <button id="nextToFinalBtn" class="btn-primary hidden">
-          Buka bagian terakhir
+          Buka yang terakhir
         </button>
       </div>
     </section>
 
-    <!-- SCENE 5: ROMANTIS -->
+    <!-- SCENE 5 -->
     <section id="scene-5" class="scene">
       <div class="cute-card final-card">
-        <div class="love-lock">
-          <span>💌</span>
-        </div>
+        <div class="scene-badge">💌</div>
 
-        <p class="mini-text">akhirnya sampai juga</p>
+        <p class="mini-text">final level</p>
+        <h2>Ini buat kamu.</h2>
 
-        <h2>Ini bagian yang dari tadi aku simpan.</h2>
-
-        <p class="main-text">
-          Klik tombolnya, nanti suratnya kebuka pelan-pelan.
+        <p class="main-text short-text">
+          Klik tombolnya. Suratnya kebuka pelan-pelan.
         </p>
 
         <button id="openLetterBtn" class="btn-primary">
-          Buka suratnya
+          Buka surat
         </button>
 
         <div id="letterBox" class="letter-box hidden">
@@ -194,11 +186,11 @@
 
         <div id="finalActions" class="final-actions hidden">
           <button id="celebrateBtn" class="btn-primary">
-            Bikin hatinya rame
+            Hujanin hati
           </button>
 
           <button id="restartBtn" class="btn-secondary">
-            Ulang dari awal
+            Ulang lagi
           </button>
         </div>
       </div>

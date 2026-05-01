@@ -6,27 +6,15 @@ function goTo(sceneId) {
   })
 
   const target = $(sceneId)
-
   if (!target) return
 
   target.scrollTop = 0
   target.classList.add("active")
 }
 
-/* BACKGROUND FLOATING */
+/* FLOATING BACKGROUND */
 
-const floatingItems = [
-  "♡",
-  "✧",
-  "💕",
-  "gemes",
-  "hehe",
-  "miss u",
-  "🌸",
-  "cute",
-  "love",
-  "💗"
-]
+const floatingItems = ["♡", "💗", "💕", "cute", "hehe", "🌸", "love", "✧"]
 
 function spawnFloatingItem() {
   const area = $("floatingArea")
@@ -53,7 +41,7 @@ function launchConfetti() {
 
   const colors = ["#ff7fbd", "#e13691", "#ffd1e6", "#ffffff", "#ffb6d9", "#c92d7c"]
 
-  for (let i = 0; i < 110; i++) {
+  for (let i = 0; i < 100; i++) {
     const item = document.createElement("div")
     const size = 5 + Math.random() * 8
 
@@ -72,7 +60,39 @@ function launchConfetti() {
   }
 }
 
-/* SCENE 2: CUTE GAME */
+/* INTRO MASCOT */
+
+const mascotMoods = [
+  { left: "•", right: "•", mouth: "ᴗ", text: "haiii 💗" },
+  { left: "◕", right: "◕", mouth: "ω", text: "klik aku" },
+  { left: "˶", right: "˶", mouth: "ᴗ", text: "gemes ya?" },
+  { left: "≧", right: "≦", mouth: "o", text: "ayo main" },
+  { left: "♥", right: "♥", mouth: "ᴗ", text: "buat kamu" }
+]
+
+let mascotIndex = 0
+let mascotTimer = null
+
+function renderMascotMood() {
+  const mood = mascotMoods[mascotIndex]
+
+  $("leftEye").textContent = mood.left
+  $("rightEye").textContent = mood.right
+  $("mascotMouth").textContent = mood.mouth
+  $("mascotBubble").textContent = mood.text
+}
+
+function startMascotLoop() {
+  clearInterval(mascotTimer)
+  renderMascotMood()
+
+  mascotTimer = setInterval(() => {
+    mascotIndex = (mascotIndex + 1) % mascotMoods.length
+    renderMascotMood()
+  }, 1400)
+}
+
+/* SCENE 2: HEART GAME */
 
 let cuteScore = 0
 let heartInterval = null
@@ -82,7 +102,7 @@ function initCuteGame() {
   cuteScore = 0
   $("cuteScore").textContent = cuteScore
   $("nextToAngryBtn").classList.add("hidden")
-  $("cuteHint").textContent = "Hatinya sebentar lagi muncul... siap-siap yaa."
+  $("cuteHint").textContent = "siap-siap yaa..."
 
   const game = $("heartGame")
   game.querySelectorAll(".catch-heart").forEach((heart) => heart.remove())
@@ -90,10 +110,10 @@ function initCuteGame() {
   clearInterval(heartInterval)
 
   setTimeout(() => {
-    $("cuteHint").textContent = "Klik hati yang muncul. Jangan kasih kabur 😤💕"
+    $("cuteHint").textContent = "klik hati yang muncul 💕"
     spawnCatchHeart()
-    heartInterval = setInterval(spawnCatchHeart, 820)
-  }, 600)
+    heartInterval = setInterval(spawnCatchHeart, 800)
+  }, 500)
 }
 
 function spawnCatchHeart() {
@@ -119,7 +139,7 @@ function spawnCatchHeart() {
     heart.textContent = "✨"
     heart.style.pointerEvents = "none"
 
-    setTimeout(() => heart.remove(), 180)
+    setTimeout(() => heart.remove(), 150)
 
     if (cuteScore >= maxCuteScore) {
       finishCuteGame()
@@ -132,7 +152,7 @@ function spawnCatchHeart() {
     if (heart.parentElement) {
       heart.remove()
     }
-  }, 1350)
+  }, 1300)
 }
 
 function finishCuteGame() {
@@ -141,15 +161,10 @@ function finishCuteGame() {
   const game = $("heartGame")
   game.querySelectorAll(".catch-heart").forEach((heart) => heart.remove())
 
-  $("cuteHint").textContent =
-    "Oke, kamu berhasil. Agak nyebelin sih karena jago banget. Tapi yaudah, boleh lanjut 😌"
+  $("cuteHint").textContent = "yeay, kamu menang 😚"
   $("nextToAngryBtn").classList.remove("hidden")
 
-  launchMiniSparkles()
-}
-
-function launchMiniSparkles() {
-  for (let i = 0; i < 20; i++) {
+  for (let i = 0; i < 15; i++) {
     setTimeout(spawnFloatingItem, i * 45)
   }
 }
@@ -159,11 +174,11 @@ function launchMiniSparkles() {
 let angryLevel = 5
 
 const angryMessages = [
-  "Hmm... masih ngambek. Bujuk lagi dong, jangan setengah-setengah 😤",
-  "Oke, dikit lagi turun. Tapi aku masih pura-pura kesel nih.",
-  "Sebenernya udah agak luluh, tapi gengsi dulu boleh kan?",
-  "Aduh, jangan lucu-lucu. Nanti aku beneran maafin.",
-  "Yaudah deh... ngambeknya kalah sama gemesnya kamu."
+  "hmm... masih ngambek 😤",
+  "dikit lagi luluh...",
+  "iya iya, mulai adem...",
+  "aduh, jangan gemesin gitu...",
+  "yaudah deh, maafinnn 😌"
 ]
 
 function initAngryScene() {
@@ -174,9 +189,7 @@ function initAngryScene() {
   $("runawayBtn").classList.remove("hidden")
   $("nextToSadBtn").classList.add("hidden")
 
-  $("angryText").textContent =
-    "Soalnya kamu terlalu lucu. Kan jadi nyebelin, aku kepikiran terus. Sekarang tugas kamu: bujuk aku sampai ngambeknya turun."
-
+  $("angryText").textContent = "Soalnya kamu bikin aku gemes. Sekarang bujuk aku dulu."
   $("runawayBtn").style.transform = "translate(0, 0)"
 }
 
@@ -191,15 +204,14 @@ function calmAngry() {
   angryLevel--
   updateAngryMeter()
 
-  const messageIndex = Math.min(5 - angryLevel - 1, angryMessages.length - 1)
-  $("angryText").textContent = angryMessages[messageIndex]
+  const index = Math.min(5 - angryLevel - 1, angryMessages.length - 1)
+  $("angryText").textContent = angryMessages[index]
 
   if (angryLevel <= 0) {
     $("calmBtn").classList.add("hidden")
     $("runawayBtn").classList.add("hidden")
     $("nextToSadBtn").classList.remove("hidden")
-    $("angryText").textContent =
-      "Oke, aku udah nggak ngambek. Tapi habis ini jangan ketawa dulu ya, soalnya bagian berikutnya agak pelan."
+    $("angryText").textContent = "Oke, aku udah gak ngambek 🤍"
   }
 }
 
@@ -228,52 +240,31 @@ function virtualHug() {
 
   setTimeout(() => {
     $("nextToFinalBtn").classList.remove("hidden")
-  }, 650)
+  }, 500)
 
-  for (let i = 0; i < 18; i++) {
-    setTimeout(spawnFloatingItem, i * 80)
+  for (let i = 0; i < 12; i++) {
+    setTimeout(spawnFloatingItem, i * 60)
   }
 }
 
-/* SCENE 5: FINAL LETTER */
+/* SCENE 5: FINAL */
 
-const finalLetter = `Hai kamu.
+const finalLetter = `Hai kamu 💗
 
-Aku awalnya cuma mau bikin sesuatu yang lucu.
-Tapi makin lama, aku sadar...
-yang paling ingin aku kasih ke kamu bukan cuma game kecil ini.
+Aku bikin ini cuma buat satu hal:
+biar kamu tahu kalau hadir kamu bikin hari aku lebih manis.
 
-Aku cuma mau kamu tahu,
-hadirmu itu punya tempat sendiri di pikiranku.
+Aku suka cara kamu bikin aku senyum.
+Aku suka cara kamu hadir,
+bahkan saat kamu nggak sadar.
 
-Kamu punya cara yang sederhana
-buat bikin hari yang biasa aja terasa lebih hangat.
+Jadi...
+kalau boleh jujur,
 
-Aku suka caramu muncul.
-Aku suka caramu bikin aku senyum tanpa sadar.
-Aku suka hal-hal kecil tentang kamu
-yang mungkin kamu sendiri nggak sadar kalau itu manis.
+aku suka kamu.
 
-Dan kalau website ini terasa agak lucu,
-agak nyebelin,
-agak sedih,
-lalu akhirnya romantis...
-
-itu karena perasaanku juga begitu.
-
-Kadang gemes.
-Kadang takut.
-Kadang kangen.
-Tapi ujung-ujungnya tetap sama:
-
-aku senang mengenal kamu.
-
-Jadi hari ini,
-tolong simpan satu hal kecil ini ya...
-
-kamu itu spesial.
-bukan karena harus sempurna,
-tapi karena kamu adalah kamu. 💗`
+Dan kalau kamu senyum habis baca ini,
+berarti website kecil ini berhasil. ✨`
 
 let typingTimer = null
 let isTyping = false
@@ -309,9 +300,9 @@ function openFinalLetter() {
       setTimeout(() => {
         $("finalActions").classList.remove("hidden")
         launchConfetti()
-      }, 500)
+      }, 400)
     }
-  }, 26)
+  }, 24)
 }
 
 function restartWebsite() {
@@ -324,11 +315,12 @@ function restartWebsite() {
 
 document.addEventListener("DOMContentLoaded", () => {
   goTo("scene-1")
+  startMascotLoop()
 
-  setInterval(spawnFloatingItem, 750)
+  setInterval(spawnFloatingItem, 800)
 
-  for (let i = 0; i < 15; i++) {
-    setTimeout(spawnFloatingItem, i * 150)
+  for (let i = 0; i < 12; i++) {
+    setTimeout(spawnFloatingItem, i * 140)
   }
 
   $("startBtn").addEventListener("click", () => {
@@ -347,8 +339,7 @@ document.addEventListener("DOMContentLoaded", () => {
   $("runawayBtn").addEventListener("touchstart", moveRunawayButton)
   $("runawayBtn").addEventListener("click", () => {
     moveRunawayButton()
-    $("angryText").textContent =
-      "Loh kok malah milih nggak mau? Tombolnya aja kabur tuh. Bujuk yang bener dong 😤"
+    $("angryText").textContent = "ihh kok gitu, bujuk yang bener dong 😝"
   })
 
   $("nextToSadBtn").addEventListener("click", () => {
@@ -364,8 +355,6 @@ document.addEventListener("DOMContentLoaded", () => {
   })
 
   $("openLetterBtn").addEventListener("click", openFinalLetter)
-
   $("celebrateBtn").addEventListener("click", launchConfetti)
-
   $("restartBtn").addEventListener("click", restartWebsite)
 })
