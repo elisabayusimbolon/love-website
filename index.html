@@ -2,14 +2,13 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Buat Kamu 💗</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Cherry+Bomb+One&family=Dancing+Script:wght@600;700&family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@500;600;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Cherry+Bomb+One&family=Dancing+Script:wght@600;700&family=Fredoka:wght@400;500;600;700;800&family=Quicksand:wght@500;600;700;800&display=swap"
     rel="stylesheet"
   />
 
@@ -17,32 +16,33 @@
 </head>
 
 <body>
-  <div class="pink-bg"></div>
-  <div class="glow-orb orb-1"></div>
-  <div class="glow-orb orb-2"></div>
-  <div class="glow-orb orb-3"></div>
+  <div class="bg"></div>
+  <div class="bg-border"></div>
+  <div class="orb orb-one"></div>
+  <div class="orb orb-two"></div>
+  <div class="orb orb-three"></div>
 
-  <div id="floatingArea" class="floating-area"></div>
-  <div id="confettiArea" class="confetti-area"></div>
-  <div id="cursorArea" class="cursor-area"></div>
+  <div id="floatLayer" class="float-layer"></div>
+  <div id="confettiLayer" class="confetti-layer"></div>
+  <div id="tapLayer" class="tap-layer"></div>
 
-  <div id="nailongGuide" class="nailong-guide">
+  <div class="mini-guide" id="miniGuide">
     <div id="guideBubble" class="guide-bubble">aku nemenin 💛</div>
 
-    <div class="nailong nailong-mini">
-      <div class="nl-spike spike-1"></div>
-      <div class="nl-spike spike-2"></div>
-      <div class="nl-spike spike-3"></div>
-      <div class="nl-tail"></div>
-      <div class="nl-body">
-        <div class="nl-face">•ᴗ•</div>
-        <div class="nl-cheek cheek-left"></div>
-        <div class="nl-cheek cheek-right"></div>
-        <div class="nl-belly"></div>
-        <div class="nl-arm arm-left"></div>
-        <div class="nl-arm arm-right"></div>
-        <div class="nl-foot foot-left"></div>
-        <div class="nl-foot foot-right"></div>
+    <div class="dino dino-small">
+      <div class="dino-tail"></div>
+      <div class="dino-body">
+        <div class="dino-belly"></div>
+        <div class="dino-eye eye-left"></div>
+        <div class="dino-eye eye-right"></div>
+        <div class="dino-nose"></div>
+        <div class="dino-mouth"></div>
+        <div class="dino-cheek cheek-left"></div>
+        <div class="dino-cheek cheek-right"></div>
+        <div class="dino-arm arm-left"></div>
+        <div class="dino-arm arm-right"></div>
+        <div class="dino-foot foot-left"></div>
+        <div class="dino-foot foot-right"></div>
       </div>
     </div>
   </div>
@@ -50,41 +50,40 @@
   <main id="app">
     <!-- SCENE 1 -->
     <section id="scene-1" class="scene active">
-      <div class="cute-card intro-card">
-        <div class="top-pill">for my favorite person</div>
+      <article class="phone-card intro-card">
+        <div class="badge">special for you</div>
 
-        <div class="nailong-wrap">
+        <div class="mascot-wrap">
           <div id="mascotBubble" class="mascot-bubble">haiii 💗</div>
 
-          <div id="introNailong" class="nailong nailong-big">
-            <div class="nl-spike spike-1"></div>
-            <div class="nl-spike spike-2"></div>
-            <div class="nl-spike spike-3"></div>
-            <div class="nl-tail"></div>
-            <div class="nl-body">
-              <div id="nailongFace" class="nl-face">♥ᴗ♥</div>
-              <div class="nl-cheek cheek-left"></div>
-              <div class="nl-cheek cheek-right"></div>
-              <div class="nl-belly"></div>
-              <div class="nl-arm arm-left"></div>
-              <div class="nl-arm arm-right"></div>
-              <div class="nl-foot foot-left"></div>
-              <div class="nl-foot foot-right"></div>
+          <div class="dino dino-main">
+            <div class="dino-tail"></div>
+            <div class="dino-body">
+              <div class="dino-belly"></div>
+              <div class="dino-eye eye-left"></div>
+              <div class="dino-eye eye-right"></div>
+              <div class="dino-nose"></div>
+              <div id="dinoMouth" class="dino-mouth"></div>
+              <div class="dino-cheek cheek-left"></div>
+              <div class="dino-cheek cheek-right"></div>
+              <div class="dino-arm arm-left"></div>
+              <div class="dino-arm arm-right"></div>
+              <div class="dino-foot foot-left"></div>
+              <div class="dino-foot foot-right"></div>
             </div>
           </div>
         </div>
 
-        <p class="mini-text">pssst... buka pelan-pelan</p>
-
+        <p class="mini-title">pssst... sini dulu</p>
         <h1>Aku punya kejutan kecil</h1>
 
-        <p class="main-text">
-          Bukan apa-apa sih.
-          Cuma sesuatu yang dibuat khusus buat kamu.
+        <p class="soft-text">
+          Dibuat khusus buat kamu.
+          Lucu dulu, baper nanti.
         </p>
 
-        <button id="startBtn" class="envelope-btn" aria-label="Buka amplop">
-          <div id="secretEnvelope" class="secret-envelope">
+        <button id="startBtn" class="envelope-button" aria-label="Mulai">
+          <div id="envelope" class="envelope">
             <div class="env-back"></div>
             <div class="env-letter">
               <span>buat kamu</span>
@@ -92,127 +91,122 @@
             </div>
             <div class="env-front"></div>
             <div class="env-flap"></div>
-            <div class="env-heart">♡</div>
+            <div class="env-seal">♡</div>
           </div>
         </button>
 
-        <p class="tiny-note">klik amplopnya yaa, jangan cuma dipandangi 😚</p>
-      </div>
+        <p class="tiny-note">klik amplopnya yaa, jangan malu-malu 😚</p>
+      </article>
     </section>
 
     <!-- SCENE 2 -->
     <section id="scene-2" class="scene">
-      <div class="cute-card">
-        <div class="scene-icon">💘</div>
-
-        <p class="mini-text">level 1</p>
+      <article class="phone-card">
+        <div class="scene-emoji">💘</div>
+        <p class="mini-title">level 1</p>
         <h2>Tangkap 5 hati</h2>
 
-        <p class="main-text">
-          Hatinya kabur. Tolong tangkapin dulu yaa.
+        <p class="soft-text">
+          Hatinya kabur. Tolong tangkapin dulu.
         </p>
 
-        <div class="score-card">
-          <span>hati terkumpul</span>
-          <strong><span id="cuteScore">0</span>/5</strong>
+        <div class="score-pill">
+          <span>hati</span>
+          <strong><span id="heartScore">0</span>/5</strong>
         </div>
 
         <div id="heartGame" class="heart-game">
-          <p id="cuteHint" class="game-hint">siap-siap yaa...</p>
+          <p id="heartHint" class="game-hint">siap-siap yaa...</p>
         </div>
 
-        <button id="nextToRiddleBtn" class="btn-primary hidden">
-          Lanjut ke misi gombal
+        <button id="toRiddleBtn" class="main-button hidden">
+          Lanjut ke teka-teki
         </button>
-      </div>
+      </article>
     </section>
 
     <!-- SCENE 3 -->
     <section id="scene-3" class="scene">
-      <div class="cute-card riddle-card">
-        <div class="scene-icon">💞</div>
-
-        <p id="riddleCounter" class="mini-text">gombalan 1 dari 3</p>
+      <article class="phone-card">
+        <div class="scene-emoji">💞</div>
+        <p id="riddleCount" class="mini-title">gombalan 1 dari 3</p>
         <h2>Teka-teki baper</h2>
 
-        <p id="riddleQuestion" class="main-text riddle-question">
+        <p id="riddleQuestion" class="soft-text question-text">
           Pertanyaan muncul di sini.
         </p>
 
-        <div id="riddleOptions" class="riddle-options"></div>
+        <div id="riddleOptions" class="option-list"></div>
 
-        <div id="riddleFeedback" class="feedback-box hidden">
-          <div id="feedbackEmoji" class="feedback-emoji">💗</div>
-          <p id="feedbackText"></p>
+        <div id="riddleResult" class="result-box hidden">
+          <div id="riddleEmoji" class="result-emoji">💗</div>
+          <p id="riddleText"></p>
         </div>
 
-        <button id="nextRiddleBtn" class="btn-primary hidden">
+        <button id="nextRiddleBtn" class="main-button hidden">
           Gombalan berikutnya
         </button>
-      </div>
+      </article>
     </section>
 
     <!-- SCENE 4 -->
     <section id="scene-4" class="scene">
-      <div class="cute-card mood-card">
-        <div class="scene-icon pout-icon">😤</div>
+      <article class="phone-card">
+        <div class="scene-emoji angry-emoji">😤</div>
+        <p class="mini-title">level 3</p>
+        <h2>Kamu boleh ngambek</h2>
 
-        <p class="mini-text">level 3</p>
-        <h2>Sekarang kamu boleh ngambek</h2>
-
-        <p id="moodText" class="main-text">
+        <p id="moodIntro" class="soft-text">
           Pilih alasan ngambek kamu.
           Tapi ngambeknya yang lucu aja ya.
         </p>
 
-        <div id="moodOptions" class="mood-options">
-          <button class="mood-btn" data-mood="baper">Aku mulai baper 😳</button>
-          <button class="mood-btn" data-mood="jail">Websitenya jail banget 😤</button>
-          <button class="mood-btn" data-mood="senyum">Aku senyum sendiri 🙈</button>
+        <div id="moodOptions" class="option-list">
+          <button class="choice-button" data-mood="baper">Aku mulai baper 😳</button>
+          <button class="choice-button" data-mood="jail">Websitenya jail banget 😤</button>
+          <button class="choice-button" data-mood="senyum">Aku senyum sendiri 🙈</button>
         </div>
 
-        <div id="poutBox" class="pout-box hidden">
-          <div class="pout-face">😾</div>
+        <div id="poutBox" class="result-box hidden">
+          <div class="result-emoji">😾</div>
 
           <div class="pout-meter">
-            <div id="poutMeterFill" class="pout-meter-fill"></div>
+            <div id="poutFill" class="pout-fill"></div>
           </div>
 
-          <p id="poutMessage">
-            Oke, kamu boleh ngambek sebentar.
-            Tapi jangan lama-lama yaa.
+          <p id="poutText">
+            Ngambeknya boleh, tapi jangan lama-lama yaa.
           </p>
         </div>
 
-        <button id="toValidationBtn" class="btn-primary hidden">
+        <button id="toValidationBtn" class="main-button hidden">
           Validasi aku dulu
         </button>
-      </div>
+      </article>
     </section>
 
     <!-- SCENE 5 -->
     <section id="scene-5" class="scene">
-      <div class="cute-card validation-card">
-        <div class="scene-icon moon-icon">🌙</div>
-
-        <p class="mini-text">level 4</p>
+      <article class="phone-card">
+        <div class="scene-emoji">🌙</div>
+        <p class="mini-title">level 4</p>
         <h2>Pelanin dulu ya...</h2>
 
         <div class="soft-window">
-          <div class="moon"></div>
-          <div class="soft-star star-a">✦</div>
-          <div class="soft-star star-b">✧</div>
-          <div class="cloud cloud-a"></div>
-          <div class="cloud cloud-b"></div>
+          <div class="window-moon"></div>
+          <div class="window-cloud cloud-one"></div>
+          <div class="window-cloud cloud-two"></div>
+          <div class="window-star star-one">✦</div>
+          <div class="window-star star-two">✧</div>
           <div class="window-heart">♡</div>
         </div>
 
-        <p class="main-text">
+        <p class="soft-text">
           Aku nggak cuma mau bikin kamu ketawa.
-          Aku juga mau bikin kamu merasa ditemenin.
+          Aku juga mau bikin kamu ngerasa ditemenin.
         </p>
 
-        <button id="startValidationBtn" class="btn-primary">
+        <button id="startValidationBtn" class="main-button">
           Aku dengerin
         </button>
 
@@ -221,101 +215,92 @@
           <p class="validation-line">Boleh diem dulu.</p>
           <p class="validation-line">Boleh nggak selalu kuat.</p>
           <p class="validation-line">Tapi jangan ngerasa sendirian ya.</p>
-          <p class="validation-line colorful-line">
+          <p class="validation-line colorful">
             Karena hari ini, aku ada di sini buat kamu 🤍
           </p>
         </div>
 
-        <button id="nextToFinalBtn" class="btn-primary hidden">
+        <button id="toFinalBtn" class="main-button hidden">
           Sekarang bikin ceria lagi
         </button>
-      </div>
+      </article>
     </section>
 
     <!-- SCENE 6 -->
     <section id="scene-6" class="scene">
-      <div class="cute-card final-card">
-        <div class="final-sticky-head">
-          <div class="scene-icon love-icon">💌</div>
+      <article class="phone-card final-card">
+        <div class="final-head">
+          <div class="scene-emoji love-emoji">💌</div>
+          <p class="mini-title">final level</p>
+          <h2>Ini buat kamu</h2>
 
-          <p class="mini-text">final level</p>
-          <h2>Ini buat kamu.</h2>
-
-          <p class="main-text">
+          <p class="soft-text">
             Bagian terakhirnya manis.
             Dibuka pelan-pelan yaa.
           </p>
 
-          <button id="openLetterBtn" class="btn-primary">
+          <button id="openLetterBtn" class="main-button">
             Buka surat
           </button>
         </div>
 
-        <div id="finalLetter" class="final-letter hidden">
-          <p class="final-line">
-            Hai kamu <span class="emoji-pop">💗</span>
-          </p>
+        <div id="letterBox" class="letter-box hidden">
+          <p class="letter-line">Hai kamu 💗</p>
 
-          <p class="final-line">
+          <p class="letter-line">
             Aku bikin website ini bukan cuma buat lucu-lucuan.
-            Aku bikin ini karena kamu punya tempat kecil yang manis di pikiranku
-            <span class="emoji-pop">🌷</span>
+            Aku bikin ini karena kamu punya tempat kecil yang manis di pikiranku 🌷
           </p>
 
-          <p class="final-line">
+          <p class="letter-line">
             Dari awal aku pengen kamu senyum,
             terus sedikit baper,
             terus pura-pura ngambek,
-            lalu akhirnya ngerasa hangat lagi
-            <span class="emoji-pop">😚</span>
+            lalu akhirnya ngerasa hangat lagi 😚
           </p>
 
-          <p class="final-line">
+          <p class="letter-line colorful">
+            Kamu itu kayak warna pink di hari yang abu-abu.
+            Datang pelan, tapi bikin semuanya kelihatan lebih lembut 🎀
+          </p>
+
+          <p class="letter-line">
             Aku suka caramu hadir.
             Suka caramu bikin hal kecil terasa lebih hidup.
-            Suka caramu bikin aku senyum tanpa sadar
-            <span class="emoji-pop">✨</span>
+            Suka caramu bikin aku senyum tanpa sadar ✨
           </p>
 
-          <p class="final-line colorful-line">
-            Kamu itu seperti warna pink di hari yang abu-abu.
-            Datang pelan, tapi bikin semuanya kelihatan lebih lembut
-            <span class="emoji-pop">🎀</span>
-          </p>
-
-          <p class="final-line">
+          <p class="letter-line">
             Mungkin aku sering bercanda,
             tapi bagian ini serius.
           </p>
 
-          <p class="final-line big-love">
-            <span class="rainbow-word">Aku suka kamu.</span>
-            <span class="emoji-pop">💞</span>
+          <p class="letter-line big-love">
+            Aku suka kamu 💞
           </p>
 
-          <p class="final-line">
+          <p class="letter-line">
             Sederhana aja.
             Nggak ribet.
             Nggak dibuat-buat.
           </p>
 
-          <p class="final-line colorful-line">
+          <p class="letter-line colorful">
             Kalau setelah baca ini kamu senyum,
-            berarti misi kecilku berhasil
-            <span class="emoji-pop">🌸✨💗</span>
+            berarti misi kecilku berhasil 🌸✨💗
           </p>
         </div>
 
         <div id="finalActions" class="final-actions hidden">
-          <button id="celebrateBtn" class="btn-primary">
+          <button id="celebrateBtn" class="main-button">
             Hujanin hati
           </button>
 
-          <button id="restartBtn" class="btn-secondary">
+          <button id="restartBtn" class="secondary-button">
             Ulang dari awal
           </button>
         </div>
-      </div>
+      </article>
     </section>
   </main>
 

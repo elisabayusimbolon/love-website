@@ -1,134 +1,130 @@
 const $ = (id) => document.getElementById(id)
 
-function goTo(sceneId) {
-  document.querySelectorAll(".scene").forEach((scene) => {
-    scene.classList.remove("active")
+let currentScene = "scene-1"
+let isSwitching = false
+let heartInterval = null
+let sceneTimers = []
+let dinoMoodInterval = null
+
+function setAppHeight() {
+  document.documentElement.style.setProperty("--app-height", `${window.innerHeight}px`)
+}
+
+function safeTimeout(callback, delay) {
+  const timer = setTimeout(callback, delay)
+  sceneTimers.push(timer)
+  return timer
+}
+
+function clearSceneTimers() {
+  sceneTimers.forEach((timer) => clearTimeout(timer))
+  sceneTimers = []
+
+  clearInterval(heartInterval)
+  heartInterval = null
+}
+
+function goTo(sceneId, callback) {
+  if (isSwitching || sceneId === currentScene) return
+
+  isSwitching = true
+  clearSceneTimers()
+
+  const current = $(currentScene)
+  const next = $(sceneId)
+
+  if (!next) {
+    isSwitching = false
+    return
+  }
+
+  if (current) {
+    current.classList.remove("active")
+  }
+
+  requestAnimationFrame(() => {
+    next.classList.add("active")
+
+    const card = next.querySelector(".phone-card")
+    if (card) card.scrollTop = 0
+
+    currentScene = sceneId
+    updateGuide(sceneId)
+
+    safeTimeout(() => {
+      isSwitching = false
+      if (typeof callback === "function") callback()
+    }, 440)
   })
-
-  const target = $(sceneId)
-  if (!target) return
-
-  target.classList.add("active")
-
-  const card = target.querySelector(".cute-card")
-  if (card) card.scrollTop = 0
-
-  updateGuide(sceneId)
-}
-
-function on(id, event, handler) {
-  const element = $(id)
-  if (!element) return
-
-  element.addEventListener(event, handler)
-}
-
-/* GUIDE */
-
-const guideTexts = {
-  "scene-1": "aku nemenin dari awal 💛",
-  "scene-2": "tangkap hatinya yaa 💘",
-  "scene-3": "siap-siap baper 😚",
-  "scene-4": "ngambeknya lucu aja 😤",
-  "scene-5": "pelan-pelan dulu ya 🌙",
-  "scene-6": "akhirnya sampai sini 💌"
 }
 
 function updateGuide(sceneId) {
-  const bubble = $("guideBubble")
-  if (!bubble) return
+  const texts = {
+    "scene-1": "aku nemenin 💛",
+    "scene-2": "tangkap hatinya 💘",
+    "scene-3": "siap-siap baper 😚",
+    "scene-4": "ngambeknya lucu aja 😤",
+    "scene-5": "pelan-pelan dulu 🌙",
+    "scene-6": "akhirnya sampai 💌"
+  }
 
-  bubble.textContent = guideTexts[sceneId] || "aku di sini 💛"
+  const bubble = $("guideBubble")
+  if (bubble) bubble.textContent = texts[sceneId] || "aku di sini 💛"
 }
 
-/* FLOATING BACKGROUND */
+/* BACKGROUND */
 
-const floatingItems = [
-  "♡",
-  "💗",
-  "💕",
-  "hehe",
-  "cute",
-  "love",
-  "🌸",
-  "baper",
-  "gemes",
-  "✧"
-]
+const floatingItems = ["♡", "💗", "💕", "hehe", "cute", "love", "🌸", "baper", "gemes", "✧"]
 
 function spawnFloatingItem() {
-  const area = $("floatingArea")
+  const area = $("floatLayer")
   if (!area) return
 
   const item = document.createElement("div")
   item.className = "float-item"
   item.textContent = floatingItems[Math.floor(Math.random() * floatingItems.length)]
-
   item.style.left = Math.random() * 100 + "vw"
-  item.style.fontSize = 12 + Math.random() * 12 + "px"
-  item.style.animationDuration = 7 + Math.random() * 8 + "s"
+  item.style.fontSize = 11 + Math.random() * 11 + "px"
+  item.style.animationDuration = 7 + Math.random() * 7 + "s"
 
   area.appendChild(item)
 
-  setTimeout(() => item.remove(), 16000)
+  setTimeout(() => item.remove(), 15000)
 }
 
-/* CURSOR HEART */
-
-let cursorCooldown = false
-
-function spawnCursorHeart(x, y) {
-  if (cursorCooldown) return
-
-  cursorCooldown = true
-
-  const area = $("cursorArea")
+function spawnTapHeart(x, y) {
+  const area = $("tapLayer")
   if (!area) return
 
   const heart = document.createElement("div")
-  heart.className = "cursor-heart"
-  heart.textContent = ["♡", "💗", "💕", "✦", "🌸"][Math.floor(Math.random() * 5)]
+  heart.className = "tap-heart"
+  heart.textContent = ["♡", "💗", "💕", "🌸", "✦"][Math.floor(Math.random() * 5)]
   heart.style.left = x + "px"
   heart.style.top = y + "px"
 
   area.appendChild(heart)
 
   setTimeout(() => heart.remove(), 900)
-
-  setTimeout(() => {
-    cursorCooldown = false
-  }, 90)
 }
 
-/* CONFETTI */
-
 function launchConfetti() {
-  const area = $("confettiArea")
+  const area = $("confettiLayer")
   if (!area) return
 
-  const colors = [
-    "#ff7fbd",
-    "#e13691",
-    "#ffd1e6",
-    "#ffffff",
-    "#ffb6d9",
-    "#c92d7c",
-    "#ffe58a",
-    "#cfa8ff"
-  ]
+  const colors = ["#ff7fbd", "#e13691", "#ffd1e6", "#ffffff", "#ffb6d9", "#ffe58a", "#cfa8ff"]
 
-  for (let i = 0; i < 120; i++) {
+  for (let i = 0; i < 110; i++) {
     const item = document.createElement("div")
-    const size = 5 + Math.random() * 8
+    const size = 5 + Math.random() * 7
 
     item.className = "confetti"
     item.style.left = Math.random() * 100 + "vw"
     item.style.width = size + "px"
     item.style.height = size + "px"
     item.style.background = colors[Math.floor(Math.random() * colors.length)]
-    item.style.animationDuration = 2.4 + Math.random() * 2.8 + "s"
-    item.style.animationDelay = Math.random() * 0.7 + "s"
-    item.style.setProperty("--move-x", (Math.random() - 0.5) * 180 + "px")
+    item.style.animationDuration = 2.2 + Math.random() * 2.8 + "s"
+    item.style.animationDelay = Math.random() * 0.6 + "s"
+    item.style.setProperty("--move-x", (Math.random() - 0.5) * 170 + "px")
 
     area.appendChild(item)
 
@@ -136,109 +132,92 @@ function launchConfetti() {
   }
 }
 
-/* NAILONG INTRO */
+/* MASCOT */
 
-const nailongMoods = [
-  { face: "♥ᴗ♥", text: "buat kamu" },
-  { face: "•ᴗ•", text: "klik amplop" },
-  { face: "◕ᴗ◕", text: "jangan malu" },
-  { face: "≧ᴗ≦", text: "ayo dong" },
-  { face: "˶ᵔᵕᵔ˶", text: "gemes ya?" }
-]
+const mascotTexts = ["haiii 💗", "klik amplop", "jangan malu", "ayo dong", "gemes ya?"]
 
-let nailongIndex = 0
-let nailongTimer = null
+let mascotIndex = 0
 
-function renderNailongMood() {
-  const mood = nailongMoods[nailongIndex]
+function startMascotLoop() {
+  clearInterval(dinoMoodInterval)
 
-  const face = $("nailongFace")
-  const bubble = $("mascotBubble")
+  dinoMoodInterval = setInterval(() => {
+    mascotIndex = (mascotIndex + 1) % mascotTexts.length
 
-  if (face) face.textContent = mood.face
-  if (bubble) bubble.textContent = mood.text
-}
-
-function startNailongLoop() {
-  clearInterval(nailongTimer)
-
-  renderNailongMood()
-
-  nailongTimer = setInterval(() => {
-    nailongIndex = (nailongIndex + 1) % nailongMoods.length
-    renderNailongMood()
+    const bubble = $("mascotBubble")
+    if (bubble) bubble.textContent = mascotTexts[mascotIndex]
   }, 1300)
 }
 
-function openIntroEnvelope() {
-  const envelope = $("secretEnvelope")
+/* SCENE 1 */
+
+function openEnvelope() {
+  const envelope = $("envelope")
+  const bubble = $("mascotBubble")
 
   if (envelope) envelope.classList.add("open")
-
-  const bubble = $("mascotBubble")
   if (bubble) bubble.textContent = "yeayy kebuka 💌"
 
-  for (let i = 0; i < 18; i++) {
+  for (let i = 0; i < 16; i++) {
     setTimeout(spawnFloatingItem, i * 45)
   }
 
   setTimeout(() => {
-    goTo("scene-2")
-    initHeartGame()
-  }, 1050)
+    goTo("scene-2", initHeartGame)
+  }, 850)
 }
 
-/* SCENE 2: HEART GAME */
+/* SCENE 2 - HEART GAME */
 
-let cuteScore = 0
-let heartInterval = null
-const maxCuteScore = 5
+let heartScore = 0
+const maxHeartScore = 5
 
 function initHeartGame() {
-  cuteScore = 0
+  heartScore = 0
 
-  $("cuteScore").textContent = cuteScore
-  $("nextToRiddleBtn").classList.add("hidden")
-  $("cuteHint").textContent = "siap-siap yaa..."
-
+  const score = $("heartScore")
+  const hint = $("heartHint")
+  const button = $("toRiddleBtn")
   const game = $("heartGame")
-  game.querySelectorAll(".catch-heart").forEach((heart) => heart.remove())
 
-  clearInterval(heartInterval)
+  if (score) score.textContent = "0"
+  if (hint) hint.textContent = "siap-siap yaa..."
+  if (button) button.classList.add("hidden")
+  if (game) game.querySelectorAll(".catch-heart").forEach((heart) => heart.remove())
 
-  setTimeout(() => {
-    $("cuteHint").textContent = "klik hati yang muncul 💕"
+  safeTimeout(() => {
+    if ($("heartHint")) $("heartHint").textContent = "klik hati yang muncul 💕"
     spawnCatchHeart()
-    heartInterval = setInterval(spawnCatchHeart, 760)
-  }, 500)
+    heartInterval = setInterval(spawnCatchHeart, 780)
+  }, 480)
 }
 
 function spawnCatchHeart() {
   const game = $("heartGame")
-  if (!game || cuteScore >= maxCuteScore) return
+  if (!game || heartScore >= maxHeartScore) return
 
   const heart = document.createElement("button")
   heart.className = "catch-heart"
+  heart.type = "button"
+  heart.textContent = ["💗", "💕", "💖", "💘", "🌸"][Math.floor(Math.random() * 5)]
 
-  const hearts = ["💗", "💕", "💖", "💘", "🌸"]
-  heart.textContent = hearts[Math.floor(Math.random() * hearts.length)]
-
-  const maxX = game.clientWidth - 54
-  const maxY = game.clientHeight - 54
+  const maxX = Math.max(10, game.clientWidth - 50)
+  const maxY = Math.max(10, game.clientHeight - 50)
 
   heart.style.left = Math.max(10, Math.random() * maxX) + "px"
   heart.style.top = Math.max(10, Math.random() * maxY) + "px"
 
   heart.addEventListener("click", () => {
-    cuteScore++
-    $("cuteScore").textContent = cuteScore
+    heartScore++
+
+    if ($("heartScore")) $("heartScore").textContent = heartScore
 
     heart.textContent = "✨"
     heart.style.pointerEvents = "none"
 
-    setTimeout(() => heart.remove(), 150)
+    setTimeout(() => heart.remove(), 120)
 
-    if (cuteScore >= maxCuteScore) {
+    if (heartScore >= maxHeartScore) {
       finishHeartGame()
     }
   })
@@ -252,199 +231,174 @@ function spawnCatchHeart() {
 
 function finishHeartGame() {
   clearInterval(heartInterval)
+  heartInterval = null
 
   const game = $("heartGame")
-  game.querySelectorAll(".catch-heart").forEach((heart) => heart.remove())
+  if (game) game.querySelectorAll(".catch-heart").forEach((heart) => heart.remove())
 
-  $("cuteHint").textContent = "yeay, hatinya ketangkep semua 😚"
-  $("nextToRiddleBtn").classList.remove("hidden")
+  if ($("heartHint")) $("heartHint").textContent = "yeay, hatinya ketangkep semua 😚"
+  if ($("toRiddleBtn")) $("toRiddleBtn").classList.remove("hidden")
 
-  for (let i = 0; i < 18; i++) {
+  for (let i = 0; i < 16; i++) {
     setTimeout(spawnFloatingItem, i * 45)
   }
 }
 
-/* SCENE 3: RIDDLE */
+/* SCENE 3 - RIDDLE */
 
 const riddles = [
   {
     question: "Kalau aku disuruh pilih tempat paling nyaman, aku pilih...",
-    options: [
-      "Kasur yang empuk",
-      "Rumah yang tenang",
-      "Kamu",
-      "Kafe lucu"
-    ],
-    correctIndex: 2,
+    options: ["Kasur empuk", "Rumah yang tenang", "Kamu", "Kafe lucu"],
+    correct: 2,
     emoji: "🏡",
-    correctText:
-      "Iya, kamu. Soalnya kadang rumah bukan tempat, tapi seseorang yang bikin hati ngerasa aman."
+    text: "Iya, kamu. Soalnya kadang rumah bukan tempat, tapi seseorang yang bikin hati ngerasa aman."
   },
   {
     question: "Kenapa aku bikin website kecil ini?",
-    options: [
-      "Karena lagi gabut",
-      "Karena kamu spesial",
-      "Karena disuruh Nailong",
-      "Karena internet lancar"
-    ],
-    correctIndex: 1,
+    options: ["Karena gabut", "Karena kamu spesial", "Karena disuruh dino", "Karena internet lancar"],
+    correct: 1,
     emoji: "💌",
-    correctText:
-      "Benar. Karena kamu terlalu spesial buat cuma dikasih chat biasa."
+    text: "Benar. Karena kamu terlalu spesial buat cuma dikasih chat biasa."
   },
   {
     question: "Kalau kamu senyum, efeknya ke aku apa?",
-    options: [
-      "Biasa aja",
-      "Loading sebentar",
-      "Ikut senyum tanpa sadar",
-      "Error 404"
-    ],
-    correctIndex: 2,
+    options: ["Biasa aja", "Loading sebentar", "Ikut senyum tanpa sadar", "Error 404"],
+    correct: 2,
     emoji: "😳",
-    correctText:
-      "Benar. Senyum kamu tuh bahaya, bisa bikin aku lupa pura-pura biasa aja."
+    text: "Benar. Senyum kamu tuh bahaya, bisa bikin aku lupa pura-pura biasa aja."
   }
 ]
 
 let riddleIndex = 0
-let riddleWrong = 0
+let wrongCount = 0
 
 function initRiddle() {
   riddleIndex = 0
-  riddleWrong = 0
+  wrongCount = 0
   showRiddle()
 }
 
 function showRiddle() {
   const riddle = riddles[riddleIndex]
-
-  $("riddleCounter").textContent = `gombalan ${riddleIndex + 1} dari ${riddles.length}`
-  $("riddleQuestion").textContent = riddle.question
-  $("riddleFeedback").classList.add("hidden")
-  $("nextRiddleBtn").classList.add("hidden")
-
   const options = $("riddleOptions")
+
+  if ($("riddleCount")) $("riddleCount").textContent = `gombalan ${riddleIndex + 1} dari ${riddles.length}`
+  if ($("riddleQuestion")) $("riddleQuestion").textContent = riddle.question
+  if ($("riddleResult")) $("riddleResult").classList.add("hidden")
+  if ($("nextRiddleBtn")) $("nextRiddleBtn").classList.add("hidden")
+
+  if (!options) return
+
   options.innerHTML = ""
 
-  riddle.options.forEach((option, index) => {
+  riddle.options.forEach((text, index) => {
     const button = document.createElement("button")
     button.className = "riddle-option"
-    button.textContent = option
-    button.addEventListener("click", () => chooseRiddleOption(index, button))
-
+    button.type = "button"
+    button.textContent = text
+    button.addEventListener("click", () => chooseRiddle(index, button))
     options.appendChild(button)
   })
 }
 
-function chooseRiddleOption(index, button) {
+function chooseRiddle(index, selectedButton) {
   const riddle = riddles[riddleIndex]
   const buttons = document.querySelectorAll(".riddle-option")
 
-  buttons.forEach((item) => {
-    item.disabled = true
+  buttons.forEach((button) => {
+    button.disabled = true
   })
 
-  $("riddleFeedback").classList.remove("hidden")
+  if ($("riddleResult")) $("riddleResult").classList.remove("hidden")
 
-  if (index === riddle.correctIndex) {
-    button.classList.add("correct")
+  if (index === riddle.correct) {
+    selectedButton.classList.add("correct")
 
-    $("feedbackEmoji").textContent = riddle.emoji
-    $("feedbackText").textContent = riddle.correctText
+    if ($("riddleEmoji")) $("riddleEmoji").textContent = riddle.emoji
+    if ($("riddleText")) $("riddleText").textContent = riddle.text
 
-    $("nextRiddleBtn").classList.remove("hidden")
-    $("nextRiddleBtn").textContent =
-      riddleIndex < riddles.length - 1
-        ? "Gombalan berikutnya"
-        : "Lanjut, tapi jangan pura-pura nggak baper"
+    const nextButton = $("nextRiddleBtn")
+    if (nextButton) {
+      nextButton.classList.remove("hidden")
+      nextButton.textContent =
+        riddleIndex < riddles.length - 1
+          ? "Gombalan berikutnya"
+          : "Lanjut, jangan pura-pura nggak baper"
+    }
 
     return
   }
 
-  button.classList.add("wrong")
-  riddleWrong++
+  wrongCount++
+  selectedButton.classList.add("wrong")
 
-  $("feedbackEmoji").textContent = "😚"
-
-  if (riddleWrong >= 2) {
-    $("feedbackText").textContent =
-      "Aku kasih clue ya: pilih jawaban yang paling bikin pipi panas."
-  } else {
-    $("feedbackText").textContent =
-      "Hmm hampir, tapi coba pikir pakai hati, jangan pakai logika dulu."
+  if ($("riddleEmoji")) $("riddleEmoji").textContent = "😚"
+  if ($("riddleText")) {
+    $("riddleText").textContent =
+      wrongCount >= 2
+        ? "Clue-nya: pilih jawaban yang paling bikin pipi panas."
+        : "Hmm hampir, tapi coba pikir pakai hati, jangan pakai logika dulu."
   }
 
-  setTimeout(() => {
-    buttons.forEach((item) => {
-      item.disabled = false
-      item.classList.remove("wrong")
+  safeTimeout(() => {
+    buttons.forEach((button) => {
+      button.disabled = false
+      button.classList.remove("wrong")
     })
-  }, 900)
+  }, 780)
 }
 
 function nextRiddle() {
   riddleIndex++
-  riddleWrong = 0
+  wrongCount = 0
 
   if (riddleIndex < riddles.length) {
     showRiddle()
   } else {
-    goTo("scene-4")
-    initMoodScene()
+    goTo("scene-4", initMood)
   }
 }
 
-/* SCENE 4: USER POUT */
+/* SCENE 4 - MOOD */
 
-function initMoodScene() {
-  $("moodOptions").classList.remove("hidden")
-  $("poutBox").classList.add("hidden")
-  $("toValidationBtn").classList.add("hidden")
-  $("poutMeterFill").style.width = "100%"
-
-  $("moodText").textContent =
-    "Pilih alasan ngambek kamu. Tapi ngambeknya yang lucu aja ya."
+function initMood() {
+  if ($("moodOptions")) $("moodOptions").classList.remove("hidden")
+  if ($("poutBox")) $("poutBox").classList.add("hidden")
+  if ($("toValidationBtn")) $("toValidationBtn").classList.add("hidden")
+  if ($("poutFill")) $("poutFill").style.width = "100%"
+  if ($("moodIntro")) {
+    $("moodIntro").textContent = "Pilih alasan ngambek kamu. Tapi ngambeknya yang lucu aja ya."
+  }
 }
 
 function chooseMood(event) {
-  const button = event.target.closest(".mood-btn")
+  const button = event.target.closest(".choice-button")
   if (!button) return
 
-  const mood = button.dataset.mood
-
   const messages = {
-    baper:
-      "Aduh, kamu mulai baper ya? Nggak apa-apa. Baper yang ini aman kok.",
-    jail:
-      "Iya, websitenya memang jail. Tapi jailnya sayang-sayang, bukan jahat.",
-    senyum:
-      "Ketahuan senyum sendiri. Lucu banget sih, jadi aku ikut senyum juga."
+    baper: "Aduh, kamu mulai baper ya? Nggak apa-apa. Baper yang ini aman kok.",
+    jail: "Iya, websitenya memang jail. Tapi jailnya sayang-sayang, bukan jahat.",
+    senyum: "Ketahuan senyum sendiri. Lucu banget sih, jadi aku ikut senyum juga."
   }
 
-  $("moodOptions").classList.add("hidden")
-  $("poutBox").classList.remove("hidden")
-  $("toValidationBtn").classList.remove("hidden")
-  $("moodText").textContent = "Oke, sekarang kamu boleh ngambek manja."
+  if ($("moodOptions")) $("moodOptions").classList.add("hidden")
+  if ($("poutBox")) $("poutBox").classList.remove("hidden")
+  if ($("toValidationBtn")) $("toValidationBtn").classList.remove("hidden")
+  if ($("moodIntro")) $("moodIntro").textContent = "Oke, sekarang kamu boleh ngambek manja."
+  if ($("poutText")) $("poutText").textContent = messages[button.dataset.mood] || messages.baper
 
-  $("poutMessage").textContent = messages[mood] || messages.baper
-
-  setTimeout(() => {
-    $("poutMeterFill").style.width = "18%"
-  }, 250)
-
-  for (let i = 0; i < 10; i++) {
-    setTimeout(spawnFloatingItem, i * 70)
-  }
+  safeTimeout(() => {
+    if ($("poutFill")) $("poutFill").style.width = "18%"
+  }, 180)
 }
 
-/* SCENE 5: VALIDATION */
+/* SCENE 5 - VALIDATION */
 
-function initValidationScene() {
-  $("startValidationBtn").classList.remove("hidden")
-  $("validationLines").classList.add("hidden")
-  $("nextToFinalBtn").classList.add("hidden")
+function initValidation() {
+  if ($("startValidationBtn")) $("startValidationBtn").classList.remove("hidden")
+  if ($("validationLines")) $("validationLines").classList.add("hidden")
+  if ($("toFinalBtn")) $("toFinalBtn").classList.add("hidden")
 
   document.querySelectorAll(".validation-line").forEach((line) => {
     line.classList.remove("show")
@@ -452,112 +406,104 @@ function initValidationScene() {
 }
 
 function startValidation() {
-  $("startValidationBtn").classList.add("hidden")
-  $("validationLines").classList.remove("hidden")
+  if ($("startValidationBtn")) $("startValidationBtn").classList.add("hidden")
+  if ($("validationLines")) $("validationLines").classList.remove("hidden")
 
   const lines = document.querySelectorAll(".validation-line")
 
   lines.forEach((line, index) => {
-    setTimeout(() => {
-      line.classList.add("show")
-    }, index * 650)
-  })
-
-  setTimeout(() => {
-    $("nextToFinalBtn").classList.remove("hidden")
-  }, lines.length * 650 + 300)
-}
-
-/* SCENE 6: FINAL */
-
-function initFinalScene() {
-  $("openLetterBtn").classList.remove("hidden")
-  $("finalLetter").classList.add("hidden")
-  $("finalActions").classList.add("hidden")
-
-  document.querySelectorAll(".final-line").forEach((line) => {
-    line.classList.remove("show")
-  })
-}
-
-function openFinalLetter() {
-  $("openLetterBtn").classList.add("hidden")
-  $("finalLetter").classList.remove("hidden")
-
-  const lines = document.querySelectorAll(".final-line")
-
-  lines.forEach((line, index) => {
-    setTimeout(() => {
+    safeTimeout(() => {
       line.classList.add("show")
     }, index * 520)
   })
 
-  setTimeout(() => {
-    $("finalActions").classList.remove("hidden")
-    launchConfetti()
-  }, lines.length * 520 + 500)
+  safeTimeout(() => {
+    if ($("toFinalBtn")) $("toFinalBtn").classList.remove("hidden")
+  }, lines.length * 520 + 260)
 }
 
-function restartWebsite() {
-  clearInterval(heartInterval)
+/* SCENE 6 - FINAL */
 
-  const envelope = $("secretEnvelope")
+function initFinal() {
+  if ($("openLetterBtn")) $("openLetterBtn").classList.remove("hidden")
+  if ($("letterBox")) $("letterBox").classList.add("hidden")
+  if ($("finalActions")) $("finalActions").classList.add("hidden")
+
+  document.querySelectorAll(".letter-line").forEach((line) => {
+    line.classList.remove("show")
+  })
+}
+
+function openLetter() {
+  if ($("openLetterBtn")) $("openLetterBtn").classList.add("hidden")
+  if ($("letterBox")) $("letterBox").classList.remove("hidden")
+
+  const lines = document.querySelectorAll(".letter-line")
+
+  lines.forEach((line, index) => {
+    safeTimeout(() => {
+      line.classList.add("show")
+    }, index * 420)
+  })
+
+  safeTimeout(() => {
+    if ($("finalActions")) $("finalActions").classList.remove("hidden")
+    launchConfetti()
+  }, lines.length * 420 + 420)
+}
+
+function restart() {
+  clearSceneTimers()
+
+  const envelope = $("envelope")
   if (envelope) envelope.classList.remove("open")
 
-  initFinalScene()
   goTo("scene-1")
 }
 
 /* EVENTS */
 
 document.addEventListener("DOMContentLoaded", () => {
-  goTo("scene-1")
-  startNailongLoop()
+  setAppHeight()
+  updateGuide("scene-1")
+  startMascotLoop()
 
-  setInterval(spawnFloatingItem, 850)
+  window.addEventListener("resize", setAppHeight)
+  window.addEventListener("orientationchange", () => {
+    setTimeout(setAppHeight, 250)
+  })
 
-  for (let i = 0; i < 14; i++) {
+  setInterval(spawnFloatingItem, 980)
+
+  for (let i = 0; i < 12; i++) {
     setTimeout(spawnFloatingItem, i * 140)
   }
 
-  document.addEventListener("mousemove", (event) => {
-    spawnCursorHeart(event.clientX, event.clientY)
+  document.addEventListener("pointerdown", (event) => {
+    spawnTapHeart(event.clientX, event.clientY)
   })
 
-  document.addEventListener("touchstart", (event) => {
-    const touch = event.touches[0]
-    if (!touch) return
+  $("startBtn").addEventListener("click", openEnvelope)
 
-    spawnCursorHeart(touch.clientX, touch.clientY)
+  $("toRiddleBtn").addEventListener("click", () => {
+    goTo("scene-3", initRiddle)
   })
 
-  on("startBtn", "click", openIntroEnvelope)
+  $("nextRiddleBtn").addEventListener("click", nextRiddle)
 
-  on("nextToRiddleBtn", "click", () => {
-    goTo("scene-3")
-    initRiddle()
+  $("moodOptions").addEventListener("click", chooseMood)
+
+  $("toValidationBtn").addEventListener("click", () => {
+    goTo("scene-5", initValidation)
   })
 
-  on("nextRiddleBtn", "click", nextRiddle)
+  $("startValidationBtn").addEventListener("click", startValidation)
 
-  const moodOptions = $("moodOptions")
-  if (moodOptions) {
-    moodOptions.addEventListener("click", chooseMood)
-  }
-
-  on("toValidationBtn", "click", () => {
-    goTo("scene-5")
-    initValidationScene()
+  $("toFinalBtn").addEventListener("click", () => {
+    goTo("scene-6", initFinal)
   })
 
-  on("startValidationBtn", "click", startValidation)
-
-  on("nextToFinalBtn", "click", () => {
-    goTo("scene-6")
-    initFinalScene()
-  })
-
-  on("openLetterBtn", "click", openFinalLetter)
-  on("celebrateBtn", "click", launchConfetti)
-  on("restartBtn", "click", restartWebsite)
+  $("openLetterBtn").addEventListener("click", openLetter)
+  $("celebrateBtn").addEventListener("click", launchConfetti)
+  $("restartBtn").addEventListener("click", restart)
 })
