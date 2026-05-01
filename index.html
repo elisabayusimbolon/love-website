@@ -3,12 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>Buat Kamu 💗</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@500;600;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Cherry+Bomb+One&family=Dancing+Script:wght@600;700&family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@500;600;700&display=swap"
     rel="stylesheet"
   />
 
@@ -22,12 +23,13 @@
 
   <div id="floatingArea" class="floating-area"></div>
   <div id="confettiArea" class="confetti-area"></div>
+  <div id="cursorArea" class="cursor-area"></div>
 
   <main id="app">
     <!-- SCENE 1 -->
     <section id="scene-1" class="scene active">
       <div class="cute-card intro-card">
-        <div class="top-pill">special mission for you</div>
+        <div class="top-pill">for my favorite person</div>
 
         <div class="mascot-wrap">
           <div id="mascotBubble" class="mascot-bubble">haiii 💗</div>
@@ -37,34 +39,38 @@
             <div class="ear ear-right"></div>
 
             <div class="face">
-              <div class="eye eye-left" id="leftEye">•</div>
-              <div class="eye eye-right" id="rightEye">•</div>
+              <div id="leftEye" class="eye eye-left">•</div>
+              <div id="rightEye" class="eye eye-right">•</div>
               <div class="blush blush-left"></div>
               <div class="blush blush-right"></div>
-              <div class="mouth" id="mascotMouth">ᴗ</div>
+              <div id="mascotMouth" class="mouth">ᴗ</div>
             </div>
           </div>
         </div>
 
-        <p class="mini-text">pssst... sini dulu</p>
+        <p class="mini-text">pssst... buka pelan-pelan</p>
 
-        <h1>Haiii kamu 💕</h1>
+        <h1>Aku punya kejutan kecil</h1>
 
         <p class="main-text short-text">
-          Aku bikin sesuatu yang lucu buat kamu.
-          Mau main bentar nggak?
+          Bukan apa-apa sih.
+          Cuma sesuatu yang dibuat khusus buat kamu.
         </p>
 
-        <div class="hint-box">
-          <span>🌸</span>
-          <p>Awalnya gemes, tengahnya ngeselin dikit, ujungnya manis banget.</p>
-        </div>
-
-        <button id="startBtn" class="btn-primary">
-          Mauu, mulai
+        <button id="startBtn" class="envelope-btn" aria-label="Buka amplop">
+          <div id="secretEnvelope" class="secret-envelope">
+            <div class="env-back"></div>
+            <div class="env-letter">
+              <span>buat kamu</span>
+              <strong>💌</strong>
+            </div>
+            <div class="env-front"></div>
+            <div class="env-flap"></div>
+            <div class="env-heart">♡</div>
+          </div>
         </button>
 
-        <p class="tiny-note">ayo klik, jangan malu-malu 😚</p>
+        <p class="tiny-note">klik amplopnya yaa, jangan cuma dipandangi 😚</p>
       </div>
     </section>
 
@@ -74,14 +80,14 @@
         <div class="scene-badge">💗</div>
 
         <p class="mini-text">level 1</p>
-        <h2>Tangkap 5 hati dulu</h2>
+        <h2>Tangkap 5 hati</h2>
 
         <p class="main-text short-text">
-          Kalau berhasil, kamu boleh lanjut.
+          Hatinya kabur. Tolong tangkapin dulu.
         </p>
 
         <div class="score-card">
-          <span>hati terkumpul</span>
+          <span>hati</span>
           <strong><span id="cuteScore">0</span>/5</strong>
         </div>
 
@@ -104,7 +110,7 @@
         <h2>Aku ngambek.</h2>
 
         <p id="angryText" class="main-text short-text">
-          Soalnya kamu bikin aku gemes.
+          Soalnya kamu terlalu gemes.
           Sekarang bujuk aku dulu.
         </p>
 
@@ -136,18 +142,20 @@
         <div class="scene-badge">🌙</div>
 
         <p class="mini-text">level 3</p>
-        <h2>Sekarang pelan ya...</h2>
+        <h2>Pelanin dulu ya...</h2>
 
         <div class="sad-window">
           <div class="moon"></div>
+          <div class="star star-a">✦</div>
+          <div class="star star-b">✧</div>
           <div class="cloud cloud-a"></div>
           <div class="cloud cloud-b"></div>
           <div class="window-heart">♡</div>
         </div>
 
         <p class="main-text short-text">
-          Kadang aku bercanda terus,
-          padahal ada rasa yang aku simpan.
+          Aku sering bercanda,
+          tapi ada rasa yang diam-diam aku simpan.
         </p>
 
         <button id="hugBtn" class="btn-primary">
@@ -155,7 +163,7 @@
         </button>
 
         <div id="sadReveal" class="sad-reveal hidden">
-          <p>Makasih ya... sekarang rasanya lebih tenang 🤍</p>
+          <p>Makasih ya... sekarang hatinya agak hangat 🤍</p>
         </div>
 
         <button id="nextToFinalBtn" class="btn-primary hidden">
@@ -167,13 +175,13 @@
     <!-- SCENE 5 -->
     <section id="scene-5" class="scene">
       <div class="cute-card final-card">
-        <div class="scene-badge">💌</div>
+        <div class="scene-badge love-badge">💌</div>
 
         <p class="mini-text">final level</p>
         <h2>Ini buat kamu.</h2>
 
         <p class="main-text short-text">
-          Klik tombolnya. Suratnya kebuka pelan-pelan.
+          Klik tombolnya. Suratnya bakal kebuka pelan-pelan.
         </p>
 
         <button id="openLetterBtn" class="btn-primary">

@@ -33,6 +33,31 @@ function spawnFloatingItem() {
   setTimeout(() => item.remove(), 16000)
 }
 
+/* CURSOR / TAP HEART */
+
+let cursorCooldown = false
+
+function spawnCursorHeart(x, y) {
+  if (cursorCooldown) return
+  cursorCooldown = true
+
+  const area = $("cursorArea")
+  if (!area) return
+
+  const heart = document.createElement("div")
+  heart.className = "cursor-heart"
+  heart.textContent = ["♡", "💗", "💕", "✦"][Math.floor(Math.random() * 4)]
+  heart.style.left = x + "px"
+  heart.style.top = y + "px"
+
+  area.appendChild(heart)
+
+  setTimeout(() => heart.remove(), 900)
+  setTimeout(() => {
+    cursorCooldown = false
+  }, 90)
+}
+
 /* CONFETTI */
 
 function launchConfetti() {
@@ -64,9 +89,9 @@ function launchConfetti() {
 
 const mascotMoods = [
   { left: "•", right: "•", mouth: "ᴗ", text: "haiii 💗" },
-  { left: "◕", right: "◕", mouth: "ω", text: "klik aku" },
+  { left: "◕", right: "◕", mouth: "ω", text: "klik amplop" },
   { left: "˶", right: "˶", mouth: "ᴗ", text: "gemes ya?" },
-  { left: "≧", right: "≦", mouth: "o", text: "ayo main" },
+  { left: "≧", right: "≦", mouth: "o", text: "ayo dong" },
   { left: "♥", right: "♥", mouth: "ᴗ", text: "buat kamu" }
 ]
 
@@ -89,7 +114,23 @@ function startMascotLoop() {
   mascotTimer = setInterval(() => {
     mascotIndex = (mascotIndex + 1) % mascotMoods.length
     renderMascotMood()
-  }, 1400)
+  }, 1300)
+}
+
+function openIntroEnvelope() {
+  const envelope = $("secretEnvelope")
+  envelope.classList.add("open")
+
+  $("mascotBubble").textContent = "yeayy kebuka 💌"
+
+  for (let i = 0; i < 18; i++) {
+    setTimeout(spawnFloatingItem, i * 45)
+  }
+
+  setTimeout(() => {
+    goTo("scene-2")
+    initCuteGame()
+  }, 1050)
 }
 
 /* SCENE 2: HEART GAME */
@@ -112,7 +153,7 @@ function initCuteGame() {
   setTimeout(() => {
     $("cuteHint").textContent = "klik hati yang muncul 💕"
     spawnCatchHeart()
-    heartInterval = setInterval(spawnCatchHeart, 800)
+    heartInterval = setInterval(spawnCatchHeart, 780)
   }, 500)
 }
 
@@ -152,7 +193,7 @@ function spawnCatchHeart() {
     if (heart.parentElement) {
       heart.remove()
     }
-  }, 1300)
+  }, 1250)
 }
 
 function finishCuteGame() {
@@ -189,7 +230,7 @@ function initAngryScene() {
   $("runawayBtn").classList.remove("hidden")
   $("nextToSadBtn").classList.add("hidden")
 
-  $("angryText").textContent = "Soalnya kamu bikin aku gemes. Sekarang bujuk aku dulu."
+  $("angryText").textContent = "Soalnya kamu terlalu gemes. Sekarang bujuk aku dulu."
   $("runawayBtn").style.transform = "translate(0, 0)"
 }
 
@@ -251,20 +292,26 @@ function virtualHug() {
 
 const finalLetter = `Hai kamu 💗
 
-Aku bikin ini cuma buat satu hal:
-biar kamu tahu kalau hadir kamu bikin hari aku lebih manis.
+Aku bikin ini bukan biar terlihat keren.
 
-Aku suka cara kamu bikin aku senyum.
-Aku suka cara kamu hadir,
-bahkan saat kamu nggak sadar.
+Aku cuma pengen kamu tahu,
+hadir kamu itu bikin hariku lebih manis.
 
-Jadi...
-kalau boleh jujur,
+Aku suka caramu bikin aku senyum.
+Aku suka caramu muncul di pikiranku
+tanpa diminta.
 
-aku suka kamu.
+Mungkin aku sering bercanda,
+tapi bagian ini serius.
 
-Dan kalau kamu senyum habis baca ini,
-berarti website kecil ini berhasil. ✨`
+Aku suka kamu.
+
+Sederhana aja.
+Nggak ribet.
+Nggak dibuat-buat.
+
+Kalau setelah baca ini kamu senyum,
+berarti misi kecilku berhasil. ✨`
 
 let typingTimer = null
 let isTyping = false
@@ -302,12 +349,16 @@ function openFinalLetter() {
         launchConfetti()
       }, 400)
     }
-  }, 24)
+  }, 23)
 }
 
 function restartWebsite() {
   clearInterval(heartInterval)
   clearInterval(typingTimer)
+
+  const envelope = $("secretEnvelope")
+  if (envelope) envelope.classList.remove("open")
+
   goTo("scene-1")
 }
 
@@ -323,10 +374,18 @@ document.addEventListener("DOMContentLoaded", () => {
     setTimeout(spawnFloatingItem, i * 140)
   }
 
-  $("startBtn").addEventListener("click", () => {
-    goTo("scene-2")
-    initCuteGame()
+  document.addEventListener("mousemove", (event) => {
+    spawnCursorHeart(event.clientX, event.clientY)
   })
+
+  document.addEventListener("touchstart", (event) => {
+    const touch = event.touches[0]
+    if (!touch) return
+
+    spawnCursorHeart(touch.clientX, touch.clientY)
+  })
+
+  $("startBtn").addEventListener("click", openIntroEnvelope)
 
   $("nextToAngryBtn").addEventListener("click", () => {
     goTo("scene-3")
