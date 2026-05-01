@@ -15,6 +15,18 @@
   --card-w: 430px;
 }
 
+@supports (height: 100svh) {
+  :root {
+    --screen-h: 100svh;
+  }
+}
+
+@supports (height: 100dvh) {
+  :root {
+    --screen-h: 100dvh;
+  }
+}
+
 html,
 body {
   width: 100%;
@@ -84,7 +96,8 @@ body {
 }
 
 @keyframes orbFloat {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0) scale(1);
   }
 
@@ -195,10 +208,16 @@ body {
   inset: 0;
   width: 100%;
   height: var(--screen-h);
-  padding: 18px 14px;
+  padding:
+    max(18px, env(safe-area-inset-top))
+    max(14px, env(safe-area-inset-right))
+    max(18px, env(safe-area-inset-bottom))
+    max(14px, env(safe-area-inset-left));
   display: grid;
   place-items: center;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   opacity: 0;
   pointer-events: none;
   transform: translateY(24px) scale(0.985);
@@ -218,9 +237,10 @@ body {
 }
 
 .cute-card {
-  width: min(100%, var(--card-w));
+  width: min(calc(100vw - 28px), var(--card-w));
   max-height: calc(var(--screen-h) - 36px);
   position: relative;
+  margin: auto;
   padding: 30px 20px 24px;
   text-align: center;
   border-radius: 32px;
@@ -270,11 +290,14 @@ body {
   }
 }
 
+/* TEXT */
+
 .top-pill {
   position: sticky;
   top: 0;
   z-index: 8;
   width: fit-content;
+  max-width: 100%;
   margin: -18px auto 12px;
   padding: 8px 18px;
   border-radius: 999px;
@@ -287,8 +310,6 @@ body {
   text-transform: uppercase;
   white-space: nowrap;
 }
-
-/* TEXT */
 
 .mini-text {
   margin-bottom: 8px;
@@ -358,7 +379,8 @@ h2 {
 }
 
 @keyframes bubbleTalk {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0);
   }
 
@@ -421,7 +443,8 @@ h2 {
 }
 
 @keyframes characterBounce {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0) rotate(-1deg);
   }
 
@@ -500,7 +523,9 @@ h2 {
 }
 
 @keyframes blink {
-  0%, 92%, 100% {
+  0%,
+  92%,
+  100% {
     transform: scaleY(1);
   }
 
@@ -668,7 +693,8 @@ h2 {
 }
 
 @keyframes heartFloatCute {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0) rotate(-8deg) scale(1);
   }
 
@@ -811,7 +837,8 @@ button {
 }
 
 @keyframes iconBounce {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0);
   }
 
@@ -825,7 +852,8 @@ button {
 }
 
 @keyframes poutShake {
-  0%, 100% {
+  0%,
+  100% {
     transform: rotate(0);
   }
 
@@ -843,7 +871,8 @@ button {
 }
 
 @keyframes lovePulse {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
   }
 
@@ -912,7 +941,8 @@ button {
 }
 
 @keyframes heartWiggle {
-  0%, 100% {
+  0%,
+  100% {
     transform: rotate(-8deg) scale(1);
   }
 
@@ -1135,7 +1165,8 @@ button {
 }
 
 @keyframes starTwinkle {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0.35;
     transform: scale(0.9);
   }
@@ -1206,7 +1237,8 @@ button {
 }
 
 @keyframes cloudMove {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateX(0);
   }
 
@@ -1227,7 +1259,8 @@ button {
 }
 
 @keyframes softBeat {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateX(-50%) scale(1);
   }
 
@@ -1288,7 +1321,6 @@ button {
 }
 
 .final-letter {
-  max-height: 42vh;
   max-height: calc(var(--screen-h) * 0.42);
   margin: 8px auto 16px;
   padding: 18px;
@@ -1370,7 +1402,8 @@ button {
 }
 
 @keyframes emojiPop {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1) rotate(0);
   }
 
@@ -1404,15 +1437,21 @@ button {
   }
 }
 
-/* MOBILE FIX */
+/* MOBILE RESPONSIVE FIX */
 
 @media (max-width: 560px) {
   :root {
-    --card-w: 378px;
+    --card-w: 360px;
+  }
+
+  html,
+  body {
+    overflow-x: hidden;
   }
 
   .scene {
-    padding: 12px 10px;
+    padding: 10px;
+    align-items: center;
   }
 
   .pink-bg::before {
@@ -1421,103 +1460,265 @@ button {
   }
 
   .cute-card {
-    width: min(100%, 378px);
-    max-height: calc(var(--screen-h) - 24px);
-    padding: 26px 16px 22px;
-    border-radius: 28px;
+    width: min(calc(100vw - 20px), 360px);
+    max-height: none;
+    padding: 22px 14px 18px;
+    border-radius: 24px;
+    overflow-y: visible;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
 
   .cute-card::before {
-    inset: 8px;
-    border-radius: 22px;
+    inset: 7px;
+    border-radius: 18px;
+  }
+
+  .top-pill {
+    max-width: calc(100% - 20px);
+    margin-top: -12px;
+    padding: 7px 12px;
+    font-size: 0.62rem;
+    white-space: normal;
   }
 
   h1 {
-    font-size: 2.65rem;
+    font-size: clamp(2.15rem, 10vw, 2.75rem);
   }
 
   h2 {
-    font-size: 2.18rem;
+    font-size: clamp(1.8rem, 8.5vw, 2.2rem);
   }
 
   .main-text {
-    font-size: 0.91rem;
-    line-height: 1.58;
+    margin-bottom: 12px;
+    font-size: 0.88rem;
+    line-height: 1.5;
+  }
+
+  .mini-text {
+    font-size: 0.68rem;
+    letter-spacing: 1.1px;
+  }
+
+  .character-wrap {
+    width: 110px;
+    margin-bottom: 6px;
   }
 
   .character-big {
-    width: 108px;
-    height: 112px;
+    width: 92px;
+    height: 98px;
   }
 
   .char-body {
-    width: 84px;
-    height: 80px;
+    width: 72px;
+    height: 70px;
   }
 
   .char-ear {
     top: 7px;
+    width: 24px;
+    height: 38px;
+  }
+
+  .ear-left {
+    left: 24px;
+  }
+
+  .ear-right {
+    right: 24px;
+  }
+
+  .char-eye {
+    top: 25px;
+    width: 10px;
+    height: 14px;
+  }
+
+  .eye-left {
+    left: 19px;
+  }
+
+  .eye-right {
+    right: 19px;
+  }
+
+  .char-cheek {
+    top: 43px;
+    width: 15px;
+    height: 8px;
+  }
+
+  .cheek-left {
+    left: 13px;
+  }
+
+  .cheek-right {
+    right: 13px;
+  }
+
+  .char-mouth {
+    top: 41px;
+    font-size: 0.95rem;
+  }
+
+  .char-arm {
+    top: 55px;
+  }
+
+  .char-foot {
+    bottom: -2px;
+  }
+
+  .heart-stack {
+    height: 44px;
+    margin-bottom: 8px;
+  }
+
+  .heart-stack span {
+    font-size: 2.15rem;
+  }
+
+  .heart-stack span:last-child {
+    font-size: 1.75rem;
+  }
+
+  .soft-note {
+    margin: 8px auto 16px;
+    padding: 11px 12px;
+  }
+
+  .scene-icon {
+    width: 54px;
+    height: 54px;
+    margin-bottom: 9px;
+    border-radius: 19px;
+    font-size: 1.7rem;
   }
 
   .heart-game {
-    height: 200px;
+    height: clamp(148px, 28svh, 185px);
+    margin-bottom: 14px;
+    border-radius: 22px;
   }
 
   .soft-window {
-    height: 145px;
+    height: clamp(115px, 24svh, 140px);
+    margin-bottom: 12px;
+    border-width: 6px;
+    border-radius: 22px;
   }
 
-  .cute-guide {
-    right: 8px;
-    bottom: 8px;
-    transform: scale(0.82);
-    transform-origin: right bottom;
+  .riddle-options,
+  .reaction-options {
+    gap: 8px;
+    margin: 12px auto;
   }
 
-  .guide-bubble {
-    display: none;
+  .riddle-option,
+  .reaction-btn {
+    min-height: 46px;
+    padding: 10px 12px;
+    border-radius: 16px;
+    font-size: 0.84rem;
+  }
+
+  .feedback-box,
+  .reaction-box {
+    margin: 10px auto 12px;
+    padding: 12px;
+    border-radius: 18px;
+  }
+
+  .validation-line {
+    padding: 9px 10px;
+    font-size: 0.82rem;
+    line-height: 1.38;
+  }
+
+  .final-sticky-head {
+    position: static;
+    padding-bottom: 10px;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .final-letter {
+    max-height: none;
+    padding: 14px;
+    overflow-y: visible;
+    border-radius: 18px;
+  }
+
+  .final-line {
+    margin-bottom: 12px;
+    font-size: 0.86rem;
+    line-height: 1.55;
   }
 
   .btn-primary,
   .btn-secondary {
     width: 100%;
-    max-width: 270px;
+    max-width: 100%;
+    min-height: 44px;
+    padding: 11px 18px;
   }
 
-  .final-letter {
-    max-height: calc(var(--screen-h) * 0.38);
+  .cute-guide {
+    display: none;
   }
 
   .final-actions {
     flex-direction: column;
-    align-items: center;
   }
 }
 
-@media (max-height: 680px) {
+@media (max-width: 380px), (max-height: 690px) {
+  .scene {
+    align-items: flex-start;
+  }
+
   .cute-card {
-    padding-top: 24px;
-    padding-bottom: 20px;
+    margin: 0 auto;
+    padding: 18px 12px 16px;
   }
 
   .character-big {
-    transform: scale(0.9);
+    width: 82px;
+    height: 88px;
   }
 
-  .heart-game,
+  .scene-icon {
+    width: 48px;
+    height: 48px;
+    font-size: 1.45rem;
+  }
+
+  .heart-game {
+    height: 140px;
+  }
+
   .soft-window {
-    height: 176px;
-  }
-
-  .final-letter {
-    max-height: calc(var(--screen-h) * 0.34);
+    height: 112px;
   }
 
   h1 {
-    font-size: 2.45rem;
+    font-size: 2.25rem;
   }
 
   h2 {
-    font-size: 2rem;
+    font-size: 1.85rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
   }
 }

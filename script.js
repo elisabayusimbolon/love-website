@@ -9,19 +9,34 @@ let riddleIndex = 0
 let mascotIndex = 0
 let mascotTimer = null
 let cursorCooldown = false
+let vhRaf = null
 
 const sceneTimers = []
 
 function setRealVh() {
-  const vh = window.innerHeight * 0.01
-  document.documentElement.style.setProperty("--vh", `${vh}px`)
+  if (vhRaf) cancelAnimationFrame(vhRaf)
+
+  vhRaf = requestAnimationFrame(() => {
+    const height = window.visualViewport?.height || window.innerHeight
+    const vh = height * 0.01
+
+    document.documentElement.style.setProperty("--vh", `${vh}px`)
+    document.documentElement.style.setProperty("--screen-h", `${height}px`)
+  })
 }
 
 setRealVh()
-window.addEventListener("resize", setRealVh)
+
+window.addEventListener("resize", setRealVh, { passive: true })
+
 window.addEventListener("orientationchange", () => {
   setTimeout(setRealVh, 250)
 })
+
+if (window.visualViewport) {
+  window.visualViewport.addEventListener("resize", setRealVh, { passive: true })
+  window.visualViewport.addEventListener("scroll", setRealVh, { passive: true })
+}
 
 function delay(fn, ms) {
   const timer = setTimeout(() => {
@@ -60,6 +75,8 @@ function goTo(sceneId, callback) {
 
   target.classList.add("active")
   currentScene = sceneId
+
+  target.scrollTop = 0
 
   const card = target.querySelector(".cute-card")
   if (card) card.scrollTop = 0
@@ -163,7 +180,13 @@ function launchConfetti() {
     "#cfa8ff"
   ]
 
-  for (let i = 0; i < 120; i++) {
+  const isMobileLike = window.matchMedia(
+    "(max-width: 560px), (hover: none), (pointer: coarse)"
+  ).matches
+
+  const total = isMobileLike ? 70 : 120
+
+  for (let i = 0; i < total; i++) {
     const item = document.createElement("div")
     const size = 5 + Math.random() * 8
 
@@ -477,7 +500,10 @@ function chooseRiddleOption(index, button) {
 
   button.classList.add("wrong")
 
-  if (feedbackEmoji) feedbackEmoji.textContent = ["🥺", "😚", "🫣"][Math.floor(Math.random() * 3)]
+  if (feedbackEmoji) {
+    feedbackEmoji.textContent = ["🥺", "😚", "🫣"][Math.floor(Math.random() * 3)]
+  }
+
   if (feedbackText) {
     feedbackText.textContent =
       riddle.wrongFeedback[index] ||
@@ -554,6 +580,7 @@ function chooseReaction(event) {
 
   if (meter) {
     meter.style.width = "100%"
+
     setTimeout(() => {
       meter.style.width = reaction === "ngambek" ? "24%" : "38%"
     }, 180)
@@ -623,6 +650,7 @@ function openFinalLetter() {
   const lines = document.querySelectorAll(".final-line")
 
   if (open) open.classList.add("hidden")
+
   if (letter) {
     letter.classList.remove("hidden")
     letter.scrollTop = 0
@@ -654,15 +682,24 @@ document.addEventListener("DOMContentLoaded", () => {
   startMascotLoop()
   updateGuide("scene-1")
 
-  setInterval(spawnFloatingItem, 850)
+  const isMobileLike = window.matchMedia(
+    "(max-width: 560px), (hover: none), (pointer: coarse)"
+  ).matches
 
-  for (let i = 0; i < 14; i++) {
+  const floatingInterval = isMobileLike ? 1500 : 850
+  const initialFloatingItems = isMobileLike ? 7 : 14
+
+  setInterval(spawnFloatingItem, floatingInterval)
+
+  for (let i = 0; i < initialFloatingItems; i++) {
     setTimeout(spawnFloatingItem, i * 140)
   }
 
-  document.addEventListener("mousemove", (event) => {
-    spawnCursorHeart(event.clientX, event.clientY)
-  })
+  if (!isMobileLike) {
+    document.addEventListener("mousemove", (event) => {
+      spawnCursorHeart(event.clientX, event.clientY)
+    })
+  }
 
   document.addEventListener(
     "touchstart",
