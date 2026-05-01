@@ -8,13 +8,53 @@ function goTo(sceneId) {
   const target = $(sceneId)
   if (!target) return
 
-  target.scrollTop = 0
   target.classList.add("active")
+
+  const card = target.querySelector(".cute-card")
+  if (card) card.scrollTop = 0
+
+  updateGuide(sceneId)
+}
+
+function on(id, event, handler) {
+  const element = $(id)
+  if (!element) return
+
+  element.addEventListener(event, handler)
+}
+
+/* GUIDE */
+
+const guideTexts = {
+  "scene-1": "aku nemenin dari awal 💛",
+  "scene-2": "tangkap hatinya yaa 💘",
+  "scene-3": "siap-siap baper 😚",
+  "scene-4": "ngambeknya lucu aja 😤",
+  "scene-5": "pelan-pelan dulu ya 🌙",
+  "scene-6": "akhirnya sampai sini 💌"
+}
+
+function updateGuide(sceneId) {
+  const bubble = $("guideBubble")
+  if (!bubble) return
+
+  bubble.textContent = guideTexts[sceneId] || "aku di sini 💛"
 }
 
 /* FLOATING BACKGROUND */
 
-const floatingItems = ["♡", "💗", "💕", "cute", "hehe", "🌸", "love", "✧"]
+const floatingItems = [
+  "♡",
+  "💗",
+  "💕",
+  "hehe",
+  "cute",
+  "love",
+  "🌸",
+  "baper",
+  "gemes",
+  "✧"
+]
 
 function spawnFloatingItem() {
   const area = $("floatingArea")
@@ -33,12 +73,13 @@ function spawnFloatingItem() {
   setTimeout(() => item.remove(), 16000)
 }
 
-/* CURSOR / TAP HEART */
+/* CURSOR HEART */
 
 let cursorCooldown = false
 
 function spawnCursorHeart(x, y) {
   if (cursorCooldown) return
+
   cursorCooldown = true
 
   const area = $("cursorArea")
@@ -46,13 +87,14 @@ function spawnCursorHeart(x, y) {
 
   const heart = document.createElement("div")
   heart.className = "cursor-heart"
-  heart.textContent = ["♡", "💗", "💕", "✦"][Math.floor(Math.random() * 4)]
+  heart.textContent = ["♡", "💗", "💕", "✦", "🌸"][Math.floor(Math.random() * 5)]
   heart.style.left = x + "px"
   heart.style.top = y + "px"
 
   area.appendChild(heart)
 
   setTimeout(() => heart.remove(), 900)
+
   setTimeout(() => {
     cursorCooldown = false
   }, 90)
@@ -64,9 +106,18 @@ function launchConfetti() {
   const area = $("confettiArea")
   if (!area) return
 
-  const colors = ["#ff7fbd", "#e13691", "#ffd1e6", "#ffffff", "#ffb6d9", "#c92d7c"]
+  const colors = [
+    "#ff7fbd",
+    "#e13691",
+    "#ffd1e6",
+    "#ffffff",
+    "#ffb6d9",
+    "#c92d7c",
+    "#ffe58a",
+    "#cfa8ff"
+  ]
 
-  for (let i = 0; i < 100; i++) {
+  for (let i = 0; i < 120; i++) {
     const item = document.createElement("div")
     const size = 5 + Math.random() * 8
 
@@ -85,43 +136,47 @@ function launchConfetti() {
   }
 }
 
-/* INTRO MASCOT */
+/* NAILONG INTRO */
 
-const mascotMoods = [
-  { left: "•", right: "•", mouth: "ᴗ", text: "haiii 💗" },
-  { left: "◕", right: "◕", mouth: "ω", text: "klik amplop" },
-  { left: "˶", right: "˶", mouth: "ᴗ", text: "gemes ya?" },
-  { left: "≧", right: "≦", mouth: "o", text: "ayo dong" },
-  { left: "♥", right: "♥", mouth: "ᴗ", text: "buat kamu" }
+const nailongMoods = [
+  { face: "♥ᴗ♥", text: "buat kamu" },
+  { face: "•ᴗ•", text: "klik amplop" },
+  { face: "◕ᴗ◕", text: "jangan malu" },
+  { face: "≧ᴗ≦", text: "ayo dong" },
+  { face: "˶ᵔᵕᵔ˶", text: "gemes ya?" }
 ]
 
-let mascotIndex = 0
-let mascotTimer = null
+let nailongIndex = 0
+let nailongTimer = null
 
-function renderMascotMood() {
-  const mood = mascotMoods[mascotIndex]
+function renderNailongMood() {
+  const mood = nailongMoods[nailongIndex]
 
-  $("leftEye").textContent = mood.left
-  $("rightEye").textContent = mood.right
-  $("mascotMouth").textContent = mood.mouth
-  $("mascotBubble").textContent = mood.text
+  const face = $("nailongFace")
+  const bubble = $("mascotBubble")
+
+  if (face) face.textContent = mood.face
+  if (bubble) bubble.textContent = mood.text
 }
 
-function startMascotLoop() {
-  clearInterval(mascotTimer)
-  renderMascotMood()
+function startNailongLoop() {
+  clearInterval(nailongTimer)
 
-  mascotTimer = setInterval(() => {
-    mascotIndex = (mascotIndex + 1) % mascotMoods.length
-    renderMascotMood()
+  renderNailongMood()
+
+  nailongTimer = setInterval(() => {
+    nailongIndex = (nailongIndex + 1) % nailongMoods.length
+    renderNailongMood()
   }, 1300)
 }
 
 function openIntroEnvelope() {
   const envelope = $("secretEnvelope")
-  envelope.classList.add("open")
 
-  $("mascotBubble").textContent = "yeayy kebuka 💌"
+  if (envelope) envelope.classList.add("open")
+
+  const bubble = $("mascotBubble")
+  if (bubble) bubble.textContent = "yeayy kebuka 💌"
 
   for (let i = 0; i < 18; i++) {
     setTimeout(spawnFloatingItem, i * 45)
@@ -129,7 +184,7 @@ function openIntroEnvelope() {
 
   setTimeout(() => {
     goTo("scene-2")
-    initCuteGame()
+    initHeartGame()
   }, 1050)
 }
 
@@ -139,10 +194,11 @@ let cuteScore = 0
 let heartInterval = null
 const maxCuteScore = 5
 
-function initCuteGame() {
+function initHeartGame() {
   cuteScore = 0
+
   $("cuteScore").textContent = cuteScore
-  $("nextToAngryBtn").classList.add("hidden")
+  $("nextToRiddleBtn").classList.add("hidden")
   $("cuteHint").textContent = "siap-siap yaa..."
 
   const game = $("heartGame")
@@ -153,7 +209,7 @@ function initCuteGame() {
   setTimeout(() => {
     $("cuteHint").textContent = "klik hati yang muncul 💕"
     spawnCatchHeart()
-    heartInterval = setInterval(spawnCatchHeart, 780)
+    heartInterval = setInterval(spawnCatchHeart, 760)
   }, 500)
 }
 
@@ -167,8 +223,8 @@ function spawnCatchHeart() {
   const hearts = ["💗", "💕", "💖", "💘", "🌸"]
   heart.textContent = hearts[Math.floor(Math.random() * hearts.length)]
 
-  const maxX = game.clientWidth - 52
-  const maxY = game.clientHeight - 52
+  const maxX = game.clientWidth - 54
+  const maxY = game.clientHeight - 54
 
   heart.style.left = Math.max(10, Math.random() * maxX) + "px"
   heart.style.top = Math.max(10, Math.random() * maxY) + "px"
@@ -183,182 +239,272 @@ function spawnCatchHeart() {
     setTimeout(() => heart.remove(), 150)
 
     if (cuteScore >= maxCuteScore) {
-      finishCuteGame()
+      finishHeartGame()
     }
   })
 
   game.appendChild(heart)
 
   setTimeout(() => {
-    if (heart.parentElement) {
-      heart.remove()
-    }
+    if (heart.parentElement) heart.remove()
   }, 1250)
 }
 
-function finishCuteGame() {
+function finishHeartGame() {
   clearInterval(heartInterval)
 
   const game = $("heartGame")
   game.querySelectorAll(".catch-heart").forEach((heart) => heart.remove())
 
-  $("cuteHint").textContent = "yeay, kamu menang 😚"
-  $("nextToAngryBtn").classList.remove("hidden")
+  $("cuteHint").textContent = "yeay, hatinya ketangkep semua 😚"
+  $("nextToRiddleBtn").classList.remove("hidden")
 
-  for (let i = 0; i < 15; i++) {
+  for (let i = 0; i < 18; i++) {
     setTimeout(spawnFloatingItem, i * 45)
   }
 }
 
-/* SCENE 3: ANGRY */
+/* SCENE 3: RIDDLE */
 
-let angryLevel = 5
-
-const angryMessages = [
-  "hmm... masih ngambek 😤",
-  "dikit lagi luluh...",
-  "iya iya, mulai adem...",
-  "aduh, jangan gemesin gitu...",
-  "yaudah deh, maafinnn 😌"
+const riddles = [
+  {
+    question: "Kalau aku disuruh pilih tempat paling nyaman, aku pilih...",
+    options: [
+      "Kasur yang empuk",
+      "Rumah yang tenang",
+      "Kamu",
+      "Kafe lucu"
+    ],
+    correctIndex: 2,
+    emoji: "🏡",
+    correctText:
+      "Iya, kamu. Soalnya kadang rumah bukan tempat, tapi seseorang yang bikin hati ngerasa aman."
+  },
+  {
+    question: "Kenapa aku bikin website kecil ini?",
+    options: [
+      "Karena lagi gabut",
+      "Karena kamu spesial",
+      "Karena disuruh Nailong",
+      "Karena internet lancar"
+    ],
+    correctIndex: 1,
+    emoji: "💌",
+    correctText:
+      "Benar. Karena kamu terlalu spesial buat cuma dikasih chat biasa."
+  },
+  {
+    question: "Kalau kamu senyum, efeknya ke aku apa?",
+    options: [
+      "Biasa aja",
+      "Loading sebentar",
+      "Ikut senyum tanpa sadar",
+      "Error 404"
+    ],
+    correctIndex: 2,
+    emoji: "😳",
+    correctText:
+      "Benar. Senyum kamu tuh bahaya, bisa bikin aku lupa pura-pura biasa aja."
+  }
 ]
 
-function initAngryScene() {
-  angryLevel = 5
-  updateAngryMeter()
+let riddleIndex = 0
+let riddleWrong = 0
 
-  $("calmBtn").classList.remove("hidden")
-  $("runawayBtn").classList.remove("hidden")
-  $("nextToSadBtn").classList.add("hidden")
-
-  $("angryText").textContent = "Soalnya kamu terlalu gemes. Sekarang bujuk aku dulu."
-  $("runawayBtn").style.transform = "translate(0, 0)"
+function initRiddle() {
+  riddleIndex = 0
+  riddleWrong = 0
+  showRiddle()
 }
 
-function updateAngryMeter() {
-  const percent = (angryLevel / 5) * 100
-  $("angryMeterFill").style.width = percent + "%"
+function showRiddle() {
+  const riddle = riddles[riddleIndex]
+
+  $("riddleCounter").textContent = `gombalan ${riddleIndex + 1} dari ${riddles.length}`
+  $("riddleQuestion").textContent = riddle.question
+  $("riddleFeedback").classList.add("hidden")
+  $("nextRiddleBtn").classList.add("hidden")
+
+  const options = $("riddleOptions")
+  options.innerHTML = ""
+
+  riddle.options.forEach((option, index) => {
+    const button = document.createElement("button")
+    button.className = "riddle-option"
+    button.textContent = option
+    button.addEventListener("click", () => chooseRiddleOption(index, button))
+
+    options.appendChild(button)
+  })
 }
 
-function calmAngry() {
-  if (angryLevel <= 0) return
+function chooseRiddleOption(index, button) {
+  const riddle = riddles[riddleIndex]
+  const buttons = document.querySelectorAll(".riddle-option")
 
-  angryLevel--
-  updateAngryMeter()
+  buttons.forEach((item) => {
+    item.disabled = true
+  })
 
-  const index = Math.min(5 - angryLevel - 1, angryMessages.length - 1)
-  $("angryText").textContent = angryMessages[index]
+  $("riddleFeedback").classList.remove("hidden")
 
-  if (angryLevel <= 0) {
-    $("calmBtn").classList.add("hidden")
-    $("runawayBtn").classList.add("hidden")
-    $("nextToSadBtn").classList.remove("hidden")
-    $("angryText").textContent = "Oke, aku udah gak ngambek 🤍"
+  if (index === riddle.correctIndex) {
+    button.classList.add("correct")
+
+    $("feedbackEmoji").textContent = riddle.emoji
+    $("feedbackText").textContent = riddle.correctText
+
+    $("nextRiddleBtn").classList.remove("hidden")
+    $("nextRiddleBtn").textContent =
+      riddleIndex < riddles.length - 1
+        ? "Gombalan berikutnya"
+        : "Lanjut, tapi jangan pura-pura nggak baper"
+
+    return
+  }
+
+  button.classList.add("wrong")
+  riddleWrong++
+
+  $("feedbackEmoji").textContent = "😚"
+
+  if (riddleWrong >= 2) {
+    $("feedbackText").textContent =
+      "Aku kasih clue ya: pilih jawaban yang paling bikin pipi panas."
+  } else {
+    $("feedbackText").textContent =
+      "Hmm hampir, tapi coba pikir pakai hati, jangan pakai logika dulu."
+  }
+
+  setTimeout(() => {
+    buttons.forEach((item) => {
+      item.disabled = false
+      item.classList.remove("wrong")
+    })
+  }, 900)
+}
+
+function nextRiddle() {
+  riddleIndex++
+  riddleWrong = 0
+
+  if (riddleIndex < riddles.length) {
+    showRiddle()
+  } else {
+    goTo("scene-4")
+    initMoodScene()
   }
 }
 
-function moveRunawayButton() {
-  const btn = $("runawayBtn")
-  if (!btn) return
+/* SCENE 4: USER POUT */
 
-  const x = Math.floor(Math.random() * 130) - 65
-  const y = Math.floor(Math.random() * 70) - 35
-  const rotate = Math.floor(Math.random() * 18) - 9
+function initMoodScene() {
+  $("moodOptions").classList.remove("hidden")
+  $("poutBox").classList.add("hidden")
+  $("toValidationBtn").classList.add("hidden")
+  $("poutMeterFill").style.width = "100%"
 
-  btn.style.transform = `translate(${x}px, ${y}px) rotate(${rotate}deg)`
+  $("moodText").textContent =
+    "Pilih alasan ngambek kamu. Tapi ngambeknya yang lucu aja ya."
 }
 
-/* SCENE 4: SAD */
+function chooseMood(event) {
+  const button = event.target.closest(".mood-btn")
+  if (!button) return
 
-function initSadScene() {
-  $("sadReveal").classList.add("hidden")
+  const mood = button.dataset.mood
+
+  const messages = {
+    baper:
+      "Aduh, kamu mulai baper ya? Nggak apa-apa. Baper yang ini aman kok.",
+    jail:
+      "Iya, websitenya memang jail. Tapi jailnya sayang-sayang, bukan jahat.",
+    senyum:
+      "Ketahuan senyum sendiri. Lucu banget sih, jadi aku ikut senyum juga."
+  }
+
+  $("moodOptions").classList.add("hidden")
+  $("poutBox").classList.remove("hidden")
+  $("toValidationBtn").classList.remove("hidden")
+  $("moodText").textContent = "Oke, sekarang kamu boleh ngambek manja."
+
+  $("poutMessage").textContent = messages[mood] || messages.baper
+
+  setTimeout(() => {
+    $("poutMeterFill").style.width = "18%"
+  }, 250)
+
+  for (let i = 0; i < 10; i++) {
+    setTimeout(spawnFloatingItem, i * 70)
+  }
+}
+
+/* SCENE 5: VALIDATION */
+
+function initValidationScene() {
+  $("startValidationBtn").classList.remove("hidden")
+  $("validationLines").classList.add("hidden")
   $("nextToFinalBtn").classList.add("hidden")
-  $("hugBtn").classList.remove("hidden")
+
+  document.querySelectorAll(".validation-line").forEach((line) => {
+    line.classList.remove("show")
+  })
 }
 
-function virtualHug() {
-  $("hugBtn").classList.add("hidden")
-  $("sadReveal").classList.remove("hidden")
+function startValidation() {
+  $("startValidationBtn").classList.add("hidden")
+  $("validationLines").classList.remove("hidden")
+
+  const lines = document.querySelectorAll(".validation-line")
+
+  lines.forEach((line, index) => {
+    setTimeout(() => {
+      line.classList.add("show")
+    }, index * 650)
+  })
 
   setTimeout(() => {
     $("nextToFinalBtn").classList.remove("hidden")
-  }, 500)
-
-  for (let i = 0; i < 12; i++) {
-    setTimeout(spawnFloatingItem, i * 60)
-  }
+  }, lines.length * 650 + 300)
 }
 
-/* SCENE 5: FINAL */
-
-const finalLetter = `Hai kamu 💗
-
-Aku bikin ini bukan biar terlihat keren.
-
-Aku cuma pengen kamu tahu,
-hadir kamu itu bikin hariku lebih manis.
-
-Aku suka caramu bikin aku senyum.
-Aku suka caramu muncul di pikiranku
-tanpa diminta.
-
-Mungkin aku sering bercanda,
-tapi bagian ini serius.
-
-Aku suka kamu.
-
-Sederhana aja.
-Nggak ribet.
-Nggak dibuat-buat.
-
-Kalau setelah baca ini kamu senyum,
-berarti misi kecilku berhasil. ✨`
-
-let typingTimer = null
-let isTyping = false
+/* SCENE 6: FINAL */
 
 function initFinalScene() {
-  $("letterBox").classList.add("hidden")
-  $("typedLetter").textContent = ""
-  $("finalActions").classList.add("hidden")
   $("openLetterBtn").classList.remove("hidden")
+  $("finalLetter").classList.add("hidden")
+  $("finalActions").classList.add("hidden")
 
-  clearInterval(typingTimer)
-  isTyping = false
+  document.querySelectorAll(".final-line").forEach((line) => {
+    line.classList.remove("show")
+  })
 }
 
 function openFinalLetter() {
-  if (isTyping) return
-
-  isTyping = true
   $("openLetterBtn").classList.add("hidden")
-  $("letterBox").classList.remove("hidden")
+  $("finalLetter").classList.remove("hidden")
 
-  let index = 0
-  $("typedLetter").textContent = ""
+  const lines = document.querySelectorAll(".final-line")
 
-  typingTimer = setInterval(() => {
-    $("typedLetter").textContent += finalLetter[index]
-    index++
+  lines.forEach((line, index) => {
+    setTimeout(() => {
+      line.classList.add("show")
+    }, index * 520)
+  })
 
-    if (index >= finalLetter.length) {
-      clearInterval(typingTimer)
-      isTyping = false
-
-      setTimeout(() => {
-        $("finalActions").classList.remove("hidden")
-        launchConfetti()
-      }, 400)
-    }
-  }, 23)
+  setTimeout(() => {
+    $("finalActions").classList.remove("hidden")
+    launchConfetti()
+  }, lines.length * 520 + 500)
 }
 
 function restartWebsite() {
   clearInterval(heartInterval)
-  clearInterval(typingTimer)
 
   const envelope = $("secretEnvelope")
   if (envelope) envelope.classList.remove("open")
 
+  initFinalScene()
   goTo("scene-1")
 }
 
@@ -366,11 +512,11 @@ function restartWebsite() {
 
 document.addEventListener("DOMContentLoaded", () => {
   goTo("scene-1")
-  startMascotLoop()
+  startNailongLoop()
 
-  setInterval(spawnFloatingItem, 800)
+  setInterval(spawnFloatingItem, 850)
 
-  for (let i = 0; i < 12; i++) {
+  for (let i = 0; i < 14; i++) {
     setTimeout(spawnFloatingItem, i * 140)
   }
 
@@ -385,35 +531,33 @@ document.addEventListener("DOMContentLoaded", () => {
     spawnCursorHeart(touch.clientX, touch.clientY)
   })
 
-  $("startBtn").addEventListener("click", openIntroEnvelope)
+  on("startBtn", "click", openIntroEnvelope)
 
-  $("nextToAngryBtn").addEventListener("click", () => {
+  on("nextToRiddleBtn", "click", () => {
     goTo("scene-3")
-    initAngryScene()
+    initRiddle()
   })
 
-  $("calmBtn").addEventListener("click", calmAngry)
+  on("nextRiddleBtn", "click", nextRiddle)
 
-  $("runawayBtn").addEventListener("mouseenter", moveRunawayButton)
-  $("runawayBtn").addEventListener("touchstart", moveRunawayButton)
-  $("runawayBtn").addEventListener("click", () => {
-    moveRunawayButton()
-    $("angryText").textContent = "ihh kok gitu, bujuk yang bener dong 😝"
-  })
+  const moodOptions = $("moodOptions")
+  if (moodOptions) {
+    moodOptions.addEventListener("click", chooseMood)
+  }
 
-  $("nextToSadBtn").addEventListener("click", () => {
-    goTo("scene-4")
-    initSadScene()
-  })
-
-  $("hugBtn").addEventListener("click", virtualHug)
-
-  $("nextToFinalBtn").addEventListener("click", () => {
+  on("toValidationBtn", "click", () => {
     goTo("scene-5")
+    initValidationScene()
+  })
+
+  on("startValidationBtn", "click", startValidation)
+
+  on("nextToFinalBtn", "click", () => {
+    goTo("scene-6")
     initFinalScene()
   })
 
-  $("openLetterBtn").addEventListener("click", openFinalLetter)
-  $("celebrateBtn").addEventListener("click", launchConfetti)
-  $("restartBtn").addEventListener("click", restartWebsite)
+  on("openLetterBtn", "click", openFinalLetter)
+  on("celebrateBtn", "click", launchConfetti)
+  on("restartBtn", "click", restartWebsite)
 })
